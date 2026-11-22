@@ -14,8 +14,8 @@ import java.util.List;
 
 /**
  * Manages a collection of Part B {@link Task} objects.
- * Provides add, display, search, update, and high-priority incomplete listing
- * operations.
+ * Provides add, display, search, update, high-priority incomplete listing, and
+ * completion-percentage calculation operations.
  * <p>
  * All iterations use indexed loops only (no enhanced for-loops).
  */
@@ -115,6 +115,29 @@ public class TaskManager {
         if (!found) {
             System.out.println("No high-priority incomplete tasks.");
         }
+    }
+
+    /**
+     * Calculates the completion percentage of all tracked tasks.
+     * <p>
+     * Formula: {@code (completedTasks / totalTasks) * 100.0}. Uses the Part B
+     * helper {@link Task#isCompleted()} to count completed tasks via an indexed
+     * loop. Result formatting (e.g. 2 decimals) is left to the app layer.
+     *
+     * @return completion percentage in [0.0, 100.0]; returns {@code -1} when
+     *         there are no tasks (guards against division by zero / NaN)
+     */
+    public double calculateCompletionPercentage() {
+        if (tasks.isEmpty()) {
+            return -1;
+        }
+        int completed = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).isCompleted()) {
+                completed++;
+            }
+        }
+        return (completed / (double) tasks.size()) * 100.0;
     }
 
     // ----- Helper -----
