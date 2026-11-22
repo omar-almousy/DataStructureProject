@@ -1,41 +1,29 @@
-/*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
- * Project: Smart Study Planner
- * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
- */
 
-import java.util.Objects;
-
-/**
- * Represents a course in the Smart Study Planner.
- * A course has a code, name, credit value, and instructor.
- */
 public class Course {
-    private String courseCode;
+    // Private instance variables
+    private int courseID;
     private String courseName;
-    private int credits;
-    private String instructor;
-
-    public Course(String courseCode, String courseName, int credits, String instructor) {
-        this.courseCode = courseCode;
+    private String instructorName;
+    private int creditHours;
+    public Course(int courseID, String courseName, String instructorName, int creditHours) {
+        this.courseID = courseID;
         this.courseName = courseName;
-        this.credits = credits;
-        this.instructor = instructor;
+        this.instructorName = instructorName;
+        this.creditHours = creditHours;
     }
 
-    public String getCourseCode() {
-        return courseCode;
+    
+    public int getCourseID() {
+        return courseID;
     }
 
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+    public void setCourseID(int courseID) {
+        this.courseID = courseID;
     }
 
+    /**
+     * Returns the course name.
+     */
     public String getCourseName() {
         return courseName;
     }
@@ -44,38 +32,41 @@ public class Course {
         this.courseName = courseName;
     }
 
-    public int getCredits() {
-        return credits;
+
+    public String getInstructorName() {
+        return instructorName;
     }
 
-    public void setCredits(int credits) {
-        this.credits = credits;
+    
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
     }
 
-    public String getInstructor() {
-        return instructor;
+    public int getCreditHours() {
+        return creditHours;
     }
 
-    public void setInstructor(String instructor) {
-        this.instructor = instructor;
+    public void setCreditHours(int creditHours) {
+        this.creditHours = creditHours;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course course = (Course) o;
-        return Objects.equals(courseCode, course.courseCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(courseCode);
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !(o instanceof Course)) {
+            return false;
+        }
+        Course other = (Course) o;
+        return this.courseID == other.courseID;
     }
 
     @Override
     public String toString() {
-        return String.format("Course[code=%s, name=%s, credits=%d, instructor=%s]",
-                courseCode, courseName, credits, instructor);
+        return "Course ID: " + courseID
+                + ", Course Name: " + courseName
+                + ", Instructor: " + instructorName
+                + ", Credit Hours: " + creditHours;
     }
 }
