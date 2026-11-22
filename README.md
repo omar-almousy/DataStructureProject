@@ -6,7 +6,7 @@ Uses ArrayList, HashMap, and PriorityQueue data structures for efficient organiz
 
 ## How to Run
 
-1. Open a terminal/command prompt in the project folder:
+1. Open a terminal/command prompt in the projectt folder:
    ```
    cd C:\Users\amier\OneDrive\Desktop\DSprjct\DataStructureProject
    ```
