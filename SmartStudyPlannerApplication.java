@@ -10,6 +10,7 @@
  */
 
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Main application class for the Smart Study Planner.
@@ -77,6 +78,26 @@ public class SmartStudyPlannerApplication {
         for (StudySession s : planner.getAllSessions()) {
             System.out.println("  " + s);
         }
+
+        // ---- Log a study session via Part E -----
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\n--- Log a Study Session (Part E) ---");
+        System.out.print("Enter session ID (6 digits): ");
+        String sessionId = sc.nextLine();
+        System.out.print("Enter task ID: ");
+        String taskId = sc.nextLine();
+        System.out.print("Enter duration (hours): ");
+        double durationHours;
+        try {
+            durationHours = Double.parseDouble(sc.nextLine());
+        } catch (NumberFormatException e) {
+            durationHours = -1;
+        }
+        System.out.print("Enter date (DD/MM/YYYY) or leave blank: ");
+        String date = sc.nextLine();
+        String result = planner.logStudySession(sessionId, taskId, durationHours, date);
+        System.out.println(result);
+        sc.close();
 
         // ---- Generate schedule ----
         System.out.println("\n=== Generated Schedule ===");

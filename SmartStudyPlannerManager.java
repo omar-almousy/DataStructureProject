@@ -169,6 +169,72 @@ public class SmartStudyPlannerManager {
         return sessions.removeIf(s -> sessionId.equals(s.getSessionId()));
     }
 
+    /**
+     * Logs a study session for a given task with validation.
+     * <p>
+     * Validates that the session ID is exactly six digits, that no session with
+     * that ID already exists, that the task exists (via {@link #getTaskById}),
+     * and that the duration is greater than zero. If a date is supplied it must
+     * match DD/MM/YYYY.
+     *
+     * @param sessionId    six-digit session identifier
+     * @param taskId       ID of the task to log the session against
+     * @param durationHours session duration in hours (must be &gt; 0)
+     * @param date         optional date in DD/MM/YYYY format (may be null or empty)
+     * @return success or specific failure message
+     */
+    public String logStudySession(String sessionId, String taskId,
+                                  double durationHours, String date) {
+        // Validate session ID: exactly six digits
+        if (sessionId == null || !sessionId.matches("\\d{6}")) {
+            return "Failure: session ID must be a six-digit number.";
+        }
+
+        // Reject duplicate session ID
+        if (getSessionById(sessionId) != null) {
+            return "Failure: duplicate session ID.";
+        }
+
+        // Validate task exists via manager
+        StudyTask task = getTaskById(taskId);
+        if (task == null) {
+            return "Failure: task not found.";
+        }
+
+        // Validate duration
+        if (durationHours <= 0) {
+            return "Failure: duration must be greater than 0.";
+        }
+
+        // Validate date format if supplied
+        if (date != null && !date.isEmpty() && !date.matches("\\d{2}/\\d{2}/\\d{4}")) {
+            return "Failure: date must be in DD/MM/YYYY format.";
+        }
+
+        // Derive start/end times from durationHours (start at 00:00)
+        int totalMinutes = (int) Math.round(durationHours * 60);
+        int hours = totalMinutes / 60;
+        int minutes = totalMinutes % 60;
+        String startTime = "00:00";
+        String endTime = String.format("%02d:%02d", hours, minutes);
+
+        StudySession session = new StudySession(
+                sessionId,
+                date != null ? date : "",
+                startTime,
+                endTime,
+                task.getCourse(),
+                "Logged session for task '" + task.getTitle() + "'");
+        session.addTask(task);
+
+        if (addSession(session)) {
+            return "Success: session logged for task '" + task.getTitle()
+                    + "' (ID: " + taskId + ").";
+        } else {
+            return "Failure: could not add session.";
+        }
+    }
+
     // ----- Schedule generation -----
     /**
      * Generates a simple schedule by assigning pending high-priority tasks
