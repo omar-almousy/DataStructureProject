@@ -79,26 +79,6 @@ public class SmartStudyPlannerApplication {
             System.out.println("  " + s);
         }
 
-        // ---- Log a study session via Part E -----
-        Scanner sc = new Scanner(System.in);
-        System.out.println("\n--- Log a Study Session (Part E) ---");
-        System.out.print("Enter session ID (6 digits): ");
-        String sessionId = sc.nextLine();
-        System.out.print("Enter task ID: ");
-        String taskId = sc.nextLine();
-        System.out.print("Enter duration (hours): ");
-        double durationHours;
-        try {
-            durationHours = Double.parseDouble(sc.nextLine());
-        } catch (NumberFormatException e) {
-            durationHours = -1;
-        }
-        System.out.print("Enter date (DD/MM/YYYY) or leave blank: ");
-        String date = sc.nextLine();
-        String result = planner.logStudySession(sessionId, taskId, durationHours, date);
-        System.out.println(result);
-        sc.close();
-
         // ---- Generate schedule ----
         System.out.println("\n=== Generated Schedule ===");
         List<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
@@ -109,6 +89,54 @@ public class SmartStudyPlannerApplication {
         // ---- Print summary ----
         System.out.println(planner.getSummary());
 
-        System.out.println("=== Smart Study Planner finished ===");
+        // ---- Interactive menu (Options 11 & 12) ----
+        Scanner sc = new Scanner(System.in);
+        boolean running = true;
+        while (running) {
+            System.out.println("\n=== Smart Study Planner Menu ===");
+            System.out.println("0. Exit");
+            System.out.println("11. Check task sessions");
+            System.out.println("12. Show completion percentage");
+            System.out.print("Select an option: ");
+            String choice = sc.nextLine();
+
+            switch (choice) {
+                case "0":
+                    running = false;
+                    System.out.println("Goodbye!");
+                    break;
+
+                case "11": {
+                    // Option 11: prompt taskID; distinguish "task not found" from "no sessions recorded"
+                    System.out.print("Enter task ID: ");
+                    String taskId = sc.nextLine();
+                    StudyTask task = planner.getTaskById(taskId);
+                    if (task == null) {
+                        System.out.println("Task not found.");
+                    } else if (!planner.hasSessionsForTask(taskId)) {
+                        System.out.println("No sessions recorded for this task.");
+                    } else {
+                        System.out.println("Sessions recorded for task '" + task.getTitle()
+                                + "' (ID: " + taskId + ").");
+                    }
+                    break;
+                }
+
+                case "12": {
+                    // Option 12: call calculateCompletionPercentage(); handle no tasks; format to 2 decimals
+                    double pct = planner.calculateCompletionPercentage();
+                    if (pct < 0) {
+                        System.out.println("No tasks exist.");
+                    } else {
+                        System.out.printf("Completion percentage: %.2f%%%n", pct);
+                    }
+                    break;
+                }
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+        sc.close();
     }
 }

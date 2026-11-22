@@ -235,6 +235,52 @@ public class SmartStudyPlannerManager {
         }
     }
 
+    // ----- Session lookup -----
+    /**
+     * Returns true if any recorded session contains a task with the given taskId.
+     * Uses indexed loops only (no enhanced for-loops).
+     *
+     * @param taskId the task ID to look for
+     * @return true if at least one session has this task; false otherwise
+     */
+    public boolean hasSessionsForTask(String taskId) {
+        if (taskId == null) {
+            return false;
+        }
+        for (int i = 0; i < sessions.size(); i++) {
+            List<StudyTask> sessionTasks = sessions.get(i).getTasks();
+            for (int j = 0; j < sessionTasks.size(); j++) {
+                if (taskId.equals(sessionTasks.get(j).getTaskId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Calculates the completion percentage of all tracked tasks.
+     * <p>
+     * Formula: {@code (completedTasks / totalTasks) * 100.0}. Uses the Part B
+     * helper {@link StudyTask#isCompleted()} to count completed tasks via an
+     * indexed loop. Returns {@code -1} when there are no tasks (guards against
+     * division by zero / NaN).
+     *
+     * @return completion percentage in [0.0, 100.0]; {@code -1} when empty
+     */
+    public double calculateCompletionPercentage() {
+        if (tasks.isEmpty()) {
+            return -1;
+        }
+        int completed = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).isCompleted()) {
+                completed++;
+            }
+        }
+        return (completed / (double) tasks.size()) * 100.0;
+    }
+
     // ----- Schedule generation -----
     /**
      * Generates a simple schedule by assigning pending high-priority tasks
