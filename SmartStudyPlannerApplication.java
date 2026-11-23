@@ -9,7 +9,7 @@
  *   [Member 4 Name] - [Member 4 ID]
  */
 
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Main application class for the Smart Study Planner.
@@ -24,18 +24,21 @@ public class SmartStudyPlannerApplication {
         System.out.println("=== Smart Study Planner ===\n");
 
         // ---- Create courses ----
-        Course math = new Course("CS101", "Introduction to Programming", 4, "Dr. Smith");
-        Course phys = new Course("PHYS201", "Physics I", 3, "Prof. Johnson");
-        Course chem = new Course("CHEM101", "General Chemistry", 3, "Dr. Lee");
+        Course math = new Course(101, "Introduction to Programming", "Dr. Smith", 4);
+        Course phys = new Course(102, "Physics I", "Prof. Johnson", 3);
+        Course chem = new Course(103, "General Chemistry", "Dr. Lee", 3);
 
-        planner.addCourse(math);
-        planner.addCourse(phys);
-        planner.addCourse(chem);
+        System.out.println("Adding courses:");
+        System.out.println("  Add CS101 (101): " + planner.addCourse(math));
+        System.out.println("  Add PHYS201 (102): " + planner.addCourse(phys));
+        System.out.println("  Add CHEM101 (103): " + planner.addCourse(chem));
 
-        System.out.println("Courses added:");
-        for (Course c : planner.getAllCourses()) {
-            System.out.println("  " + c);
-        }
+        // Test duplicate courseID rejection
+        Course mathDup = new Course(101, "Duplicate Programming", "Dr. Smith", 4);
+        System.out.println("  Add duplicate (101): " + planner.addCourse(mathDup));
+
+        System.out.println("\n=== All Courses ===");
+        planner.displayAllCourses();
 
         // ---- Create study tasks ----
         StudyTask t1 = new StudyTask("T001", "Finish Chapter 3 exercises",
@@ -55,9 +58,9 @@ public class SmartStudyPlannerApplication {
         planner.addTask(t4);
         planner.addTask(t5);
 
-        System.out.println("\nTasks added:");
-        for (StudyTask t : planner.getAllTasks()) {
-            System.out.println("  " + t);
+        System.out.println("\n=== All Tasks ===");
+        for (int i = 0; i < planner.getAllTasks().size(); i++) {
+            System.out.println("  " + planner.getAllTasks().get(i));
         }
 
         // ---- Mark one task complete ----
@@ -73,16 +76,16 @@ public class SmartStudyPlannerApplication {
         planner.addSession(s2);
         planner.addSession(s3);
 
-        System.out.println("\nSessions added:");
-        for (StudySession s : planner.getAllSessions()) {
-            System.out.println("  " + s);
+        System.out.println("\n=== All Sessions ===");
+        for (int i = 0; i < planner.getAllSessions().size(); i++) {
+            System.out.println("  " + planner.getAllSessions().get(i));
         }
 
         // ---- Generate schedule ----
         System.out.println("\n=== Generated Schedule ===");
-        List<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
-        for (StudySession sess : schedule) {
-            System.out.println("  " + sess);
+        LinkedList<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
+        for (int i = 0; i < schedule.size(); i++) {
+            System.out.println("  " + schedule.get(i));
         }
 
         // ---- Print summary ----

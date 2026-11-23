@@ -4,76 +4,133 @@
  * Project: Smart Study Planner
  * Group Members:
  *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
  *   [Member 3 Name] - [Member 3 ID]
  *   [Member 4 Name] - [Member 4 ID]
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.stream.Collectors;
+import java.util.LinkedList;
 
 /**
  * Manages courses, study tasks, and study sessions for the Smart Study Planner.
- * Uses ArrayList, HashMap, and PriorityQueue data structures for efficient storage and retrieval.
+ * Uses LinkedList data structures for course, task, and session storage.
+ * All iterations use indexed for loops (no enhanced for-each).
  */
 public class SmartStudyPlannerManager {
-    private List<Course> courses;
-    private List<StudyTask> tasks;
-    private List<StudySession> sessions;
-    private Map<String, Course> courseMap;
-    private Map<String, List<StudyTask>> tasksByCourse;
+    private LinkedList<Course> courses;
+    private LinkedList<StudyTask> tasks;
+    private LinkedList<StudySession> sessions;
 
+    /**
+     * Constructor initializing all three LinkedLists.
+     */
     public SmartStudyPlannerManager() {
-        this.courses = new ArrayList<>();
-        this.tasks = new ArrayList<>();
-        this.sessions = new ArrayList<>();
-        this.courseMap = new HashMap<>();
-        this.tasksByCourse = new HashMap<>();
+        this.courses = new LinkedList<>();
+        this.tasks = new LinkedList<>();
+        this.sessions = new LinkedList<>();
     }
 
     // ----- Course management -----
-    public boolean addCourse(Course course) {
-        if (course == null || courseMap.containsKey(course.getCourseCode())) {
+
+    /**
+     * Adds a course only if its courseID is not already present.
+     *
+     * @param c the course to add
+     * @return true if the course was added, false if it is null or a duplicate courseID
+     */
+    public boolean addCourse(Course c) {
+        if (c == null) {
             return false;
         }
-        courses.add(course);
-        courseMap.put(course.getCourseCode(), course);
-        return true;
+        if (findCourseByID(c.getCourseID()) != null) {
+            return false;
+        }
+        return courses.add(c);
     }
 
-    public Course getCourseByCode(String courseCode) {
-        return courseMap.get(courseCode);
+    /**
+     * Finds a course by its ID using an indexed for loop.
+     *
+     * @param id the course ID to search for
+     * @return the Course if found, null otherwise
+     */
+    public Course findCourseByID(int id) {
+        for (int i = 0; i < courses.size(); i++) {
+            Course c = courses.get(i);
+            if (c.getCourseID() == id) {
+                return c;
+            }
+        }
+        return null;
     }
 
-    public List<Course> getAllCourses() {
-        return new ArrayList<>(courses);
+    /**
+     * Returns the course with the given ID (alias for findCourseByID).
+     *
+     * @param id the course ID to search for
+     * @return the Course if found, null otherwise
+     */
+    public Course getCourseByID(int id) {
+        return findCourseByID(id);
     }
 
-    public boolean removeCourse(String courseCode) {
-        Course c = courseMap.remove(courseCode);
-        if (c == null) return false;
-        courses.remove(c);
-        tasksByCourse.remove(courseCode);
-        tasks.removeIf(t -> courseCode.equals(t.getCourse() != null ? t.getCourse().getCourseCode() : null));
-        return true;
+    /**
+     * Displays all courses using an indexed for loop.
+     * Prints an appropriate message if the list is empty.
+     */
+    public void displayAllCourses() {
+        if (courses.isEmpty()) {
+            System.out.println("No courses available.");
+            return;
+        }
+        for (int i = 0; i < courses.size(); i++) {
+            System.out.println("  " + courses.get(i));
+        }
+    }
+
+    /**
+     * Returns a copy of the courses list.
+     *
+     * @return a LinkedList containing all courses
+     */
+    public LinkedList<Course> getAllCourses() {
+        return new LinkedList<>(courses);
+    }
+
+    /**
+     * Removes a course by its courseID. Also removes any tasks belonging to that course.
+     *
+     * @param courseID the ID of the course to remove
+     * @return true if removed, false if not found
+     */
+    public boolean removeCourse(int courseID) {
+        for (int i = 0; i < courses.size(); i++) {
+            Course c = courses.get(i);
+            if (c.getCourseID() == courseID) {
+                courses.remove(i);
+                for (int j = tasks.size() - 1; j >= 0; j--) {
+                    if (tasks.get(j).getCourse() != null
+                            && tasks.get(j).getCourse().getCourseID() == courseID) {
+                        tasks.remove(j);
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     // ----- Task management -----
+
     public boolean addTask(StudyTask task) {
         if (task == null || task.getCourse() == null) {
             return false;
         }
-        tasks.add(task);
-        tasksByCourse.computeIfAbsent(task.getCourse().getCourseCode(), k -> new ArrayList<>()).add(task);
-        return true;
+        return tasks.add(task);
     }
 
     public StudyTask getTaskById(String taskId) {
-        for (StudyTask t : tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
             if (taskId.equals(t.getTaskId())) {
                 return t;
             }
@@ -81,38 +138,73 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
-    public List<StudyTask> getAllTasks() {
-        return new ArrayList<>(tasks);
+    public LinkedList<StudyTask> getAllTasks() {
+        return new LinkedList<>(tasks);
     }
 
-    public List<StudyTask> getTasksByCourse(String courseCode) {
-        List<StudyTask> list = tasksByCourse.get(courseCode);
-        return list != null ? new ArrayList<>(list) : new ArrayList<>();
-    }
-
-    public List<StudyTask> getPendingTasks() {
-        return tasks.stream().filter(t -> !t.isCompleted()).collect(Collectors.toList());
-    }
-
-    public List<StudyTask> getCompletedTasks() {
-        return tasks.stream().filter(StudyTask::isCompleted).collect(Collectors.toList());
-    }
-
-    /**
-     * Returns pending tasks ordered by priority (High first) then due date.
-     */
-    public List<StudyTask> getPrioritizedPendingTasks() {
-        PriorityQueue<StudyTask> pq = new PriorityQueue<>();
-        for (StudyTask t : tasks) {
-            if (!t.isCompleted()) {
-                pq.offer(t);
+    public LinkedList<StudyTask> getTasksByCourse(int courseID) {
+        LinkedList<StudyTask> result = new LinkedList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
+            if (t.getCourse() != null && t.getCourse().getCourseID() == courseID) {
+                result.add(t);
             }
         }
-        List<StudyTask> result = new ArrayList<>();
-        while (!pq.isEmpty()) {
-            result.add(pq.poll());
+        return result;
+    }
+
+    public LinkedList<StudyTask> getPendingTasks() {
+        LinkedList<StudyTask> result = new LinkedList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
+            if (!t.isCompleted()) {
+                result.add(t);
+            }
         }
         return result;
+    }
+
+    public LinkedList<StudyTask> getCompletedTasks() {
+        LinkedList<StudyTask> result = new LinkedList<>();
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
+            if (t.isCompleted()) {
+                result.add(t);
+            }
+        }
+        return result;
+    }
+
+    public LinkedList<StudyTask> getPrioritizedPendingTasks() {
+        LinkedList<StudyTask> pending = getPendingTasks();
+        LinkedList<StudyTask> sorted = new LinkedList<>();
+        for (int i = 0; i < pending.size(); i++) {
+            StudyTask t = pending.get(i);
+            int insertPos = 0;
+            while (insertPos < sorted.size() && shouldComeBefore(sorted.get(insertPos), t)) {
+                insertPos++;
+            }
+            sorted.add(insertPos, t);
+        }
+        return sorted;
+    }
+
+    private boolean shouldComeBefore(StudyTask a, StudyTask b) {
+        int rankA = priorityRank(a.getPriority());
+        int rankB = priorityRank(b.getPriority());
+        if (rankA != rankB) {
+            return rankA > rankB;
+        }
+        return a.getDueDate().compareTo(b.getDueDate()) < 0;
+    }
+
+    private int priorityRank(String p) {
+        switch (p) {
+            case "High": return 3;
+            case "Medium": return 2;
+            case "Low": return 1;
+            default: return 0;
+        }
     }
 
     public boolean markTaskComplete(String taskId) {
@@ -125,62 +217,70 @@ public class SmartStudyPlannerManager {
     }
 
     public boolean removeTask(String taskId) {
-        StudyTask t = getTaskById(taskId);
-        if (t == null) return false;
-        tasks.remove(t);
-        if (t.getCourse() != null) {
-            List<StudyTask> courseTasks = tasksByCourse.get(t.getCourse().getCourseCode());
-            if (courseTasks != null) {
-                courseTasks.remove(t);
+        for (int i = 0; i < tasks.size(); i++) {
+            if (taskId.equals(tasks.get(i).getTaskId())) {
+                tasks.remove(i);
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     // ----- Session management -----
+
     public boolean addSession(StudySession session) {
         if (session == null) {
             return false;
         }
-        sessions.add(session);
-        return true;
+        return sessions.add(session);
     }
 
-    public List<StudySession> getAllSessions() {
-        return new ArrayList<>(sessions);
+    public LinkedList<StudySession> getAllSessions() {
+        return new LinkedList<>(sessions);
     }
 
-    public List<StudySession> getSessionsByCourse(String courseCode) {
-        return sessions.stream()
-                .filter(s -> s.getCourse() != null && courseCode.equals(s.getCourse().getCourseCode()))
-                .collect(Collectors.toList());
+    public LinkedList<StudySession> getSessionsByCourse(int courseID) {
+        LinkedList<StudySession> result = new LinkedList<>();
+        for (int i = 0; i < sessions.size(); i++) {
+            StudySession s = sessions.get(i);
+            if (s.getCourse() != null && s.getCourse().getCourseID() == courseID) {
+                result.add(s);
+            }
+        }
+        return result;
     }
 
     public StudySession getSessionById(String sessionId) {
-        for (StudySession s : sessions) {
-            if (sessionId.equals(s.getSessionId())) {
-                return s;
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessionId.equals(sessions.get(i).getSessionId())) {
+                return sessions.get(i);
             }
         }
         return null;
     }
 
     public boolean removeSession(String sessionId) {
-        return sessions.removeIf(s -> sessionId.equals(s.getSessionId()));
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessionId.equals(sessions.get(i).getSessionId())) {
+                sessions.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 
     // ----- Schedule generation -----
-    /**
-     * Generates a simple schedule by assigning pending high-priority tasks
-     * to sessions, distributed across courses.
-     */
-    public List<StudySession> generateSchedule(List<StudySession> availableSessions) {
-        List<StudyTask> prioritized = getPrioritizedPendingTasks();
-        List<StudySession> scheduled = new ArrayList<>();
+
+    public LinkedList<StudySession> generateSchedule(LinkedList<StudySession> availableSessions) {
+        LinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
+        LinkedList<StudySession> scheduled = new LinkedList<>();
 
         int taskIndex = 0;
-        for (StudySession session : availableSessions) {
-            if (taskIndex >= prioritized.size()) break;
+        for (int i = 0; i < availableSessions.size(); i++) {
+            if (taskIndex >= prioritized.size()) {
+                break;
+            }
+            StudySession session = availableSessions.get(i);
             StudySession copy = new StudySession(
                     session.getSessionId(), session.getDate(),
                     session.getStartTime(), session.getEndTime(),
@@ -196,7 +296,7 @@ public class SmartStudyPlannerManager {
                     break;
                 }
             }
-            if (!copy.getTasks().isEmpty()) {
+            if (copy.getTaskCount() > 0) {
                 scheduled.add(copy);
             }
         }
@@ -204,6 +304,7 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Summary -----
+
     public String getSummary() {
         int pending = getPendingTasks().size();
         int completed = getCompletedTasks().size();
@@ -219,16 +320,17 @@ public class SmartStudyPlannerManager {
         StringBuilder sb = new StringBuilder();
         sb.append(getSummary()).append("%n");
         sb.append("Courses:%n");
-        for (Course c : courses) {
-            sb.append("  ").append(c).append("%n");
+        for (int i = 0; i < courses.size(); i++) {
+            sb.append("  ").append(courses.get(i)).append("%n");
         }
         sb.append("Pending Tasks (prioritized):%n");
-        for (StudyTask t : getPrioritizedPendingTasks()) {
-            sb.append("  ").append(t).append("%n");
+        LinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
+        for (int i = 0; i < prioritized.size(); i++) {
+            sb.append("  ").append(prioritized.get(i)).append("%n");
         }
         sb.append("Sessions:%n");
-        for (StudySession s : sessions) {
-            sb.append("  ").append(s).append("%n");
+        for (int i = 0; i < sessions.size(); i++) {
+            sb.append("  ").append(sessions.get(i)).append("%n");
         }
         return sb.toString();
     }

@@ -1,61 +1,121 @@
+/*
+ * Course: [COURSE_CODE]
+ * Section: [SECTION]
+ * Project: Smart Study Planner
+ * Group Members:
+ *   [Member 1 Name] - [Member 1 ID]
+ *   [Member 2 Name] - [Member 2 ID]
+ *   [Member 3 Name] - [Member 3 ID]
+ *   [Member 4 Name] - [Member 4 ID]
+ */
+
+import java.util.LinkedList;
+
 public class StudySession {
 
-    private String subject;
-    private String task;
-    private int priority;
-    private String deadline;
-    private String status;
-    
-    public StudySession(String subject, String task, int priority,
-                        String deadline, String status) {
-        this.subject = subject;
-        this.task = task;
-        this.priority = priority;
-        this.deadline = deadline;
-        this.status = status;
+    private String sessionId;
+    private String date;
+    private String startTime;
+    private String endTime;
+    private Course course;
+    private LinkedList<StudyTask> tasks;
+    private String notes;
+
+    public StudySession(String sessionId, String date, String startTime,
+            String endTime, Course course, String notes) {
+        this.sessionId = sessionId;
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.course = course;
+        this.notes = notes;
+        this.tasks = new LinkedList<>();
     }
 
-    public String getSubject() {
-        return subject;
+    public String getSessionId() {
+        return sessionId;
     }
 
-    public String getTask() {
-        return task;
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
-    public int getPriority() {
-        return priority;
+    public String getDate() {
+        return date;
     }
 
-    public String getDeadline() {
-        return deadline;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getStatus() {
-        return status;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+    public Course getCourse() {
+        return course;
+    }
+        
+
+    public LinkedList<StudyTask> getTasks() {
+        return tasks;
+    }
+    public void addTask(StudyTask task) {
+        if (task != null) {
+            tasks.add(task);
+        }
+    }
+    public int getTaskCount() {
+        return tasks.size();
+    }
+    public String getNotes() {
+        return notes;
+    }
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+    /**
+     * Returns the session duration in hours (e.g. "14:00" - "10:00" = 4.0).
+     */
+    public double getDurationHours() {
+        try {
+            String[] startParts = startTime.split(":");
+            String[] endParts = endTime.split(":");
+            int startMin = Integer.parseInt(startParts[0]) * 60 + Integer.parseInt(startParts[1]);
+            int endMin = Integer.parseInt(endParts[0]) * 60 + Integer.parseInt(endParts[1]);
+            return (endMin - startMin) / 60.0;
+        } catch (Exception e) {
+            return 0.0;
+        }
     }
 
     @Override
     public String toString() {
-        String level;
-        
-
-        if (priority == 1) {
-            level = "High";
-        } else if (priority == 2) {
-            level = "Medium";
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("Session[id=%s, date=%s, time=%s-%s, course=%s, duration=%.1fh, notes='%s']",
+                sessionId, date, startTime, endTime,
+                (course != null ? course.getCourseID() : "N/A"), getDurationHours(), notes));
+        if (tasks.isEmpty()) {
+            sb.append(" (no tasks assigned)");
         } else {
-            level = "Low";
+            sb.append(" tasks=[");
+            for (int i = 0; i < tasks.size(); i++) {
+                if (i > 0) sb.append(", ");
+                sb.append(tasks.get(i).getTaskId());
+            }
+            sb.append("]");
         }
-
-        return "Subject: " + subject +
-                "\nTask: " + task +
-                "\nPriority: " + priority + " (" + level + ")" +
-                "\nDeadline: " + deadline +
-                "\nStatus: " + status;
+        return sb.toString();
     }
 }

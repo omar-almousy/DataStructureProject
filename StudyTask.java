@@ -128,7 +128,7 @@ public class StudyTask implements Comparable<StudyTask> {
     @Override
     public String toString() {
         return String.format("Task[id=%s, title='%s', course=%s, due=%s, priority=%s, hours=%.1f, completed=%b]",
-                taskId, title, (course != null ? course.getCourseCode() : "N/A"),
+                taskId, title, (course != null ? course.getCourseID() : "N/A"),
                 dueDate, priority, estimatedHours, completed);
     }
 }
