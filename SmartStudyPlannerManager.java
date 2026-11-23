@@ -1,3 +1,4 @@
+
 /*
  * Course: [COURSE_CODE]
  * Section: [SECTION]
@@ -72,10 +73,10 @@ public class SmartStudyPlannerManager {
         return true;
     }
 
-    public StudyTask getTaskById(String taskId) {
-        for (StudyTask t : tasks) {
-            if (taskId.equals(t.getTaskId())) {
-                return t;
+    public StudyTask getTaskById(int taskId) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getTaskId() == taskId) {
+                return tasks.get(i);
             }
         }
         return null;
@@ -115,7 +116,7 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    public boolean markTaskComplete(String taskId) {
+    public boolean markTaskComplete(int taskId) {
         StudyTask t = getTaskById(taskId);
         if (t != null) {
             t.markComplete();
@@ -124,7 +125,7 @@ public class SmartStudyPlannerManager {
         return false;
     }
 
-    public boolean removeTask(String taskId) {
+    public boolean removeTask(int taskId) {
         StudyTask t = getTaskById(taskId);
         if (t == null) return false;
         tasks.remove(t);
@@ -142,6 +143,23 @@ public class SmartStudyPlannerManager {
         if (session == null) {
             return false;
         }
+        // Reject duplicate session IDs.
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getId() == session.getId()) {
+                return false;
+            }
+        }
+        // Reject sessions linked to a task ID that does not exist.
+        for (int i = 0; i < session.getTasks().size(); i++) {
+            StudyTask task = session.getTasks().get(i);
+            if (task == null || getTaskById(task.getTaskId()) == null) {
+                return false;
+            }
+        }
+        // Reject durationHours <= 0.
+        if (session.getDurationHours() <= 0) {
+            return false;
+        }
         sessions.add(session);
         return true;
     }
@@ -156,17 +174,55 @@ public class SmartStudyPlannerManager {
                 .collect(Collectors.toList());
     }
 
-    public StudySession getSessionById(String sessionId) {
-        for (StudySession s : sessions) {
-            if (sessionId.equals(s.getSessionId())) {
-                return s;
+    public StudySession getSessionById(int sessionId) {
+        return findSessionByID(sessionId);
+    }
+
+    public StudySession findSessionByID(int id) {
+        // Search for a session by ID. Return the session if found, otherwise return null.
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getId() == id) {
+                return sessions.get(i);
             }
         }
         return null;
     }
 
-    public boolean removeSession(String sessionId) {
-        return sessions.removeIf(s -> sessionId.equals(s.getSessionId()));
+    public boolean removeSession(int sessionId) {
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getId() == sessionId) {
+                sessions.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void displaySessionsForTask(int taskID) {
+        // Check if the task exists first.
+        StudyTask task = getTaskById(taskID);
+        if (task == null) {
+            System.out.println("Task with ID " + taskID + " does not exist.");
+            return;
+        }
+        // Display all sessions linked to this task.
+        boolean found = false;
+        for (int i = 0; i < sessions.size(); i++) {
+            StudySession s = sessions.get(i);
+            for (int j = 0; j < s.getTasks().size(); j++) {
+                if (s.getTasks().get(j).getTaskId() == taskID) {
+                    if (!found) {
+                        System.out.println("Sessions for task ID " + taskID + ":");
+                    }
+                    System.out.println("  " + s);
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("No sessions found for task ID " + taskID + ".");
+        }
     }
 
     // ----- Schedule generation -----
@@ -182,7 +238,7 @@ public class SmartStudyPlannerManager {
         for (StudySession session : availableSessions) {
             if (taskIndex >= prioritized.size()) break;
             StudySession copy = new StudySession(
-                    session.getSessionId(), session.getDate(),
+                    session.getId(), session.getDate(),
                     session.getStartTime(), session.getEndTime(),
                     session.getCourse(), session.getNotes());
             double remaining = copy.getDurationHours();

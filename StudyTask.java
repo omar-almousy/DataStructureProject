@@ -1,21 +1,5 @@
-/*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
- * Project: Smart Study Planner
- * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
- */
-
-/**
- * Represents a study task in the Smart Study Planner.
- * Each task belongs to a course and has a priority, due date, and completion status.
- * Tasks implement Comparable so they can be ordered in a priority queue.
- */
 public class StudyTask implements Comparable<StudyTask> {
-    private String taskId;
+    private int taskId;
     private String title;
     private String description;
     private Course course;
@@ -24,7 +8,7 @@ public class StudyTask implements Comparable<StudyTask> {
     private double estimatedHours;
     private boolean completed;
 
-    public StudyTask(String taskId, String title, String description,
+    public StudyTask(int taskId, String title, String description,
             Course course, String dueDate, String priority, double estimatedHours) {
         this.taskId = taskId;
         this.title = title;
@@ -36,11 +20,11 @@ public class StudyTask implements Comparable<StudyTask> {
         this.completed = false;
     }
 
-    public String getTaskId() {
+    public int getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(String taskId) {
+    public void setTaskId(int taskId) {
         this.taskId = taskId;
     }
 
@@ -106,13 +90,11 @@ public class StudyTask implements Comparable<StudyTask> {
 
     @Override
     public int compareTo(StudyTask other) {
-        // Higher priority tasks come first
         int thisRank = priorityRank(this.priority);
         int otherRank = priorityRank(other.priority);
         if (thisRank != otherRank) {
-            return Integer.compare(otherRank, thisRank); // descending: High first
+            return Integer.compare(otherRank, thisRank);
         }
-        // Then by due date (earlier first)
         return this.dueDate.compareTo(other.dueDate);
     }
 
@@ -127,7 +109,7 @@ public class StudyTask implements Comparable<StudyTask> {
 
     @Override
     public String toString() {
-        return String.format("Task[id=%s, title='%s', course=%s, due=%s, priority=%s, hours=%.1f, completed=%b]",
+        return String.format("Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%.1f, completed=%b]",
                 taskId, title, (course != null ? course.getCourseCode() : "N/A"),
                 dueDate, priority, estimatedHours, completed);
     }
