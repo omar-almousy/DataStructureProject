@@ -41,31 +41,59 @@ public class SmartStudyPlannerApplication {
         planner.displayAllCourses();
 
         // ---- Create study tasks ----
-        StudyTask t1 = new StudyTask("T001", "Finish Chapter 3 exercises",
+        StudyTask t1 = new StudyTask(1, "Finish Chapter 3 exercises",
                 "Complete exercises 3.1 through 3.10", math, "2026-12-01", "High", 2.5);
-        StudyTask t2 = new StudyTask("T002", "Lab report",
+        StudyTask t2 = new StudyTask(2, "Lab report",
                 "Write and submit physics lab report", phys, "2026-12-02", "High", 3.0);
-        StudyTask t3 = new StudyTask("T003", "Review periodic table",
+        StudyTask t3 = new StudyTask(3, "Review periodic table",
                 "Memorize elements and groups", chem, "2026-12-05", "Medium", 1.5);
-        StudyTask t4 = new StudyTask("T004", "Debug assignment",
+        StudyTask t4 = new StudyTask(4, "Debug assignment",
                 "Fix bugs in sorting algorithm", math, "2026-11-30", "High", 1.0);
-        StudyTask t5 = new StudyTask("T005", "Read chapter 5",
+        StudyTask t5 = new StudyTask(5, "Read chapter 5",
                 "Read and summarize chemistry chapter 5", chem, "2026-12-07", "Low", 2.0);
 
-        planner.addTask(t1);
-        planner.addTask(t2);
-        planner.addTask(t3);
-        planner.addTask(t4);
-        planner.addTask(t5);
+        System.out.println("Adding tasks:");
+        System.out.println("  Add task 1: " + planner.addTask(t1));
+        System.out.println("  Add task 2: " + planner.addTask(t2));
+        System.out.println("  Add task 3: " + planner.addTask(t3));
+        System.out.println("  Add task 4: " + planner.addTask(t4));
+        System.out.println("  Add task 5: " + planner.addTask(t5));
+
+        // Test duplicate taskID rejection
+        StudyTask tDup = new StudyTask(1, "Duplicate task", "Should be rejected",
+                math, "2026-12-10", "Low", 1.0);
+        System.out.println("  Add duplicate taskID (1): " + planner.addTask(tDup));
+
+        // Test task with non-existent course ID
+        Course noCourse = new Course(999, "Nonexistent", "N/A", 1);
+        StudyTask tBadCourse = new StudyTask(6, "Bad course task", "Should be rejected",
+                noCourse, "2026-12-10", "Low", 1.0);
+        System.out.println("  Add task with bad courseID (999): " + planner.addTask(tBadCourse));
 
         System.out.println("\n=== All Tasks ===");
-        for (int i = 0; i < planner.getAllTasks().size(); i++) {
-            System.out.println("  " + planner.getAllTasks().get(i));
-        }
+        planner.displayAllStudyTasks();
+
+        // ---- Search task by ID ----
+        System.out.println("\n=== Search Task by ID ===");
+        StudyTask found = planner.searchTaskByID(3);
+        System.out.println("  Search task 3: " + (found != null ? found.getTitle() : "not found"));
+        StudyTask notFound = planner.searchTaskByID(99);
+        System.out.println("  Search task 99: " + (notFound != null ? notFound.getTitle() : "not found"));
+
+        // ---- Update task status ----
+        System.out.println("\n=== Update Task Status ===");
+        System.out.println("  Update task 2 to 'In Progress': " + planner.updateTaskStatus(2, "In Progress"));
+        System.out.println("  Update task 99 to 'Completed' (unknown ID): " + planner.updateTaskStatus(99, "Completed"));
+        System.out.println("  Update task 1 to 'InvalidStatus' (invalid): " + planner.updateTaskStatus(1, "InvalidStatus"));
+        System.out.println("  Update task 4 to 'Completed': " + planner.updateTaskStatus(4, "Completed"));
 
         // ---- Mark one task complete ----
-        planner.markTaskComplete("T004");
-        System.out.println("\nMarked T004 as complete.");
+        planner.markTaskComplete(4);
+        System.out.println("\nMarked task 4 as complete.");
+
+        // ---- Display high-priority incomplete tasks ----
+        System.out.println("\n=== High-Priority Incomplete Tasks ===");
+        planner.displayHighPriorityIncompleteTasks();
 
         // ---- Create study sessions ----
         StudySession s1 = new StudySession("S001", "2026-11-25", "10:00", "12:00", math, "Morning study block");

@@ -121,21 +121,53 @@ public class SmartStudyPlannerManager {
 
     // ----- Task management -----
 
-    public boolean addTask(StudyTask task) {
-        if (task == null || task.getCourse() == null) {
+    /**
+     * Adds a study task to the list.
+     * Rejects if task is null, has no course, taskID is duplicate,
+     * or the associated courseID does not exist.
+     *
+     * @param t the task to add
+     * @return true if added, false otherwise
+     */
+    public boolean addTask(StudyTask t) {
+        if (t == null || t.getCourse() == null) {
             return false;
         }
-        return tasks.add(task);
+        // Reject if taskID is duplicate
+        if (findTaskByID(t.getTaskId()) != null) {
+            return false;
+        }
+        // Reject if associated courseID does not exist
+        if (findCourseByID(t.getCourse().getCourseID()) == null) {
+            return false;
+        }
+        return tasks.add(t);
     }
 
-    public StudyTask getTaskById(String taskId) {
+    /**
+     * Helper: finds a task by its ID using an indexed for loop.
+     *
+     * @param id the task ID to search for
+     * @return the StudyTask if found, null otherwise
+     */
+    private StudyTask findTaskByID(int id) {
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
-            if (taskId.equals(t.getTaskId())) {
+            if (t.getTaskId() == id) {
                 return t;
             }
         }
         return null;
+    }
+
+    /**
+     * Searches for a task by its ID.
+     *
+     * @param id the task ID to search for
+     * @return the StudyTask if found, null otherwise
+     */
+    public StudyTask searchTaskByID(int id) {
+        return findTaskByID(id);
     }
 
     public LinkedList<StudyTask> getAllTasks() {
@@ -207,8 +239,8 @@ public class SmartStudyPlannerManager {
         }
     }
 
-    public boolean markTaskComplete(String taskId) {
-        StudyTask t = getTaskById(taskId);
+    public boolean markTaskComplete(int id) {
+        StudyTask t = findTaskByID(id);
         if (t != null) {
             t.markComplete();
             return true;
@@ -216,14 +248,72 @@ public class SmartStudyPlannerManager {
         return false;
     }
 
-    public boolean removeTask(String taskId) {
+    public boolean removeTask(int id) {
         for (int i = 0; i < tasks.size(); i++) {
-            if (taskId.equals(tasks.get(i).getTaskId())) {
+            if (tasks.get(i).getTaskId() == id) {
                 tasks.remove(i);
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Displays all study tasks with course info using an indexed for loop.
+     * Prints an appropriate message if the list is empty.
+     */
+    public void displayAllStudyTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println("No study tasks available.");
+            return;
+        }
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
+            Course c = t.getCourse();
+            System.out.println("  " + t + " | course=" + (c != null ? c.getCourseName() : "N/A"));
+        }
+    }
+
+    /**
+     * Updates the status of a task by its ID.
+     * Valid status values: "Pending", "In Progress", "Completed".
+     *
+     * @param id the task ID
+     * @param newStatus the new status to set
+     * @return true if updated successfully, false if task not found or invalid status
+     */
+    public boolean updateTaskStatus(int id, String newStatus) {
+        if (newStatus == null) {
+            return false;
+        }
+        if (!"Pending".equals(newStatus) && !"In Progress".equals(newStatus)
+                && !"Completed".equals(newStatus)) {
+            return false;
+        }
+        StudyTask t = findTaskByID(id);
+        if (t != null) {
+            t.setStatus(newStatus);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Displays all high-priority incomplete tasks using indexed loops.
+     * Prints a message if none are found.
+     */
+    public void displayHighPriorityIncompleteTasks() {
+        boolean found = false;
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
+            if (t.isHighPriority() && !t.isCompleted()) {
+                System.out.println("  " + t);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No high-priority incomplete tasks found.");
+        }
     }
 
     // ----- Session management -----
