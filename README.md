@@ -13,7 +13,7 @@ Uses ArrayList, HashMap, and PriorityQueue data structures for efficient organiz
 
 2. Compile all Java files:
    ```
-   javac *.javaa
+   javac *.javaaac
    ```
 
 3. Run the application:
