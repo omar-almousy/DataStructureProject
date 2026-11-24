@@ -19,6 +19,13 @@ import java.util.Scanner;
  */
 public class SmartStudyPlannerApplication {
 
+    /**
+     * Main entry point for the Smart Study Planner application.
+     * Creates sample courses, tasks, and sessions, generates a schedule,
+     * and provides an interactive menu for Options 11 and 12.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         SmartStudyPlannerManager planner = new SmartStudyPlannerManager();
 
@@ -34,8 +41,9 @@ public class SmartStudyPlannerApplication {
         planner.addCourse(chem);
 
         System.out.println("Courses added:");
-        for (Course c : planner.getAllCourses()) {
-            System.out.println("  " + c);
+        List<Course> allCourses = planner.getAllCourses();
+        for (int i = 0; i < allCourses.size(); i++) {
+            System.out.println("  " + allCourses.get(i));
         }
 
         // ---- Create study tasks ----
@@ -57,8 +65,9 @@ public class SmartStudyPlannerApplication {
         planner.addTask(t5);
 
         System.out.println("\nTasks added:");
-        for (StudyTask t : planner.getAllTasks()) {
-            System.out.println("  " + t);
+        List<StudyTask> allTasks = planner.getAllTasks();
+        for (int i = 0; i < allTasks.size(); i++) {
+            System.out.println("  " + allTasks.get(i));
         }
 
         // ---- Mark one task complete ----
@@ -75,15 +84,16 @@ public class SmartStudyPlannerApplication {
         planner.addSession(s3);
 
         System.out.println("\nSessions added:");
-        for (StudySession s : planner.getAllSessions()) {
-            System.out.println("  " + s);
+        List<StudySession> allSessions = planner.getAllSessions();
+        for (int i = 0; i < allSessions.size(); i++) {
+            System.out.println("  " + allSessions.get(i));
         }
 
         // ---- Generate schedule ----
         System.out.println("\n=== Generated Schedule ===");
         List<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
-        for (StudySession sess : schedule) {
-            System.out.println("  " + sess);
+        for (int i = 0; i < schedule.size(); i++) {
+            System.out.println("  " + schedule.get(i));
         }
 
         // ---- Print summary ----

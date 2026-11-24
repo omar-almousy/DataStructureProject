@@ -25,6 +25,16 @@ public class StudySession {
     private List<StudyTask> tasks;
     private String notes;
 
+    /**
+     * Constructs a study session with the given details.
+     *
+     * @param sessionId the session ID
+     * @param date      the session date
+     * @param startTime the start time
+     * @param endTime   the end time
+     * @param course    the associated course
+     * @param notes     session notes
+     */
     public StudySession(String sessionId, String date, String startTime,
             String endTime, Course course, String notes) {
         this.sessionId = sessionId;
@@ -36,72 +46,150 @@ public class StudySession {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Returns the session ID.
+     *
+     * @return the session ID
+     */
     public String getSessionId() {
         return sessionId;
     }
 
+    /**
+     * Sets the session ID.
+     *
+     * @param sessionId the session ID to set
+     */
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
     }
 
+    /**
+     * Returns the session date.
+     *
+     * @return the session date
+     */
     public String getDate() {
         return date;
     }
 
+    /**
+     * Sets the session date.
+     *
+     * @param date the session date to set
+     */
     public void setDate(String date) {
         this.date = date;
     }
 
+    /**
+     * Returns the start time.
+     *
+     * @return the start time
+     */
     public String getStartTime() {
         return startTime;
     }
 
+    /**
+     * Sets the start time.
+     *
+     * @param startTime the start time to set
+     */
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
+    /**
+     * Returns the end time.
+     *
+     * @return the end time
+     */
     public String getEndTime() {
         return endTime;
     }
 
+    /**
+     * Sets the end time.
+     *
+     * @param endTime the end time to set
+     */
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
+    /**
+     * Returns the associated course.
+     *
+     * @return the course
+     */
     public Course getCourse() {
         return course;
     }
 
+    /**
+     * Sets the associated course.
+     *
+     * @param course the course to set
+     */
     public void setCourse(Course course) {
         this.course = course;
     }
 
+    /**
+     * Returns the list of tasks in this session.
+     *
+     * @return the list of tasks
+     */
     public List<StudyTask> getTasks() {
         return tasks;
     }
 
+    /**
+     * Adds a task to this session.
+     *
+     * @param task the task to add
+     */
     public void addTask(StudyTask task) {
         if (task != null) {
             tasks.add(task);
         }
     }
 
+    /**
+     * Removes a task from this session.
+     *
+     * @param task the task to remove
+     */
     public void removeTask(StudyTask task) {
         tasks.remove(task);
     }
 
+    /**
+     * Returns the session notes.
+     *
+     * @return the notes
+     */
     public String getNotes() {
         return notes;
     }
 
+    /**
+     * Sets the session notes.
+     *
+     * @param notes the notes to set
+     */
     public void setNotes(String notes) {
         this.notes = notes;
     }
 
     /**
-     * Returns the session duration in hours (e.g. "14:00" - "10:00" = 4.0).
+     * Returns a string representation of this session.
+     *
+     * @return a formatted string with session details
      */
-    public double getDurationHours() {
+    @Override
+    public String toString() {
         try {
             String[] startParts = startTime.split(":");
             String[] endParts = endTime.split(":");
@@ -122,8 +210,8 @@ public class StudySession {
         if (tasks.isEmpty()) {
             sb.append("  (no tasks assigned)");
         } else {
-            for (StudyTask t : tasks) {
-                sb.append("  ").append(t).append("%n");
+            for (int i = 0; i < tasks.size(); i++) {
+                sb.append("  ").append(tasks.get(i)).append("%n");
             }
         }
         return sb.toString();

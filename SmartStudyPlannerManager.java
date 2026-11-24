@@ -27,6 +27,9 @@ public class SmartStudyPlannerManager {
     private Map<String, Course> courseMap;
     private Map<String, List<StudyTask>> tasksByCourse;
 
+    /**
+     * Constructs a new SmartStudyPlannerManager with empty collections.
+     */
     public SmartStudyPlannerManager() {
         this.courses = new ArrayList<>();
         this.tasks = new ArrayList<>();
@@ -36,6 +39,12 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Course management -----
+    /**
+     * Adds a course if it is not null and its code is not already present.
+     *
+     * @param course the course to add
+     * @return true if added; false if null or duplicate code
+     */
     public boolean addCourse(Course course) {
         if (course == null || courseMap.containsKey(course.getCourseCode())) {
             return false;
@@ -45,14 +54,31 @@ public class SmartStudyPlannerManager {
         return true;
     }
 
+    /**
+     * Returns the course with the given code.
+     *
+     * @param courseCode the course code
+     * @return the course, or null if not found
+     */
     public Course getCourseByCode(String courseCode) {
         return courseMap.get(courseCode);
     }
 
+    /**
+     * Returns a copy of all courses.
+     *
+     * @return a list of all courses
+     */
     public List<Course> getAllCourses() {
         return new ArrayList<>(courses);
     }
 
+    /**
+     * Removes a course and its associated tasks by code.
+     *
+     * @param courseCode the course code to remove
+     * @return true if removed; false if not found
+     */
     public boolean removeCourse(String courseCode) {
         Course c = courseMap.remove(courseCode);
         if (c == null) return false;
@@ -63,6 +89,12 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Task management -----
+    /**
+     * Adds a task and indexes it by its course code.
+     *
+     * @param task the task to add
+     * @return true if added; false if null or no course
+     */
     public boolean addTask(StudyTask task) {
         if (task == null || task.getCourse() == null) {
             return false;
@@ -72,8 +104,15 @@ public class SmartStudyPlannerManager {
         return true;
     }
 
+    /**
+     * Finds a task by its ID using an indexed loop.
+     *
+     * @param taskId the task ID
+     * @return the matching task, or null if not found
+     */
     public StudyTask getTaskById(String taskId) {
-        for (StudyTask t : tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
             if (taskId.equals(t.getTaskId())) {
                 return t;
             }
@@ -81,19 +120,40 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
+    /**
+     * Returns a copy of all tasks.
+     *
+     * @return a list of all tasks
+     */
     public List<StudyTask> getAllTasks() {
         return new ArrayList<>(tasks);
     }
 
+    /**
+     * Returns all tasks for a given course code.
+     *
+     * @param courseCode the course code
+     * @return a list of tasks for the course
+     */
     public List<StudyTask> getTasksByCourse(String courseCode) {
         List<StudyTask> list = tasksByCourse.get(courseCode);
         return list != null ? new ArrayList<>(list) : new ArrayList<>();
     }
 
+    /**
+     * Returns all pending (not completed) tasks.
+     *
+     * @return a list of pending tasks
+     */
     public List<StudyTask> getPendingTasks() {
         return tasks.stream().filter(t -> !t.isCompleted()).collect(Collectors.toList());
     }
 
+    /**
+     * Returns all completed tasks.
+     *
+     * @return a list of completed tasks
+     */
     public List<StudyTask> getCompletedTasks() {
         return tasks.stream().filter(StudyTask::isCompleted).collect(Collectors.toList());
     }
@@ -103,7 +163,8 @@ public class SmartStudyPlannerManager {
      */
     public List<StudyTask> getPrioritizedPendingTasks() {
         PriorityQueue<StudyTask> pq = new PriorityQueue<>();
-        for (StudyTask t : tasks) {
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
             if (!t.isCompleted()) {
                 pq.offer(t);
             }
@@ -115,6 +176,12 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
+    /**
+     * Marks a task as completed by ID.
+     *
+     * @param taskId the task ID
+     * @return true if found and marked; false if not found
+     */
     public boolean markTaskComplete(String taskId) {
         StudyTask t = getTaskById(taskId);
         if (t != null) {
@@ -124,6 +191,12 @@ public class SmartStudyPlannerManager {
         return false;
     }
 
+    /**
+     * Removes a task by ID.
+     *
+     * @param taskId the task ID
+     * @return true if removed; false if not found
+     */
     public boolean removeTask(String taskId) {
         StudyTask t = getTaskById(taskId);
         if (t == null) return false;
@@ -138,6 +211,12 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Session management -----
+    /**
+     * Adds a session if it is not null.
+     *
+     * @param session the session to add
+     * @return true if added; false if null
+     */
     public boolean addSession(StudySession session) {
         if (session == null) {
             return false;
@@ -146,18 +225,36 @@ public class SmartStudyPlannerManager {
         return true;
     }
 
+    /**
+     * Returns a copy of all sessions.
+     *
+     * @return a list of all sessions
+     */
     public List<StudySession> getAllSessions() {
         return new ArrayList<>(sessions);
     }
 
+    /**
+     * Returns all sessions for a given course code.
+     *
+     * @param courseCode the course code
+     * @return a list of sessions for the course
+     */
     public List<StudySession> getSessionsByCourse(String courseCode) {
         return sessions.stream()
                 .filter(s -> s.getCourse() != null && courseCode.equals(s.getCourse().getCourseCode()))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Finds a session by its ID using an indexed loop.
+     *
+     * @param sessionId the session ID
+     * @return the matching session, or null if not found
+     */
     public StudySession getSessionById(String sessionId) {
-        for (StudySession s : sessions) {
+        for (int i = 0; i < sessions.size(); i++) {
+            StudySession s = sessions.get(i);
             if (sessionId.equals(s.getSessionId())) {
                 return s;
             }
@@ -165,6 +262,12 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
+    /**
+     * Removes a session by ID.
+     *
+     * @param sessionId the session ID
+     * @return true if removed
+     */
     public boolean removeSession(String sessionId) {
         return sessions.removeIf(s -> sessionId.equals(s.getSessionId()));
     }
@@ -291,7 +394,8 @@ public class SmartStudyPlannerManager {
         List<StudySession> scheduled = new ArrayList<>();
 
         int taskIndex = 0;
-        for (StudySession session : availableSessions) {
+        for (int i = 0; i < availableSessions.size(); i++) {
+            StudySession session = availableSessions.get(i);
             if (taskIndex >= prioritized.size()) break;
             StudySession copy = new StudySession(
                     session.getSessionId(), session.getDate(),
@@ -316,6 +420,11 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Summary -----
+    /**
+     * Returns a summary string with counts of courses, tasks, and sessions.
+     *
+     * @return a formatted summary string
+     */
     public String getSummary() {
         int pending = getPendingTasks().size();
         int completed = getCompletedTasks().size();
@@ -326,21 +435,28 @@ public class SmartStudyPlannerManager {
                 courses.size(), tasks.size(), pending, completed, sessions.size());
     }
 
+    /**
+     * Returns a string representation of the planner including summary,
+     * courses, pending tasks, and sessions.
+     *
+     * @return a formatted string representation
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getSummary()).append("%n");
         sb.append("Courses:%n");
-        for (Course c : courses) {
-            sb.append("  ").append(c).append("%n");
+        for (int i = 0; i < courses.size(); i++) {
+            sb.append("  ").append(courses.get(i)).append("%n");
         }
         sb.append("Pending Tasks (prioritized):%n");
-        for (StudyTask t : getPrioritizedPendingTasks()) {
-            sb.append("  ").append(t).append("%n");
+        List<StudyTask> pendingTasks = getPrioritizedPendingTasks();
+        for (int i = 0; i < pendingTasks.size(); i++) {
+            sb.append("  ").append(pendingTasks.get(i)).append("%n");
         }
         sb.append("Sessions:%n");
-        for (StudySession s : sessions) {
-            sb.append("  ").append(s).append("%n");
+        for (int i = 0; i < sessions.size(); i++) {
+            sb.append("  ").append(sessions.get(i)).append("%n");
         }
         return sb.toString();
     }
