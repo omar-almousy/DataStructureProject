@@ -79,6 +79,10 @@ public class StudySession {
         tasks.remove(task);
     }
 
+    public int getTaskCount() {
+        return tasks.size();
+    }
+
     public String getNotes() {
         return notes;
     }

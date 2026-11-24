@@ -1,4 +1,3 @@
-
 /*
  * Course: [COURSE_CODE]
  * Section: [SECTION]
@@ -10,7 +9,7 @@
  *   [Member 4 Name] - [Member 4 ID]
  */
 
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Main application class for the Smart Study Planner.
@@ -29,14 +28,17 @@ public class SmartStudyPlannerApplication {
         Course phys = new Course(102, "Physics I", "Prof. Johnson", 3);
         Course chem = new Course(103, "General Chemistry", "Dr. Lee", 3);
 
-        planner.addCourse(math);
-        planner.addCourse(phys);
-        planner.addCourse(chem);
+        System.out.println("Adding courses:");
+        System.out.println("  Add CS101 (101): " + planner.addCourse(math));
+        System.out.println("  Add PHYS201 (102): " + planner.addCourse(phys));
+        System.out.println("  Add CHEM101 (103): " + planner.addCourse(chem));
 
-        System.out.println("Courses added:");
-        for (Course c : planner.getAllCourses()) {
-            System.out.println("  " + c);
-        }
+        // Test duplicate courseID rejection
+        Course mathDup = new Course(101, "Duplicate Programming", "Dr. Smith", 4);
+        System.out.println("  Add duplicate (101): " + planner.addCourse(mathDup));
+
+        System.out.println("\n=== All Courses ===");
+        planner.displayAllCourses();
 
         // ---- Create study tasks ----
         StudyTask t1 = new StudyTask(1, "Finish Chapter 3 exercises",
@@ -50,20 +52,48 @@ public class SmartStudyPlannerApplication {
         StudyTask t5 = new StudyTask(5, "Read chapter 5",
                 "Read and summarize chemistry chapter 5", chem, "2026-12-07", "Low", 2.0);
 
-        planner.addTask(t1);
-        planner.addTask(t2);
-        planner.addTask(t3);
-        planner.addTask(t4);
-        planner.addTask(t5);
+        System.out.println("Adding tasks:");
+        System.out.println("  Add task 1: " + planner.addTask(t1));
+        System.out.println("  Add task 2: " + planner.addTask(t2));
+        System.out.println("  Add task 3: " + planner.addTask(t3));
+        System.out.println("  Add task 4: " + planner.addTask(t4));
+        System.out.println("  Add task 5: " + planner.addTask(t5));
 
-        System.out.println("\nTasks added:");
-        for (StudyTask t : planner.getAllTasks()) {
-            System.out.println("  " + t);
-        }
+        // Test duplicate taskID rejection
+        StudyTask tDup = new StudyTask(1, "Duplicate task", "Should be rejected",
+                math, "2026-12-10", "Low", 1.0);
+        System.out.println("  Add duplicate taskID (1): " + planner.addTask(tDup));
+
+        // Test task with non-existent course ID
+        Course noCourse = new Course(999, "Nonexistent", "N/A", 1);
+        StudyTask tBadCourse = new StudyTask(6, "Bad course task", "Should be rejected",
+                noCourse, "2026-12-10", "Low", 1.0);
+        System.out.println("  Add task with bad courseID (999): " + planner.addTask(tBadCourse));
+
+        System.out.println("\n=== All Tasks ===");
+        planner.displayAllStudyTasks();
+
+        // ---- Search task by ID ----
+        System.out.println("\n=== Search Task by ID ===");
+        StudyTask found = planner.searchTaskByID(3);
+        System.out.println("  Search task 3: " + (found != null ? found.getTitle() : "not found"));
+        StudyTask notFound = planner.searchTaskByID(99);
+        System.out.println("  Search task 99: " + (notFound != null ? notFound.getTitle() : "not found"));
+
+        // ---- Update task status ----
+        System.out.println("\n=== Update Task Status ===");
+        System.out.println("  Update task 2 to 'In Progress': " + planner.updateTaskStatus(2, "In Progress"));
+        System.out.println("  Update task 99 to 'Completed' (unknown ID): " + planner.updateTaskStatus(99, "Completed"));
+        System.out.println("  Update task 1 to 'InvalidStatus' (invalid): " + planner.updateTaskStatus(1, "InvalidStatus"));
+        System.out.println("  Update task 4 to 'Completed': " + planner.updateTaskStatus(4, "Completed"));
 
         // ---- Mark one task complete ----
         planner.markTaskComplete(4);
         System.out.println("\nMarked task 4 as complete.");
+
+        // ---- Display high-priority incomplete tasks ----
+        System.out.println("\n=== High-Priority Incomplete Tasks ===");
+        planner.displayHighPriorityIncompleteTasks();
 
         // ---- Create study sessions ----
         StudySession s1 = new StudySession(1, "2026-11-25", "10:00", "12:00", math, "Morning study block");
@@ -74,16 +104,16 @@ public class SmartStudyPlannerApplication {
         planner.addSession(s2);
         planner.addSession(s3);
 
-        System.out.println("\nSessions added:");
-        for (StudySession s : planner.getAllSessions()) {
-            System.out.println("  " + s);
+        System.out.println("\n=== All Sessions ===");
+        for (int i = 0; i < planner.getAllSessions().size(); i++) {
+            System.out.println("  " + planner.getAllSessions().get(i));
         }
 
         // ---- Generate schedule ----
         System.out.println("\n=== Generated Schedule ===");
-        List<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
-        for (StudySession sess : schedule) {
-            System.out.println("  " + sess);
+        LinkedList<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
+        for (int i = 0; i < schedule.size(); i++) {
+            System.out.println("  " + schedule.get(i));
         }
 
         // ---- Print summary ----

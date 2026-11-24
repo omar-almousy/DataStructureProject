@@ -7,6 +7,7 @@ public class StudyTask implements Comparable<StudyTask> {
     private String priority; // "High", "Medium", "Low"
     private double estimatedHours;
     private boolean completed;
+    private String status; // "Pending", "In Progress", "Completed"
 
     public StudyTask(int taskId, String title, String description,
             Course course, String dueDate, String priority, double estimatedHours) {
@@ -18,6 +19,7 @@ public class StudyTask implements Comparable<StudyTask> {
         this.priority = priority;
         this.estimatedHours = estimatedHours;
         this.completed = false;
+        this.status = "Pending";
     }
 
     public int getTaskId() {
@@ -80,12 +82,33 @@ public class StudyTask implements Comparable<StudyTask> {
         return completed;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+        this.completed = "Completed".equals(status);
+    }
+
+    /**
+     * Returns true if this task has high priority.
+     */
+    public boolean isHighPriority() {
+        return "High".equals(priority);
+    }
+
+    /**
+     * Marks this task as complete.
+     */
     public void markComplete() {
         this.completed = true;
+        this.status = "Completed";
     }
 
     public void markIncomplete() {
         this.completed = false;
+        this.status = "Pending";
     }
 
     @Override
@@ -109,8 +132,8 @@ public class StudyTask implements Comparable<StudyTask> {
 
     @Override
     public String toString() {
-        return String.format("Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%.1f, completed=%b]",
+        return String.format("Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%.1f, completed=%b, status=%s]",
                 taskId, title, (course != null ? course.getCourseCode() : "N/A"),
-                dueDate, priority, estimatedHours, completed);
+                dueDate, priority, estimatedHours, completed, status);
     }
 }
