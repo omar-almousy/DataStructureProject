@@ -96,9 +96,9 @@ public class SmartStudyPlannerApplication {
         planner.displayHighPriorityIncompleteTasks();
 
         // ---- Create study sessions ----
-        StudySession s1 = new StudySession("S001", "2026-11-25", "10:00", "12:00", math, "Morning study block");
-        StudySession s2 = new StudySession("S002", "2026-11-25", "14:00", "16:00", phys, "Afternoon lab prep");
-        StudySession s3 = new StudySession("S003", "2026-11-26", "09:00", "11:00", chem, "Review session");
+        StudySession s1 = new StudySession(1, "2026-11-25", "10:00", "12:00", math, "Morning study block");
+        StudySession s2 = new StudySession(2, "2026-11-25", "14:00", "16:00", phys, "Afternoon lab prep");
+        StudySession s3 = new StudySession(3, "2026-11-26", "09:00", "11:00", chem, "Review session");
 
         planner.addSession(s1);
         planner.addSession(s2);

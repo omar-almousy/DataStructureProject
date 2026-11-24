@@ -23,13 +23,19 @@ public class Course {
         this.creditHours = creditHours;
     }
 
-    
     public int getCourseID() {
         return courseID;
     }
 
     public void setCourseID(int courseID) {
         this.courseID = courseID;
+    }
+
+    /**
+     * Returns the course code used as the key in course maps.
+     */
+    public String getCourseCode() {
+        return String.valueOf(courseID);
     }
 
     /**
@@ -48,7 +54,6 @@ public class Course {
         return instructorName;
     }
 
-    
     public void setInstructorName(String instructorName) {
         this.instructorName = instructorName;
     }

@@ -1,14 +1,5 @@
-/*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
- * Project: Smart Study Planner
- * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
- */
-
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Manages courses, study tasks, and study sessions for the Smart Study Planner.
@@ -20,9 +11,6 @@ public class SmartStudyPlannerManager {
     private LinkedList<StudyTask> tasks;
     private LinkedList<StudySession> sessions;
 
-    /**
-     * Constructor initializing all three LinkedLists.
-     */
     public SmartStudyPlannerManager() {
         this.courses = new LinkedList<>();
         this.tasks = new LinkedList<>();
@@ -30,13 +18,6 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Course management -----
-
-    /**
-     * Adds a course only if its courseID is not already present.
-     *
-     * @param c the course to add
-     * @return true if the course was added, false if it is null or a duplicate courseID
-     */
     public boolean addCourse(Course c) {
         if (c == null) {
             return false;
@@ -47,12 +28,6 @@ public class SmartStudyPlannerManager {
         return courses.add(c);
     }
 
-    /**
-     * Finds a course by its ID using an indexed for loop.
-     *
-     * @param id the course ID to search for
-     * @return the Course if found, null otherwise
-     */
     public Course findCourseByID(int id) {
         for (int i = 0; i < courses.size(); i++) {
             Course c = courses.get(i);
@@ -63,20 +38,10 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
-    /**
-     * Returns the course with the given ID (alias for findCourseByID).
-     *
-     * @param id the course ID to search for
-     * @return the Course if found, null otherwise
-     */
     public Course getCourseByID(int id) {
         return findCourseByID(id);
     }
 
-    /**
-     * Displays all courses using an indexed for loop.
-     * Prints an appropriate message if the list is empty.
-     */
     public void displayAllCourses() {
         if (courses.isEmpty()) {
             System.out.println("No courses available.");
@@ -87,21 +52,10 @@ public class SmartStudyPlannerManager {
         }
     }
 
-    /**
-     * Returns a copy of the courses list.
-     *
-     * @return a LinkedList containing all courses
-     */
-    public LinkedList<Course> getAllCourses() {
+    public List<Course> getAllCourses() {
         return new LinkedList<>(courses);
     }
 
-    /**
-     * Removes a course by its courseID. Also removes any tasks belonging to that course.
-     *
-     * @param courseID the ID of the course to remove
-     * @return true if removed, false if not found
-     */
     public boolean removeCourse(int courseID) {
         for (int i = 0; i < courses.size(); i++) {
             Course c = courses.get(i);
@@ -120,15 +74,6 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Task management -----
-
-    /**
-     * Adds a study task to the list.
-     * Rejects if task is null, has no course, taskID is duplicate,
-     * or the associated courseID does not exist.
-     *
-     * @param t the task to add
-     * @return true if added, false otherwise
-     */
     public boolean addTask(StudyTask t) {
         if (t == null || t.getCourse() == null) {
             return false;
@@ -144,12 +89,13 @@ public class SmartStudyPlannerManager {
         return tasks.add(t);
     }
 
-    /**
-     * Helper: finds a task by its ID using an indexed for loop.
-     *
-     * @param id the task ID to search for
-     * @return the StudyTask if found, null otherwise
-     */
+    public StudyTask getTaskById(int taskId) {
+        return findTaskByID(taskId);
+    }
+    public StudyTask searchTaskByID(int id) {
+        return findTaskByID(id);
+    }
+
     private StudyTask findTaskByID(int id) {
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
@@ -160,21 +106,11 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
-    /**
-     * Searches for a task by its ID.
-     *
-     * @param id the task ID to search for
-     * @return the StudyTask if found, null otherwise
-     */
-    public StudyTask searchTaskByID(int id) {
-        return findTaskByID(id);
-    }
-
-    public LinkedList<StudyTask> getAllTasks() {
+    public List<StudyTask> getAllTasks() {
         return new LinkedList<>(tasks);
     }
 
-    public LinkedList<StudyTask> getTasksByCourse(int courseID) {
+    public List<StudyTask> getTasksByCourse(int courseID) {
         LinkedList<StudyTask> result = new LinkedList<>();
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
@@ -196,7 +132,7 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    public LinkedList<StudyTask> getCompletedTasks() {
+    public List<StudyTask> getCompletedTasks() {
         LinkedList<StudyTask> result = new LinkedList<>();
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
@@ -258,10 +194,6 @@ public class SmartStudyPlannerManager {
         return false;
     }
 
-    /**
-     * Displays all study tasks with course info using an indexed for loop.
-     * Prints an appropriate message if the list is empty.
-     */
     public void displayAllStudyTasks() {
         if (tasks.isEmpty()) {
             System.out.println("No study tasks available.");
@@ -274,14 +206,6 @@ public class SmartStudyPlannerManager {
         }
     }
 
-    /**
-     * Updates the status of a task by its ID.
-     * Valid status values: "Pending", "In Progress", "Completed".
-     *
-     * @param id the task ID
-     * @param newStatus the new status to set
-     * @return true if updated successfully, false if task not found or invalid status
-     */
     public boolean updateTaskStatus(int id, String newStatus) {
         if (newStatus == null) {
             return false;
@@ -297,11 +221,6 @@ public class SmartStudyPlannerManager {
         }
         return false;
     }
-
-    /**
-     * Displays all high-priority incomplete tasks using indexed loops.
-     * Prints a message if none are found.
-     */
     public void displayHighPriorityIncompleteTasks() {
         boolean found = false;
         for (int i = 0; i < tasks.size(); i++) {
@@ -317,19 +236,36 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Session management -----
-
     public boolean addSession(StudySession session) {
         if (session == null) {
             return false;
         }
-        return sessions.add(session);
+        // Reject duplicate session IDs.
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getId() == session.getId()) {
+                return false;
+            }
+        }
+        // Reject sessions linked to a task ID that does not exist.
+        for (int i = 0; i < session.getTasks().size(); i++) {
+            StudyTask task = session.getTasks().get(i);
+            if (task == null || getTaskById(task.getTaskId()) == null) {
+                return false;
+            }
+        }
+        // Reject durationHours <= 0.
+        if (session.getDurationHours() <= 0) {
+            return false;
+        }
+        sessions.add(session);
+        return true;
     }
 
     public LinkedList<StudySession> getAllSessions() {
         return new LinkedList<>(sessions);
     }
 
-    public LinkedList<StudySession> getSessionsByCourse(int courseID) {
+    public List<StudySession> getSessionsByCourse(int courseID) {
         LinkedList<StudySession> result = new LinkedList<>();
         for (int i = 0; i < sessions.size(); i++) {
             StudySession s = sessions.get(i);
@@ -340,18 +276,23 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    public StudySession getSessionById(String sessionId) {
+    public StudySession getSessionById(int sessionId) {
+        return findSessionByID(sessionId);
+    }
+
+    public StudySession findSessionByID(int id) {
+        // Search for a session by ID. Return the session if found, otherwise return null.
         for (int i = 0; i < sessions.size(); i++) {
-            if (sessionId.equals(sessions.get(i).getSessionId())) {
+            if (sessions.get(i).getId() == id) {
                 return sessions.get(i);
             }
         }
         return null;
     }
 
-    public boolean removeSession(String sessionId) {
+    public boolean removeSession(int sessionId) {
         for (int i = 0; i < sessions.size(); i++) {
-            if (sessionId.equals(sessions.get(i).getSessionId())) {
+            if (sessions.get(i).getId() == sessionId) {
                 sessions.remove(i);
                 return true;
             }
@@ -359,8 +300,35 @@ public class SmartStudyPlannerManager {
         return false;
     }
 
-    // ----- Schedule generation -----
 
+    public void displaySessionsForTask(int taskID) {
+        // Check if the task exists first.
+        StudyTask task = getTaskById(taskID);
+        if (task == null) {
+            System.out.println("Task with ID " + taskID + " does not exist.");
+            return;
+        }
+        // Display all sessions linked to this task.
+        boolean found = false;
+        for (int i = 0; i < sessions.size(); i++) {
+            StudySession s = sessions.get(i);
+            for (int j = 0; j < s.getTasks().size(); j++) {
+                if (s.getTasks().get(j).getTaskId() == taskID) {
+                    if (!found) {
+                        System.out.println("Sessions for task ID " + taskID + ":");
+                    }
+                    System.out.println("  " + s);
+                    found = true;
+                    break;
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("No sessions found for task ID " + taskID + ".");
+        }
+    }
+
+    // ----- Schedule generation -----
     public LinkedList<StudySession> generateSchedule(LinkedList<StudySession> availableSessions) {
         LinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
         LinkedList<StudySession> scheduled = new LinkedList<>();
@@ -372,7 +340,7 @@ public class SmartStudyPlannerManager {
             }
             StudySession session = availableSessions.get(i);
             StudySession copy = new StudySession(
-                    session.getSessionId(), session.getDate(),
+                    session.getId(), session.getDate(),
                     session.getStartTime(), session.getEndTime(),
                     session.getCourse(), session.getNotes());
             double remaining = copy.getDurationHours();
@@ -394,7 +362,6 @@ public class SmartStudyPlannerManager {
     }
 
     // ----- Summary -----
-
     public String getSummary() {
         int pending = getPendingTasks().size();
         int completed = getCompletedTasks().size();

@@ -1,19 +1,3 @@
-/*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
- * Project: Smart Study Planner
- * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
- */
-
-/**
- * Represents a study task in the Smart Study Planner.
- * Each task belongs to a course and has a priority, due date, and completion status.
- * Tasks implement Comparable so they can be ordered by priority.
- */
 public class StudyTask implements Comparable<StudyTask> {
     private int taskId;
     private String title;
@@ -22,6 +6,7 @@ public class StudyTask implements Comparable<StudyTask> {
     private String dueDate;
     private String priority; // "High", "Medium", "Low"
     private double estimatedHours;
+    private boolean completed;
     private String status; // "Pending", "In Progress", "Completed"
 
     public StudyTask(int taskId, String title, String description,
@@ -33,6 +18,7 @@ public class StudyTask implements Comparable<StudyTask> {
         this.dueDate = dueDate;
         this.priority = priority;
         this.estimatedHours = estimatedHours;
+        this.completed = false;
         this.status = "Pending";
     }
 
@@ -92,12 +78,17 @@ public class StudyTask implements Comparable<StudyTask> {
         this.estimatedHours = estimatedHours;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+        this.completed = "Completed".equals(status);
     }
 
     /**
@@ -108,29 +99,25 @@ public class StudyTask implements Comparable<StudyTask> {
     }
 
     /**
-     * Returns true if this task is completed.
+     * Marks this task as complete.
      */
-    public boolean isCompleted() {
-        return "Completed".equals(status);
-    }
-
     public void markComplete() {
+        this.completed = true;
         this.status = "Completed";
     }
 
     public void markIncomplete() {
+        this.completed = false;
         this.status = "Pending";
     }
 
     @Override
     public int compareTo(StudyTask other) {
-        // Higher priority tasks come first
         int thisRank = priorityRank(this.priority);
         int otherRank = priorityRank(other.priority);
         if (thisRank != otherRank) {
-            return Integer.compare(otherRank, thisRank); // descending: High first
+            return Integer.compare(otherRank, thisRank);
         }
-        // Then by due date (earlier first)
         return this.dueDate.compareTo(other.dueDate);
     }
 
@@ -145,8 +132,8 @@ public class StudyTask implements Comparable<StudyTask> {
 
     @Override
     public String toString() {
-        return String.format("Task[id=%d, title='%s', course=%s, due=%s, priority=%s, hours=%.1f, status=%s]",
-                taskId, title, (course != null ? course.getCourseID() : "N/A"),
-                dueDate, priority, estimatedHours, status);
+        return String.format("Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%.1f, completed=%b, status=%s]",
+                taskId, title, (course != null ? course.getCourseCode() : "N/A"),
+                dueDate, priority, estimatedHours, completed, status);
     }
 }
