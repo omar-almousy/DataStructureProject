@@ -16,13 +16,14 @@ public class Course {
     private String courseName;
     private String instructorName;
     private int creditHours;
+
     /**
      * Constructs a course with the given details.
      *
-     * @param courseID     the course ID
-     * @param courseName   the course name
+     * @param courseID the course ID
+     * @param courseName the course name
      * @param instructorName the instructor name
-     * @param creditHours  the credit hours
+     * @param creditHours the credit hours
      */
     public Course(int courseID, String courseName, String instructorName, int creditHours) {
         this.courseID = courseID;
@@ -31,7 +32,6 @@ public class Course {
         this.creditHours = creditHours;
     }
 
-    
     /**
      * Returns the course ID.
      *
@@ -51,6 +51,13 @@ public class Course {
     }
 
     /**
+     * Returns the course code used as the key in course maps.
+     */
+    public String getCourseCode() {
+        return String.valueOf(courseID);
+    }
+
+    /**
      * Returns the course name.
      */
     public String getCourseName() {
@@ -65,7 +72,6 @@ public class Course {
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
-
 
     /**
      * Returns the instructor name.

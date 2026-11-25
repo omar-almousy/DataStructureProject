@@ -13,12 +13,12 @@ Uses ArrayList, HashMap, and PriorityQueue data structures for efficient organiz
 
 2. Compile all Java files:
    ```
-   javac *.java
+   javac *.javaa
    ```
 
 3. Run the application:
    ```
-   java SmartStudyPlannerApplication
+   java SmartStudyPlannerApplication1
    ```
 
 ## Submission Instructions
