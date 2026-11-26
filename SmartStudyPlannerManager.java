@@ -363,6 +363,50 @@ public class SmartStudyPlannerManager {
     }
 
     /**
+     * Returns every session that was logged to the given task.
+     * The caller checks first that the task exists (see {@link #searchTaskByID(int)}),
+     * so an empty list means "the task exists but has no sessions".
+     *
+     * @param taskID the task ID
+     * @return a new list of matching sessions (empty if none)
+     */
+    public LinkedList<StudySession> getSessionsForTask(int taskID) {
+        LinkedList<StudySession> result = new LinkedList<>();
+        for (int i = 0; i < sessions.size(); i++) {
+            StudySession s = sessions.get(i);
+            List<StudyTask> sessionTasks = s.getTasks();
+            for (int j = 0; j < sessionTasks.size(); j++) {
+                if (sessionTasks.get(j).getTaskId() == taskID) {
+                    result.add(s);
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Calculates the percentage of study tasks whose status is Completed.
+     * Formula: (completed tasks / total tasks) * 100.
+     * Display formatting is done with {@link OutputFormat#percentage(double)}.
+     *
+     * @return the percentage in [0, 100], or -1 when there are no tasks
+     *         (avoids division by zero)
+     */
+    public double calculateCompletionPercentage() {
+        if (tasks.isEmpty()) {
+            return -1;
+        }
+        int completed = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).isCompleted()) {
+                completed++;
+            }
+        }
+        return completed * 100.0 / tasks.size();
+    }
+
+    /**
      * Helper: finds a session by its integer ID using an indexed for loop.
      *
      * @param id the session ID to search for

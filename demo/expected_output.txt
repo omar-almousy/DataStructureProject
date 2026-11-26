@@ -1,0 +1,1113 @@
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: No tasks exist, so there is no completion percentage yet.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: No courses available.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: No study tasks available.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: No high-priority incomplete tasks found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: No sessions available.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Invalid course ID: must be exactly 5 digits (10000-99999).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Enter course name: Invalid course name: cannot be empty.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Enter course name: Enter instructor name: Invalid instructor name: cannot be empty.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Enter course name: Enter instructor name: Enter credit hours (1-6): Invalid credit hours: must be a whole number between 1 and 6.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Enter course name: Enter instructor name: Enter credit hours (1-6): Course 10101 added successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Enter course name: Enter instructor name: Enter credit hours (1-6): Course 20202 added successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Enter course name: Enter instructor name: Enter credit hours (1-6): Failed to add course: duplicate ID 10101 already exists.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice:   Course ID: 10101, Course Name: Data Structures, Instructor: Dr. Sara, Credit Hours: 3
+  Course ID: 20202, Course Name: Calculus, Instructor: Dr. Ali, Credit Hours: 4
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Invalid task ID: must be exactly 6 digits (100000-999999).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Invalid title: cannot be empty.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Unknown course: no course exists with ID 55555.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Invalid date: must be a real date in DD/MM/YYYY format (e.g. 05/03/2026).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Invalid date: must be a real date in DD/MM/YYYY format (e.g. 05/03/2026).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Invalid priority: must be 1 (High), 2 (Medium), or 3 (Low).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Enter status (Pending / In Progress / Completed): Invalid status: must be Pending, In Progress, or Completed.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Enter status (Pending / In Progress / Completed): Enter estimated hours: Invalid estimated hours: must be a number greater than 0.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Enter status (Pending / In Progress / Completed): Enter estimated hours: Task 100001 added successfully to course 10101.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Enter status (Pending / In Progress / Completed): Enter estimated hours: Task 100002 added successfully to course 10101.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Enter status (Pending / In Progress / Completed): Enter estimated hours: Task 100003 added successfully to course 20202.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter task title: Enter task description: Enter course ID (5 digits): Enter deadline (DD/MM/YYYY): Enter priority (1 = High, 2 = Medium, 3 = Low): Enter status (Pending / In Progress / Completed): Enter estimated hours: Failed to add task: duplicate ID 100001 already exists.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice:   Task[id=100001, title=Linked lists, description=Implement a singly linked list, course=10101 Data Structures, deadline=15/12/2026, priority=1 (High), hours=3.00, status=Pending]
+  Task[id=100002, title=Stacks quiz, description=Revise stacks and queues, course=10101 Data Structures, deadline=20/12/2026, priority=1 (High), hours=2.00, status=In Progress]
+  Task[id=100003, title=Derivatives, description=Practice sheet 4, course=20202 Calculus, deadline=10/12/2026, priority=2 (Medium), hours=1.50, status=Pending]
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Completion percentage: 0.00%
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Invalid session ID: must be exactly 6 digits (100000-999999).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Enter task ID (6 digits): Enter duration in hours: Failure: duration must be a number greater than 0.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Enter task ID (6 digits): Enter duration in hours: Failure: task not found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Enter task ID (6 digits): Enter duration in hours: Session 500001 logged successfully: 1.50 hour(s) on task 100001 (Linked lists).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Enter task ID (6 digits): Enter duration in hours: Session 500002 logged successfully: 2.00 hour(s) on task 100002 (Stacks quiz).
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Enter task ID (6 digits): Enter duration in hours: Failure: duplicate session ID 500001.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice:   Session[id=500001, course=10101, duration=1.50h]
+  Task[id=100001, title=Linked lists, description=Implement a singly linked list, course=10101 Data Structures, deadline=15/12/2026, priority=1 (High), hours=3.00, status=Pending]
+
+  Session[id=500002, course=10101, duration=2.00h]
+  Task[id=100002, title=Stacks quiz, description=Revise stacks and queues, course=10101 Data Structures, deadline=20/12/2026, priority=1 (High), hours=2.00, status=In Progress]
+
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Task not found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter status (Pending / In Progress / Completed): Status updated successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Completion percentage: 33.33%
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Task[id=100001, title=Linked lists, description=Implement a singly linked list, course=10101 Data Structures, deadline=15/12/2026, priority=1 (High), hours=3.00, status=Pending]
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): no matching task
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice:   Task[id=100001, title=Linked lists, description=Implement a singly linked list, course=10101 Data Structures, deadline=15/12/2026, priority=1 (High), hours=3.00, status=Pending]
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Cannot delete task - has sessions.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Task deleted successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Task not found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Completion percentage: 50.00%
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Cannot delete course - has tasks.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Course not found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter course ID (5 digits): Course deleted successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Sessions recorded for task 'Linked lists' (ID: 100001):
+  Session[id=500001, course=10101, duration=1.50h]
+  Task[id=100001, title=Linked lists, description=Implement a singly linked list, course=10101 Data Structures, deadline=15/12/2026, priority=1 (High), hours=3.00, status=Pending]
+
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Session deleted successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter session ID (6 digits): Session not found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): No sessions recorded for this task.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Task not found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Enter task ID (6 digits): Enter status (Pending / In Progress / Completed): Status updated successfully.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Completion percentage: 100.00%
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: No high-priority incomplete tasks found.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Invalid input. Please enter a number.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Invalid choice. Please select 0-14.
+
+=== Smart Study Planner Menu ===
+0. Exit
+1. Add Course
+2. Delete Course
+3. Update Task Status
+4. Search Task by ID
+5. Add Study Task
+6. Delete Study Task
+7. Log Study Session
+8. Display All Courses
+9. Display All Study Tasks
+10. Display High-Priority Incomplete Tasks
+11. Display All Sessions
+12. Delete Study Session
+13. Show Sessions for a Task
+14. Show Completion Percentage
+------------------------------
+Enter your choice: Goodbye!

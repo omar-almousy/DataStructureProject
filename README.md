@@ -56,4 +56,7 @@ Number output goes through `OutputFormat`: percentages always show 2 decimals (`
 - `SmartStudyPlannerApplication.java` — Main application entry point
 - `Validator.java` — Every field rule and its error message, in one place
 - `OutputFormat.java` — Number and percentage display (2 decimals), in one place
+- `demo/DEMO_SCRIPT.md` — Step-by-step demo with speakers and expected output
+- `demo/CHEAT_SHEET.md` — One-page class responsibilities for the demo
+- `demo/demo_input.txt` + `demo/expected_output.txt` — Run the whole demo automatically and compare
 - `README.md` — This file

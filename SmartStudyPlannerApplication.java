@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 
 /**
  * Main application class for the Smart Study Planner.
- * Provides a resilient menu shell with 12 options plus exit (0).
+ * Provides a resilient menu shell with 14 options plus exit (0).
  * Uses a switch statement for dispatch and handles bad input gracefully.
  * All input is read line by line so a bad entry never desynchronises the scanner.
  * <p>
@@ -53,7 +53,7 @@ public class SmartStudyPlannerApplication {
             if (!scanner.hasNextLine()) {
                 break; // input closed (e.g. Ctrl+Z / end of piped input)
             }
-            int choice = parseInt(scanner.nextLine());
+            int choice = parseInt(clean(scanner.nextLine()));
             if (choice == INVALID_INT) {
                 System.out.println("Invalid input. Please enter a number.");
                 continue;
@@ -101,6 +101,8 @@ public class SmartStudyPlannerApplication {
     System.out.println("10. Display High-Priority Incomplete Tasks");
     System.out.println("11. Display All Sessions");
     System.out.println("12. Delete Study Session");
+    System.out.println("13. Show Sessions for a Task");
+    System.out.println("14. Show Completion Percentage");
     System.out.println("------------------------------");
 }
 
@@ -117,7 +119,19 @@ public class SmartStudyPlannerApplication {
         if (!scanner.hasNextLine()) {
             return "";
         }
-        return scanner.nextLine().trim();
+        return clean(scanner.nextLine());
+    }
+
+    /**
+     * Trims a line and removes any invisible byte-order mark (U+FEFF).
+     * Windows PowerShell can add one in front of input piped from a file,
+     * which would otherwise make the first number look invalid.
+     *
+     * @param line the raw line
+     * @return the cleaned line
+     */
+    private static String clean(String line) {
+        return line.replace("﻿", "").trim();
     }
 
     /**
@@ -288,8 +302,14 @@ public class SmartStudyPlannerApplication {
         case 12:
             handleDeleteStudySession();
             break;
+        case 13:
+            handleShowSessionsForTask();
+            break;
+        case 14:
+            handleShowCompletionPercentage();
+            break;
         default:
-            System.out.println("Invalid choice. Please select 0-12.");
+            System.out.println("Invalid choice. Please select 0-14.");
             break;
     }
     return true;
@@ -513,5 +533,40 @@ public class SmartStudyPlannerApplication {
         if (sessionID == INVALID_INT) return;
         boolean success = planner.removeSession(String.valueOf(sessionID));
         System.out.println(success ? "Session deleted successfully." : "Session not found.");
+    }
+
+    /**
+     * Option 13: shows the sessions logged to one task.
+     * Distinguishes "task not found" from "task exists but has no sessions".
+     */
+    private static void handleShowSessionsForTask() {
+        int taskID = readTaskID();
+        if (taskID == INVALID_INT) return;
+        StudyTask task = planner.searchTaskByID(taskID);
+        if (task == null) {
+            System.out.println("Task not found.");
+            return;
+        }
+        LinkedList<StudySession> found = planner.getSessionsForTask(taskID);
+        if (found.isEmpty()) {
+            System.out.println("No sessions recorded for this task.");
+            return;
+        }
+        System.out.println("Sessions recorded for task '" + task.getTitle() + "' (ID: " + taskID + "):");
+        for (int i = 0; i < found.size(); i++) {
+            System.out.println("  " + found.get(i));
+        }
+    }
+
+    /**
+     * Option 14: shows the percentage of tasks that are Completed, to 2 decimals.
+     */
+    private static void handleShowCompletionPercentage() {
+        double percent = planner.calculateCompletionPercentage();
+        if (percent < 0) {
+            System.out.println("No tasks exist, so there is no completion percentage yet.");
+        } else {
+            System.out.println("Completion percentage: " + OutputFormat.percentage(percent));
+        }
     }
 }
