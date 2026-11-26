@@ -1,43 +1,61 @@
-/*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
- * Project: Smart Study Planner
- * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Represents a scheduled study session.
+ * A session has an ID, date, time range, associated course, and a list of tasks.
  */
-
-import java.util.LinkedList;
-
 public class StudySession {
 
-    private String sessionId;
+    private int id;
     private String date;
     private String startTime;
     private String endTime;
     private Course course;
-    private LinkedList<StudyTask> tasks;
+    private List<StudyTask> tasks;
     private String notes;
 
-    public StudySession(String sessionId, String date, String startTime,
-            String endTime, Course course, String notes) {
-        this.sessionId = sessionId;
+    /**
+     * Constructs a study session using an integer ID.
+     */
+    public StudySession(int id, String date, String startTime,
+                        String endTime, Course course, String notes) {
+        this.id = id;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
         this.course = course;
         this.notes = notes;
-        this.tasks = new LinkedList<>();
+        this.tasks = new ArrayList<>();
+    }
+
+    /**
+     * Constructs a study session using a String ID.
+     */
+    public StudySession(String sessionId, String date, String startTime,
+                        String endTime, Course course, String notes) {
+        this(Integer.parseInt(sessionId), date, startTime,
+                endTime, course, notes);
+    }
+
+    /**
+     * Returns the session ID.
+     */
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSessionId() {
-        return sessionId;
+        return String.valueOf(id);
     }
 
     public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
+        this.id = Integer.parseInt(sessionId);
     }
 
     public String getDate() {
@@ -52,70 +70,104 @@ public class StudySession {
         return startTime;
     }
 
-    public String getEndTime() {
-        return endTime;
-    }
-
     public void setStartTime(String startTime) {
         this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
     }
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
+
     public Course getCourse() {
         return course;
     }
-        
 
-    public LinkedList<StudyTask> getTasks() {
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public List<StudyTask> getTasks() {
         return tasks;
     }
+
     public void addTask(StudyTask task) {
         if (task != null) {
             tasks.add(task);
         }
     }
+
+    public void removeTask(StudyTask task) {
+        tasks.remove(task);
+    }
+
     public int getTaskCount() {
         return tasks.size();
     }
+
     public String getNotes() {
         return notes;
     }
+
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
     /**
-     * Returns the session duration in hours (e.g. "14:00" - "10:00" = 4.0).
+     * Calculates the session duration in hours.
+     *
+     * @return duration in hours
      */
     public double getDurationHours() {
         try {
             String[] startParts = startTime.split(":");
             String[] endParts = endTime.split(":");
-            int startMin = Integer.parseInt(startParts[0]) * 60 + Integer.parseInt(startParts[1]);
-            int endMin = Integer.parseInt(endParts[0]) * 60 + Integer.parseInt(endParts[1]);
+
+            int startMin = Integer.parseInt(startParts[0]) * 60
+                    + Integer.parseInt(startParts[1]);
+
+            int endMin = Integer.parseInt(endParts[0]) * 60
+                    + Integer.parseInt(endParts[1]);
+
             return (endMin - startMin) / 60.0;
+
         } catch (Exception e) {
             return 0.0;
         }
     }
 
+    /**
+     * Returns a string representation of this session.
+     */
     @Override
     public String toString() {
+
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Session[id=%s, date=%s, time=%s-%s, course=%s, duration=%.1fh, notes='%s']",
-                sessionId, date, startTime, endTime,
-                (course != null ? course.getCourseID() : "N/A"), getDurationHours(), notes));
+
+        sb.append(String.format(
+                "Session[id=%d, date=%s, time=%s-%s, course=%s, duration=%.1fh, notes='%s']%n",
+                id,
+                date,
+                startTime,
+                endTime,
+                (course != null ? course.getCourseCode() : "N/A"),
+                getDurationHours(),
+                notes
+        ));
+
         if (tasks.isEmpty()) {
-            sb.append(" (no tasks assigned)");
+            sb.append("  (no tasks assigned)");
         } else {
-            sb.append(" tasks=[");
             for (int i = 0; i < tasks.size(); i++) {
-                if (i > 0) sb.append(", ");
-                sb.append(tasks.get(i).getTaskId());
+                sb.append("  ")
+                        .append(tasks.get(i))
+                        .append(System.lineSeparator());
             }
-            sb.append("]");
         }
+
         return sb.toString();
     }
 }
