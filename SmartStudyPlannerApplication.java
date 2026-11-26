@@ -229,7 +229,7 @@ public class SmartStudyPlannerApplication {
                 System.out.println("Course not found.");
                 break;
             case 2:
-                System.out.println("Cannot delete course: one or more study tasks reference this course.");
+                System.out.println("Cannot delete course - has tasks.");
                 break;
             default:
                 System.out.println("Unexpected error.");
@@ -314,7 +314,7 @@ public class SmartStudyPlannerApplication {
                 System.out.println("Task not found.");
                 break;
             case 2:
-                System.out.println("Cannot delete task: one or more study sessions reference this task.");
+                System.out.println("Cannot delete task - has sessions.");
                 break;
             default:
                 System.out.println("Unexpected error.");
