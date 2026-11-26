@@ -147,6 +147,8 @@ public class SmartStudyPlannerApplication {
         while (running) {
             System.out.println("\n=== Smart Study Planner Menu ===");
             System.out.println("0. Exit");
+            System.out.println("4. Update task status");
+            System.out.println("5. Search task by ID");
             System.out.println("11. Check task sessions");
             System.out.println("12. Show completion percentage");
             System.out.print("Select an option: ");
@@ -183,6 +185,54 @@ public class SmartStudyPlannerApplication {
                         System.out.println("No tasks exist.");
                     } else {
                         System.out.printf("Completion percentage: %.2f%%%n", pct);
+                    }
+                    break;
+                }
+
+                case "4": {
+                    // Option 4: prompt taskID; if not found print message;
+                    // else prompt new status, validate against the allowed values,
+                    // call manager, print result. Invalid status is rejected
+                    // before any data is changed.
+                    System.out.print("Enter task ID: ");
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid task ID.");
+                        break;
+                    }
+                    if (planner.searchTaskByID(id) == null) {
+                        System.out.println("Task not found.");
+                    } else {
+                        System.out.print("Enter new status (Pending / In Progress / Completed): ");
+                        String newStatus = sc.nextLine();
+                        boolean updated = planner.updateTaskStatus(id, newStatus);
+                        if (updated) {
+                            System.out.println("Status updated successfully.");
+                        } else {
+                            System.out.println("Invalid status. Allowed values: Pending, In Progress, Completed.");
+                        }
+                    }
+                    break;
+                }
+
+                case "5": {
+                    // Option 5: prompt taskID; print full task details if found,
+                    // else "no matching task".
+                    System.out.print("Enter task ID: ");
+                    int id;
+                    try {
+                        id = Integer.parseInt(sc.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid task ID.");
+                        break;
+                    }
+                    StudyTask task = planner.searchTaskByID(id);
+                    if (task == null) {
+                        System.out.println("no matching task");
+                    } else {
+                        System.out.println(task);
                     }
                     break;
                 }
