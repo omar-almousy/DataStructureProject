@@ -298,16 +298,14 @@ public class SmartStudyPlannerManager {
 
     /**
      * Updates the status of a task by its ID.
-     * Valid status values: "Pending", "In Progress", "Completed".
+     * The status value itself is validated by the caller with
+     * {@link Validator#isValidStatus(String)}; this method only checks that the task exists.
      *
      * @param id the task ID
-     * @param newStatus the new status to set
-     * @return true if updated successfully, false if task not found or invalid status
+     * @param newStatus the new status to set (already validated)
+     * @return true if updated successfully, false if the task was not found
      */
     public boolean updateTaskStatus(int id, String newStatus) {
-        if (!Validator.isValidStatus(newStatus)) {
-            return false;
-        }
         StudyTask t = findTaskByID(id);
         if (t != null) {
             t.setStatus(newStatus);
@@ -345,21 +343,16 @@ public class SmartStudyPlannerManager {
 
     /**
      * Logs a study session of the given duration against an existing task.
-     * Checks are applied in order: duration, duplicate session ID, task existence.
+     * Field formats (six-digit session ID, positive duration) are validated by the
+     * caller with {@link Validator}; this method checks only the rules that need
+     * the stored data: duplicate session ID, then task existence.
      *
-     * @param sessionID the six-digit session ID
+     * @param sessionID the six-digit session ID (already validated)
      * @param taskID the ID of the task the session is logged to
-     * @param durationHours the session length in hours (must be greater than 0)
-     * @return 0 = success, 1 = duplicate session ID, 2 = task not found,
-     *         3 = invalid duration, 4 = invalid session ID
+     * @param durationHours the session length in hours (already validated)
+     * @return 0 = success, 1 = duplicate session ID, 2 = task not found
      */
     public int logStudySession(int sessionID, int taskID, double durationHours) {
-        if (!Validator.isValidSessionID(sessionID)) {
-            return 4;
-        }
-        if (!Validator.isValidDuration(durationHours)) {
-            return 3;
-        }
         if (findSessionByID(sessionID) != null) {
             return 1;
         }

@@ -26,17 +26,18 @@ public class Course {
      * @param creditHours the credit hours
      */
     public Course(int courseID, String courseName, String instructorName, int creditHours) {
+        // Last-line guard only: the application validates input before calling this.
         if (!Validator.isValidCourseID(courseID)) {
-            throw new IllegalArgumentException("Course ID must be 5 digits (10000-99999).");
+            throw new IllegalArgumentException(Validator.MSG_COURSE_ID);
         }
         if (!Validator.isNonEmpty(courseName)) {
-            throw new IllegalArgumentException("Course name cannot be empty.");
+            throw new IllegalArgumentException("Course name " + Validator.MSG_NON_EMPTY);
         }
         if (!Validator.isNonEmpty(instructorName)) {
-            throw new IllegalArgumentException("Instructor name cannot be empty.");
+            throw new IllegalArgumentException("Instructor name " + Validator.MSG_NON_EMPTY);
         }
         if (!Validator.isValidCreditHours(creditHours)) {
-            throw new IllegalArgumentException("Credit hours must be between 1 and 6.");
+            throw new IllegalArgumentException(Validator.MSG_CREDIT_HOURS);
         }
         this.courseID = courseID;
         this.courseName = courseName;

@@ -87,7 +87,7 @@ public class TaskManager {
      *         the status is invalid
      */
     public boolean updateTaskStatus(int id, String newStatus) {
-        if (!isValidStatus(newStatus)) {
+        if (!Validator.isValidStatus(newStatus)) {
             return false;
         }
         Task task = findTaskByID(id);
@@ -122,7 +122,8 @@ public class TaskManager {
      * <p>
      * Formula: {@code (completedTasks / totalTasks) * 100.0}. Uses the Part B
      * helper {@link Task#isCompleted()} to count completed tasks via an indexed
-     * loop. Result formatting (e.g. 2 decimals) is left to the app layer.
+     * loop. Display formatting is done with {@link OutputFormat#percentage(double)}
+     * (2 decimals, and "N/A" for the -1 "no tasks" result).
      *
      * @return completion percentage in [0.0, 100.0]; returns {@code -1} when
      *         there are no tasks (guards against division by zero / NaN)
@@ -173,21 +174,5 @@ public class TaskManager {
             }
         }
         return false;
-    }
-
-    /**
-     * Returns true if the given status is one of Pending, In Progress, or
-     * Completed (case-insensitive).
-     *
-     * @param status the status to validate
-     * @return true if valid
-     */
-    private boolean isValidStatus(String status) {
-        if (status == null) {
-            return false;
-        }
-        return status.equalsIgnoreCase("Pending")
-                || status.equalsIgnoreCase("In Progress")
-                || status.equalsIgnoreCase("Completed");
     }
 }

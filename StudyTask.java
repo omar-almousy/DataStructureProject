@@ -18,17 +18,18 @@ public class StudyTask implements Comparable<StudyTask> {
                      Course course, String deadline, int priority,
                      double estimatedHours) {
 
+        // Last-line guard only: the application validates input before calling this.
         if (!Validator.isValidTaskID(taskId)) {
-            throw new IllegalArgumentException("Task ID must be 6 digits (100000-999999).");
+            throw new IllegalArgumentException(Validator.MSG_TASK_ID);
         }
         if (!Validator.isNonEmpty(title)) {
-            throw new IllegalArgumentException("Task title cannot be empty.");
+            throw new IllegalArgumentException("Task title " + Validator.MSG_NON_EMPTY);
         }
         if (!Validator.isValidDeadline(deadline)) {
-            throw new IllegalArgumentException("Deadline must be in DD/MM/YYYY format.");
+            throw new IllegalArgumentException(Validator.MSG_DATE);
         }
         if (!Validator.isValidPriority(priority)) {
-            throw new IllegalArgumentException("Priority must be 1 (High), 2 (Medium), or 3 (Low).");
+            throw new IllegalArgumentException(Validator.MSG_PRIORITY);
         }
 
         this.taskId = taskId;
@@ -148,6 +149,10 @@ public class StudyTask implements Comparable<StudyTask> {
     }
 
     public void setStatus(String status) {
+        // Last-line guard only: callers validate the status with Validator first.
+        if (!Validator.isValidStatus(status)) {
+            throw new IllegalArgumentException(Validator.MSG_STATUS);
+        }
         this.status = status;
         this.completed = "Completed".equals(status);
     }
@@ -186,8 +191,8 @@ public class StudyTask implements Comparable<StudyTask> {
             return Integer.compare(this.priority, other.priority);
         }
 
-        return Integer.compare(Validator.deadlineSortKey(this.deadline),
-                Validator.deadlineSortKey(other.deadline));
+        return Integer.compare(Validator.dateSortKey(this.deadline),
+                Validator.dateSortKey(other.deadline));
     }
 
     /**
@@ -196,13 +201,13 @@ public class StudyTask implements Comparable<StudyTask> {
     @Override
     public String toString() {
         return String.format(
-                "Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%.1f, completed=%b, status=%s]",
+                "Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%s, completed=%b, status=%s]",
                 taskId,
                 title,
                 (course != null ? course.getCourseCode() : "N/A"),
                 deadline,
                 priority,
-                estimatedHours,
+                OutputFormat.number(estimatedHours),
                 completed,
                 status
         );

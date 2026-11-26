@@ -25,6 +25,13 @@ public class StudySession {
      * @param durationHours the session length in hours
      */
     public StudySession(int id, StudyTask task, double durationHours) {
+        // Last-line guard only: the application validates input before calling this.
+        if (!Validator.isValidSessionID(id)) {
+            throw new IllegalArgumentException(Validator.MSG_SESSION_ID);
+        }
+        if (!Validator.isValidDuration(durationHours)) {
+            throw new IllegalArgumentException("Duration " + Validator.MSG_POSITIVE);
+        }
         this.id = id;
         this.course = (task != null ? task.getCourse() : null);
         this.notes = "";
@@ -170,19 +177,19 @@ public class StudySession {
         StringBuilder sb = new StringBuilder();
 
         if (startTime == null || endTime == null) {
-            sb.append(String.format("Session[id=%d, course=%s, duration=%.1fh]%n",
+            sb.append(String.format("Session[id=%d, course=%s, duration=%sh]%n",
                     id,
                     (course != null ? course.getCourseCode() : "N/A"),
-                    getDurationHours()));
+                    OutputFormat.number(getDurationHours())));
         } else {
             sb.append(String.format(
-                "Session[id=%d, date=%s, time=%s-%s, course=%s, duration=%.1fh, notes='%s']%n",
+                "Session[id=%d, date=%s, time=%s-%s, course=%s, duration=%sh, notes='%s']%n",
                 id,
                 date,
                 startTime,
                 endTime,
                 (course != null ? course.getCourseCode() : "N/A"),
-                getDurationHours(),
+                OutputFormat.number(getDurationHours()),
                 notes
             ));
         }
