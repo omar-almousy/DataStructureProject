@@ -1,37 +1,39 @@
 /*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
+ * Course: ITCS214
+ * Section: 7
  * Project: Smart Study Planner
  * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
+ *   Omar - 202400777
+ *   AbdulNasser ali mohameed - 202302839
+ *   oakba - 202504174
  */
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Manages a collection of Part B {@link Task} objects.
  * Provides add, display, search, update, high-priority incomplete listing, and
  * completion-percentage calculation operations.
+ * Stores tasks in the course's KWArrayList class (not java.util.ArrayList).
  * <p>
  * All iterations use indexed loops only (no enhanced for-loops).
  */
 public class TaskManager {
-    private List<Task> tasks;
-    private List<Integer> validCourseIDs;
+    private KWArrayList<Task> tasks;
+    private KWArrayList<Integer> validCourseIDs;
 
     /**
      * Constructs a task manager with the given set of valid (existing) course IDs.
+     * The IDs are copied, so later changes to the caller's list have no effect.
      *
      * @param validCourseIDs course IDs that are considered valid/existing
      */
-    public TaskManager(List<Integer> validCourseIDs) {
-        this.tasks = new ArrayList<>();
-        this.validCourseIDs =
-                validCourseIDs != null ? new ArrayList<>(validCourseIDs) : new ArrayList<>();
+    public TaskManager(KWArrayList<Integer> validCourseIDs) {
+        this.tasks = new KWArrayList<>();
+        this.validCourseIDs = new KWArrayList<>();
+        if (validCourseIDs != null) {
+            for (int i = 0; i < validCourseIDs.size(); i++) {
+                this.validCourseIDs.add(validCourseIDs.get(i));
+            }
+        }
     }
 
     /**

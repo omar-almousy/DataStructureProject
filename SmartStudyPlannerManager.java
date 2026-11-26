@@ -1,33 +1,46 @@
 /*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
+ * Course: ITCS214
+ * Section: 7
  * Project: Smart Study Planner
  * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
+ *   Omar - 202400777
+ *   AbdulNasser ali mohameed - 202302839
+ *   oakba - 202504174
  */
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Manages courses, study tasks, and study sessions for the Smart Study Planner.
- * Uses LinkedList data structures for course, task, and session storage.
+ * Stores them in the course's KWLinkedList class (not java.util.LinkedList).
  * All iterations use indexed for loops (no enhanced for-each).
  */
 public class SmartStudyPlannerManager {
-    private LinkedList<Course> courses;
-    private LinkedList<StudyTask> tasks;
-    private LinkedList<StudySession> sessions;
+    private KWLinkedList<Course> courses;
+    private KWLinkedList<StudyTask> tasks;
+    private KWLinkedList<StudySession> sessions;
 
     /**
-     * Constructor initializing all three LinkedLists.
+     * Constructor initializing all three KWLinkedLists.
      */
     public SmartStudyPlannerManager() {
-        this.courses = new LinkedList<>();
-        this.tasks = new LinkedList<>();
-        this.sessions = new LinkedList<>();
+        this.courses = new KWLinkedList<>();
+        this.tasks = new KWLinkedList<>();
+        this.sessions = new KWLinkedList<>();
+    }
+
+    /**
+     * Returns a new KWLinkedList holding the same elements, so callers
+     * cannot change the manager's own lists.
+     *
+     * @param source the list to copy
+     * @param <T> the element type
+     * @return a copy of source
+     */
+    private static <T> KWLinkedList<T> copyOf(KWLinkedList<T> source) {
+        KWLinkedList<T> copy = new KWLinkedList<>();
+        for (int i = 0; i < source.size(); i++) {
+            copy.add(source.get(i));
+        }
+        return copy;
     }
 
     // ----- Course management -----
@@ -93,8 +106,8 @@ public class SmartStudyPlannerManager {
      *
      * @return a LinkedList containing all courses
      */
-    public LinkedList<Course> getAllCourses() {
-        return new LinkedList<>(courses);
+    public KWLinkedList<Course> getAllCourses() {
+        return copyOf(courses);
     }
 
     /**
@@ -152,7 +165,7 @@ public class SmartStudyPlannerManager {
         // Check if any session references this task
         for (int i = 0; i < sessions.size(); i++) {
             StudySession s = sessions.get(i);
-            List<StudyTask> sessionTasks = s.getTasks();
+            KWArrayList<StudyTask> sessionTasks = s.getTasks();
             for (int j = 0; j < sessionTasks.size(); j++) {
                 if (sessionTasks.get(j).getTaskId() == taskID) {
                     return 2; // blocked by dependent sessions
@@ -215,12 +228,12 @@ public class SmartStudyPlannerManager {
         return findTaskByID(id);
     }
 
-    public LinkedList<StudyTask> getAllTasks() {
-        return new LinkedList<>(tasks);
+    public KWLinkedList<StudyTask> getAllTasks() {
+        return copyOf(tasks);
     }
 
-    public LinkedList<StudyTask> getTasksByCourse(int courseID) {
-        LinkedList<StudyTask> result = new LinkedList<>();
+    public KWLinkedList<StudyTask> getTasksByCourse(int courseID) {
+        KWLinkedList<StudyTask> result = new KWLinkedList<>();
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
             if (t.getCourse() != null && t.getCourse().getCourseID() == courseID) {
@@ -230,8 +243,8 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    public LinkedList<StudyTask> getPendingTasks() {
-        LinkedList<StudyTask> result = new LinkedList<>();
+    public KWLinkedList<StudyTask> getPendingTasks() {
+        KWLinkedList<StudyTask> result = new KWLinkedList<>();
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
             if (!t.isCompleted()) {
@@ -241,8 +254,8 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    public LinkedList<StudyTask> getCompletedTasks() {
-        LinkedList<StudyTask> result = new LinkedList<>();
+    public KWLinkedList<StudyTask> getCompletedTasks() {
+        KWLinkedList<StudyTask> result = new KWLinkedList<>();
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
             if (t.isCompleted()) {
@@ -252,9 +265,9 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    public LinkedList<StudyTask> getPrioritizedPendingTasks() {
-        LinkedList<StudyTask> pending = getPendingTasks();
-        LinkedList<StudyTask> sorted = new LinkedList<>();
+    public KWLinkedList<StudyTask> getPrioritizedPendingTasks() {
+        KWLinkedList<StudyTask> pending = getPendingTasks();
+        KWLinkedList<StudyTask> sorted = new KWLinkedList<>();
         for (int i = 0; i < pending.size(); i++) {
             StudyTask t = pending.get(i);
             int insertPos = 0;
@@ -370,11 +383,11 @@ public class SmartStudyPlannerManager {
      * @param taskID the task ID
      * @return a new list of matching sessions (empty if none)
      */
-    public LinkedList<StudySession> getSessionsForTask(int taskID) {
-        LinkedList<StudySession> result = new LinkedList<>();
+    public KWLinkedList<StudySession> getSessionsForTask(int taskID) {
+        KWLinkedList<StudySession> result = new KWLinkedList<>();
         for (int i = 0; i < sessions.size(); i++) {
             StudySession s = sessions.get(i);
-            List<StudyTask> sessionTasks = s.getTasks();
+            KWArrayList<StudyTask> sessionTasks = s.getTasks();
             for (int j = 0; j < sessionTasks.size(); j++) {
                 if (sessionTasks.get(j).getTaskId() == taskID) {
                     result.add(s);
@@ -426,12 +439,12 @@ public class SmartStudyPlannerManager {
      *
      * @return a LinkedList containing all sessions
      */
-    public LinkedList<StudySession> getAllSessions() {
-        return new LinkedList<>(sessions);
+    public KWLinkedList<StudySession> getAllSessions() {
+        return copyOf(sessions);
     }
 
-    public LinkedList<StudySession> getSessionsByCourse(int courseID) {
-        LinkedList<StudySession> result = new LinkedList<>();
+    public KWLinkedList<StudySession> getSessionsByCourse(int courseID) {
+        KWLinkedList<StudySession> result = new KWLinkedList<>();
         for (int i = 0; i < sessions.size(); i++) {
             StudySession s = sessions.get(i);
             if (s.getCourse() != null && s.getCourse().getCourseID() == courseID) {
@@ -462,9 +475,9 @@ public class SmartStudyPlannerManager {
 
     // ----- Schedule generation -----
 
-    public LinkedList<StudySession> generateSchedule(LinkedList<StudySession> availableSessions) {
-        LinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
-        LinkedList<StudySession> scheduled = new LinkedList<>();
+    public KWLinkedList<StudySession> generateSchedule(KWLinkedList<StudySession> availableSessions) {
+        KWLinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
+        KWLinkedList<StudySession> scheduled = new KWLinkedList<>();
 
         int taskIndex = 0;
         for (int i = 0; i < availableSessions.size(); i++) {
@@ -515,7 +528,7 @@ public class SmartStudyPlannerManager {
             sb.append("  ").append(courses.get(i)).append("%n");
         }
         sb.append("Pending Tasks (prioritized):%n");
-        LinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
+        KWLinkedList<StudyTask> prioritized = getPrioritizedPendingTasks();
         for (int i = 0; i < prioritized.size(); i++) {
             sb.append("  ").append(prioritized.get(i)).append("%n");
         }

@@ -2,7 +2,9 @@
 
 ## Project Description
 A Java-based Smart Study Planner that manages courses, study tasks, and study sessions.
-Uses ArrayList, HashMap, and PriorityQueue data structures for efficient organization.
+Uses the course's own data structure classes, not Java's built-in collections:
+`KWLinkedList` (doubly linked list) stores courses, tasks and sessions, and
+`KWArrayList` (array-based list) stores the tasks inside a session.
 
 ## How to Run
 
@@ -52,7 +54,9 @@ Number output goes through `OutputFormat`: percentages always show 2 decimals (`
 - `Course.java` — Course entity
 - `StudyTask.java` — Study task entity (Comparable)
 - `StudySession.java` — Study session entity
-- `SmartStudyPlannerManager.java` — Manager using ArrayList, HashMap, PriorityQueue
+- `SmartStudyPlannerManager.java` — Manager storing everything in `KWLinkedList`s
+- `KWLinkedList.java` — Course doubly linked list class (replaces `java.util.LinkedList`)
+- `KWArrayList.java` — Course array list class (replaces `java.util.ArrayList`)
 - `SmartStudyPlannerApplication.java` — Main application entry point
 - `Validator.java` — Every field rule and its error message, in one place
 - `OutputFormat.java` — Number and percentage display (2 decimals), in one place

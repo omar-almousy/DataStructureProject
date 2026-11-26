@@ -1,3 +1,12 @@
+/*
+ * Course: ITCS214
+ * Section: 7
+ * Project: Smart Study Planner
+ * Group Members:
+ *   Omar - 202400777
+ *   AbdulNasser ali mohameed - 202302839
+ *   oakba - 202504174
+ */
 
 public class StudyTask implements Comparable<StudyTask> {
 

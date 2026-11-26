@@ -5,10 +5,12 @@
 | `Course` | One course: 5-digit ID, name, instructor, credit hours | constructor (guards with `Validator`), getters/setters, `equals` (by ID), `toString` | Member 1 | Course fields, equality by ID |
 | `StudyTask` | One task: 6-digit ID, title, description, course, deadline, priority 1–3, hours, status | constructor, `setStatus`, `isCompleted`, `isHighPriority`, `compareTo` (priority, then deadline), `toString` | Member 2 | Priority/deadline ordering, status rules |
 | `StudySession` | One study session logged to a task, with a duration in hours | logged-session constructor, `getTasks`, `getDurationHours`, `toString` | Member 3 | How a session links to its task |
-| `SmartStudyPlannerManager` | Stores everything in three `LinkedList`s; enforces data rules | `addCourse`, `addTask`, `logStudySession`, `deleteCourse`, `deleteStudyTask`, `removeSession`, `searchTaskByID`, `updateTaskStatus`, `getSessionsForTask`, `calculateCompletionPercentage`, the `display...` methods | Member 4 | Duplicates, existence checks, delete blocking, return codes |
+| `SmartStudyPlannerManager` | Stores everything in three `KWLinkedList`s; enforces data rules | `addCourse`, `addTask`, `logStudySession`, `deleteCourse`, `deleteStudyTask`, `removeSession`, `searchTaskByID`, `updateTaskStatus`, `getSessionsForTask`, `calculateCompletionPercentage`, the `display...` methods | Member 4 | Duplicates, existence checks, delete blocking, return codes |
 | `SmartStudyPlannerApplication` | The menu: reads input, validates it, calls the manager, prints results | `main` loop, `handleChoice` (switch), `readValidInt/Double/Line`, one `handle...` per option | Member 4 | Menu loop, try-catch on input |
 | `Validator` | Every field rule and its error message, in one place | `isValidCourseID`, `isValidTaskID`, `isValidSessionID`, `isValidDate`, `isValidPriority`, `isValidStatus`, `isPositive`, `isNonEmpty`, `isValidCreditHours` | Member 2 | Date regex + calendar check |
 | `OutputFormat` | How numbers are printed: always 2 decimals | `percentage(...)`, `number(...)` | Member 3 | Why percentages never divide by zero |
+| `KWLinkedList` | Course doubly linked list (head, tail, size, inner `Node` and `KWListIter`) used for all storage | `add`, `addFirst`, `addLast`, `get`, `remove(index)`, `size`, `isEmpty`, `indexOf`, `listIterator` | Member 4 | Why linked list; how remove works via the iterator |
+| `KWArrayList` | Course array list (array that doubles when full) used for a session's tasks and `TaskManager` | `add`, `get`, `set`, `remove`, `indexOf`, `contains`, `size`, `isEmpty` | Member 3 | `reallocate()` doubling capacity |
 | `Task`, `TaskManager` | Part B versions of the task model and its manager (not used by the menu) | `addTask`, `calculateCompletionPercentage` | Member 2 | Part B requirements |
 
 ## Where each check lives (one rule, one place)
@@ -43,6 +45,7 @@
 
 ## Coding rules we followed (expect questions)
 
+- No Java collection classes: we use the course's `KWLinkedList` and `KWArrayList` instead of `java.util.LinkedList` / `ArrayList`.
 - Indexed `for` loops only. No enhanced for-each.
 - All instance fields are `private`.
 - Menu dispatch uses a `switch`.

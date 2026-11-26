@@ -1,6 +1,12 @@
-
-import java.util.ArrayList;
-import java.util.List;
+/*
+ * Course: ITCS214
+ * Section: 7
+ * Project: Smart Study Planner
+ * Group Members:
+ *   Omar - 202400777
+ *   AbdulNasser ali mohameed - 202302839
+ *   oakba - 202504174
+ */
 
 /**
  * Represents a scheduled study session.
@@ -13,7 +19,7 @@ public class StudySession {
     private String startTime;
     private String endTime;
     private Course course;
-    private List<StudyTask> tasks;
+    private KWArrayList<StudyTask> tasks;
     private String notes;
     private double loggedHours; // used when the session is logged with a duration instead of times
 
@@ -36,7 +42,7 @@ public class StudySession {
         this.course = (task != null ? task.getCourse() : null);
         this.notes = "";
         this.loggedHours = durationHours;
-        this.tasks = new ArrayList<>();
+        this.tasks = new KWArrayList<>();
         if (task != null) {
             this.tasks.add(task);
         }
@@ -53,7 +59,7 @@ public class StudySession {
         this.endTime = endTime;
         this.course = course;
         this.notes = notes;
-        this.tasks = new ArrayList<>();
+        this.tasks = new KWArrayList<>();
     }
 
     /**
@@ -116,7 +122,7 @@ public class StudySession {
         this.course = course;
     }
 
-    public List<StudyTask> getTasks() {
+    public KWArrayList<StudyTask> getTasks() {
         return tasks;
     }
 

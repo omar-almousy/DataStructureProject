@@ -1,15 +1,13 @@
 /*
- * Course: [COURSE_CODE]
- * Section: [SECTION]
+ * Course: ITCS214
+ * Section: 7
  * Project: Smart Study Planner
  * Group Members:
- *   [Member 1 Name] - [Member 1 ID]
- *   [Member 2 Name] - [Member 2 ID]
- *   [Member 3 Name] - [Member 3 ID]
- *   [Member 4 Name] - [Member 4 ID]
+ *   Omar - 202400777
+ *   AbdulNasser ali mohameed - 202302839
+ *   oakba - 202504174
  */
 
-import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
@@ -515,7 +513,7 @@ public class SmartStudyPlannerApplication {
      * Option 11: displays all sessions.
      */
     private static void handleDisplayAllSessions() {
-        LinkedList<StudySession> sessions = planner.getAllSessions();
+        KWLinkedList<StudySession> sessions = planner.getAllSessions();
         if (sessions.isEmpty()) {
             System.out.println("No sessions available.");
         } else {
@@ -547,7 +545,7 @@ public class SmartStudyPlannerApplication {
             System.out.println("Task not found.");
             return;
         }
-        LinkedList<StudySession> found = planner.getSessionsForTask(taskID);
+        KWLinkedList<StudySession> found = planner.getSessionsForTask(taskID);
         if (found.isEmpty()) {
             System.out.println("No sessions recorded for this task.");
             return;
