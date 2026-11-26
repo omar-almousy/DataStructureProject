@@ -97,26 +97,70 @@ public class SmartStudyPlannerManager {
     }
 
     /**
-     * Removes a course by its courseID. Also removes any tasks belonging to that course.
+     * Deletes a course by its courseID.
+     * Blocks deletion if any StudyTask references this courseID (no cascade delete).
      *
-     * @param courseID the ID of the course to remove
-     * @return true if removed, false if not found
+     * @param courseID the ID of the course to delete
+     * @return 0 = success, 1 = course not found, 2 = blocked because tasks reference it
      */
-    public boolean removeCourse(int courseID) {
+    public int deleteCourse(int courseID) {
+        // Find the course
+        int courseIndex = -1;
         for (int i = 0; i < courses.size(); i++) {
-            Course c = courses.get(i);
-            if (c.getCourseID() == courseID) {
-                courses.remove(i);
-                for (int j = tasks.size() - 1; j >= 0; j--) {
-                    if (tasks.get(j).getCourse() != null
-                            && tasks.get(j).getCourse().getCourseID() == courseID) {
-                        tasks.remove(j);
-                    }
-                }
-                return true;
+            if (courses.get(i).getCourseID() == courseID) {
+                courseIndex = i;
+                break;
             }
         }
-        return false;
+        if (courseIndex == -1) {
+            return 1; // not found
+        }
+
+        // Check if any task references this course
+        for (int i = 0; i < tasks.size(); i++) {
+            StudyTask t = tasks.get(i);
+            if (t.getCourse() != null && t.getCourse().getCourseID() == courseID) {
+                return 2; // blocked by dependent tasks
+            }
+        }
+
+        courses.remove(courseIndex);
+        return 0; // success
+    }
+
+    /**
+     * Deletes a study task by its taskID.
+     * Blocks deletion if any StudySession references this taskID (no cascade delete).
+     *
+     * @param taskID the ID of the task to delete
+     * @return 0 = success, 1 = task not found, 2 = blocked because sessions reference it
+     */
+    public int deleteStudyTask(int taskID) {
+        // Find the task
+        int taskIndex = -1;
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).getTaskId() == taskID) {
+                taskIndex = i;
+                break;
+            }
+        }
+        if (taskIndex == -1) {
+            return 1; // not found
+        }
+
+        // Check if any session references this task
+        for (int i = 0; i < sessions.size(); i++) {
+            StudySession s = sessions.get(i);
+            LinkedList<StudyTask> sessionTasks = s.getTasks();
+            for (int j = 0; j < sessionTasks.size(); j++) {
+                if (sessionTasks.get(j).getTaskId() == taskID) {
+                    return 2; // blocked by dependent sessions
+                }
+            }
+        }
+
+        tasks.remove(taskIndex);
+        return 0; // success
     }
 
     // ----- Task management -----
@@ -249,13 +293,7 @@ public class SmartStudyPlannerManager {
     }
 
     public boolean removeTask(int id) {
-        for (int i = 0; i < tasks.size(); i++) {
-            if (tasks.get(i).getTaskId() == id) {
-                tasks.remove(i);
-                return true;
-            }
-        }
-        return false;
+        return deleteStudyTask(id) == 0;
     }
 
     /**
