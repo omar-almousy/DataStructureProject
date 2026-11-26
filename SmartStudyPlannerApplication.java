@@ -1,3 +1,4 @@
+
 /*
  * Course: [COURSE_CODE]
  * Section: [SECTION]
@@ -9,7 +10,8 @@
  *   [Member 4 Name] - [Member 4 ID]
  */
 
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * Main application class for the Smart Study Planner.
@@ -18,6 +20,11 @@ import java.util.LinkedList;
  */
 public class SmartStudyPlannerApplication {
 
+    /**
+     * Main entry point for the Smart Study Planner application.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         SmartStudyPlannerManager planner = new SmartStudyPlannerManager();
 
@@ -32,6 +39,12 @@ public class SmartStudyPlannerApplication {
         System.out.println("  Add CS101 (101): " + planner.addCourse(math));
         System.out.println("  Add PHYS201 (102): " + planner.addCourse(phys));
         System.out.println("  Add CHEM101 (103): " + planner.addCourse(chem));
+
+        System.out.println("Courses added:");
+        List<Course> allCourses = planner.getAllCourses();
+        for (int i = 0; i < allCourses.size(); i++) {
+            System.out.println("  " + allCourses.get(i));
+        }
 
         // Test duplicate courseID rejection
         Course mathDup = new Course(101, "Duplicate Programming", "Dr. Smith", 4);
@@ -58,6 +71,12 @@ public class SmartStudyPlannerApplication {
         System.out.println("  Add task 3: " + planner.addTask(t3));
         System.out.println("  Add task 4: " + planner.addTask(t4));
         System.out.println("  Add task 5: " + planner.addTask(t5));
+
+        System.out.println("\nTasks added:");
+        List<StudyTask> allTasks = planner.getAllTasks();
+        for (int i = 0; i < allTasks.size(); i++) {
+            System.out.println("  " + allTasks.get(i));
+        }
 
         // Test duplicate taskID rejection
         StudyTask tDup = new StudyTask(1, "Duplicate task", "Should be rejected",
@@ -104,14 +123,16 @@ public class SmartStudyPlannerApplication {
         planner.addSession(s2);
         planner.addSession(s3);
 
-        System.out.println("\n=== All Sessions ===");
-        for (int i = 0; i < planner.getAllSessions().size(); i++) {
-            System.out.println("  " + planner.getAllSessions().get(i));
+        System.out.println("\nSessions added:");
+        List<StudySession> allSessions = planner.getAllSessions();
+        for (int i = 0; i < allSessions.size(); i++) {
+            System.out.println("  " + allSessions.get(i));
         }
 
         // ---- Generate schedule ----
         System.out.println("\n=== Generated Schedule ===");
-        LinkedList<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
+        List<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
+
         for (int i = 0; i < schedule.size(); i++) {
             System.out.println("  " + schedule.get(i));
         }
@@ -119,6 +140,58 @@ public class SmartStudyPlannerApplication {
         // ---- Print summary ----
         System.out.println(planner.getSummary());
 
-        System.out.println("=== Smart Study Planner finished ===");
+        // ---- Interactive menu (Options 11 & 12) ----
+        Scanner sc = new Scanner(System.in);
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n=== Smart Study Planner Menu ===");
+            System.out.println("0. Exit");
+            System.out.println("11. Check task sessions");
+            System.out.println("12. Show completion percentage");
+            System.out.print("Select an option: ");
+
+            String choice = sc.nextLine();
+
+            switch (choice) {
+                case "0":
+                    running = false;
+                    System.out.println("Goodbye!");
+                    break;
+
+                case "11": {
+                    System.out.print("Enter task ID: ");
+                    String taskId = sc.nextLine();
+
+                    StudyTask task = planner.getTaskById(taskId);
+
+                    if (task == null) {
+                        System.out.println("Task not found.");
+                    } else if (!planner.hasSessionsForTask(taskId)) {
+                        System.out.println("No sessions recorded for this task.");
+                    } else {
+                        System.out.println("Sessions recorded for task '" + task.getTitle()
+                                + "' (ID: " + taskId + ").");
+                    }
+                    break;
+                }
+
+                case "12": {
+                    double pct = planner.calculateCompletionPercentage();
+
+                    if (pct < 0) {
+                        System.out.println("No tasks exist.");
+                    } else {
+                        System.out.printf("Completion percentage: %.2f%%%n", pct);
+                    }
+                    break;
+                }
+
+                default:
+                    System.out.println("Invalid option.");
+            }
+        }
+
+        sc.close();
     }
 }

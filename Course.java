@@ -16,6 +16,15 @@ public class Course {
     private String courseName;
     private String instructorName;
     private int creditHours;
+
+    /**
+     * Constructs a course with the given details.
+     *
+     * @param courseID the course ID
+     * @param courseName the course name
+     * @param instructorName the instructor name
+     * @param creditHours the credit hours
+     */
     public Course(int courseID, String courseName, String instructorName, int creditHours) {
         this.courseID = courseID;
         this.courseName = courseName;
@@ -23,10 +32,20 @@ public class Course {
         this.creditHours = creditHours;
     }
 
+    /**
+     * Returns the course ID.
+     *
+     * @return the course ID
+     */
     public int getCourseID() {
         return courseID;
     }
 
+    /**
+     * Sets the course ID.
+     *
+     * @param courseID the course ID to set
+     */
     public void setCourseID(int courseID) {
         this.courseID = courseID;
     }
@@ -45,27 +64,57 @@ public class Course {
         return courseName;
     }
 
+    /**
+     * Sets the course name.
+     *
+     * @param courseName the course name to set
+     */
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
 
-
+    /**
+     * Returns the instructor name.
+     *
+     * @return the instructor name
+     */
     public String getInstructorName() {
         return instructorName;
     }
 
+    /**
+     * Sets the instructor name.
+     *
+     * @param instructorName the instructor name to set
+     */
     public void setInstructorName(String instructorName) {
         this.instructorName = instructorName;
     }
 
+    /**
+     * Returns the credit hours.
+     *
+     * @return the credit hours
+     */
     public int getCreditHours() {
         return creditHours;
     }
 
+    /**
+     * Sets the credit hours.
+     *
+     * @param creditHours the credit hours to set
+     */
     public void setCreditHours(int creditHours) {
         this.creditHours = creditHours;
     }
 
+    /**
+     * Compares this course to another object for equality based on course ID.
+     *
+     * @param o the reference object to compare with
+     * @return true if the other object is a Course with the same course ID
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -78,6 +127,11 @@ public class Course {
         return this.courseID == other.courseID;
     }
 
+    /**
+     * Returns a string representation of this course.
+     *
+     * @return a string containing course ID, name, instructor, and credit hours
+     */
     @Override
     public String toString() {
         return "Course ID: " + courseID
