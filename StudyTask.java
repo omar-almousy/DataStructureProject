@@ -200,16 +200,40 @@ public class StudyTask implements Comparable<StudyTask> {
      */
     @Override
     public String toString() {
+        String courseText = (course != null)
+                ? course.getCourseCode() + " " + course.getCourseName()
+                : "N/A";
+        String descriptionText = (description != null && !description.trim().isEmpty())
+                ? description
+                : "(none)";
         return String.format(
-                "Task[id=%d, title=%s, course=%s, due=%s, priority=%s, hours=%s, completed=%b, status=%s]",
+                "Task[id=%d, title=%s, description=%s, course=%s, deadline=%s, priority=%d (%s), "
+                        + "hours=%s, status=%s]",
                 taskId,
                 title,
-                (course != null ? course.getCourseCode() : "N/A"),
+                descriptionText,
+                courseText,
                 deadline,
                 priority,
+                priorityLabel(),
                 OutputFormat.number(estimatedHours),
-                completed,
                 status
         );
+    }
+
+    /**
+     * Returns the word for this task's priority number.
+     *
+     * @return "High" for 1, "Medium" for 2, "Low" for 3
+     */
+    private String priorityLabel() {
+        switch (priority) {
+            case 1:
+                return "High";
+            case 2:
+                return "Medium";
+            default:
+                return "Low";
+        }
     }
 }

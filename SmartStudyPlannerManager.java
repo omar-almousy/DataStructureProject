@@ -290,9 +290,7 @@ public class SmartStudyPlannerManager {
             return;
         }
         for (int i = 0; i < tasks.size(); i++) {
-            StudyTask t = tasks.get(i);
-            Course c = t.getCourse();
-            System.out.println("  " + t + " | course=" + (c != null ? c.getCourseName() : "N/A"));
+            System.out.println("  " + tasks.get(i));
         }
     }
 
