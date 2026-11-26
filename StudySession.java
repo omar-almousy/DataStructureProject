@@ -15,6 +15,25 @@ public class StudySession {
     private Course course;
     private List<StudyTask> tasks;
     private String notes;
+    private double loggedHours; // used when the session is logged with a duration instead of times
+
+    /**
+     * Constructs a logged study session of a fixed duration for one task.
+     *
+     * @param id the six-digit session ID
+     * @param task the task this session is logged to
+     * @param durationHours the session length in hours
+     */
+    public StudySession(int id, StudyTask task, double durationHours) {
+        this.id = id;
+        this.course = (task != null ? task.getCourse() : null);
+        this.notes = "";
+        this.loggedHours = durationHours;
+        this.tasks = new ArrayList<>();
+        if (task != null) {
+            this.tasks.add(task);
+        }
+    }
 
     /**
      * Constructs a study session using an integer ID.
@@ -122,6 +141,9 @@ public class StudySession {
      * @return duration in hours
      */
     public double getDurationHours() {
+        if (startTime == null || endTime == null) {
+            return loggedHours;
+        }
         try {
             String[] startParts = startTime.split(":");
             String[] endParts = endTime.split(":");
@@ -147,7 +169,13 @@ public class StudySession {
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append(String.format(
+        if (startTime == null || endTime == null) {
+            sb.append(String.format("Session[id=%d, course=%s, duration=%.1fh]%n",
+                    id,
+                    (course != null ? course.getCourseCode() : "N/A"),
+                    getDurationHours()));
+        } else {
+            sb.append(String.format(
                 "Session[id=%d, date=%s, time=%s-%s, course=%s, duration=%.1fh, notes='%s']%n",
                 id,
                 date,
@@ -156,7 +184,8 @@ public class StudySession {
                 (course != null ? course.getCourseCode() : "N/A"),
                 getDurationHours(),
                 notes
-        ));
+            ));
+        }
 
         if (tasks.isEmpty()) {
             sb.append("  (no tasks assigned)");

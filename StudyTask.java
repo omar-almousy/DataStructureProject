@@ -5,8 +5,8 @@ public class StudyTask implements Comparable<StudyTask> {
     private String title;
     private String description;
     private Course course;
-    private String dueDate;
-    private String priority;
+    private String deadline;
+    private int priority; // 1 = High, 2 = Medium, 3 = Low
     private double estimatedHours;
     private boolean completed;
     private String status;
@@ -15,14 +15,27 @@ public class StudyTask implements Comparable<StudyTask> {
      * Constructs a study task using an integer ID.
      */
     public StudyTask(int taskId, String title, String description,
-                     Course course, String dueDate, String priority,
+                     Course course, String deadline, int priority,
                      double estimatedHours) {
+
+        if (!Validator.isValidTaskID(taskId)) {
+            throw new IllegalArgumentException("Task ID must be 6 digits (100000-999999).");
+        }
+        if (!Validator.isNonEmpty(title)) {
+            throw new IllegalArgumentException("Task title cannot be empty.");
+        }
+        if (!Validator.isValidDeadline(deadline)) {
+            throw new IllegalArgumentException("Deadline must be in DD/MM/YYYY format.");
+        }
+        if (!Validator.isValidPriority(priority)) {
+            throw new IllegalArgumentException("Priority must be 1 (High), 2 (Medium), or 3 (Low).");
+        }
 
         this.taskId = taskId;
         this.title = title;
         this.description = description;
         this.course = course;
-        this.dueDate = dueDate;
+        this.deadline = deadline;
         this.priority = priority;
         this.estimatedHours = estimatedHours;
         this.completed = false;
@@ -33,11 +46,10 @@ public class StudyTask implements Comparable<StudyTask> {
      * Constructs a study task using a String ID.
      */
     public StudyTask(String taskId, String title, String description,
-                     Course course, String dueDate, String priority,
+                     Course course, String deadline, int priority,
                      double estimatedHours) {
-
         this(Integer.parseInt(taskId), title, description,
-                course, dueDate, priority, estimatedHours);
+                course, deadline, priority, estimatedHours);
     }
 
     /**
@@ -91,22 +103,22 @@ public class StudyTask implements Comparable<StudyTask> {
     /**
      * Returns the due date.
      */
-    public String getDueDate() {
-        return dueDate;
+    public String getDeadline() {
+        return deadline;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
     /**
      * Returns the task priority.
      */
-    public String getPriority() {
+    public int getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(int priority) {
         this.priority = priority;
     }
 
@@ -144,7 +156,7 @@ public class StudyTask implements Comparable<StudyTask> {
      * Returns true if this task has high priority.
      */
     public boolean isHighPriority() {
-        return "High".equals(priority);
+        return priority == 1;
     }
 
     /**
@@ -169,30 +181,13 @@ public class StudyTask implements Comparable<StudyTask> {
     @Override
     public int compareTo(StudyTask other) {
 
-        int thisRank = priorityRank(this.priority);
-        int otherRank = priorityRank(other.priority);
-
-        if (thisRank != otherRank) {
-            return Integer.compare(otherRank, thisRank);
+        // 1 = High comes first, so a lower number sorts earlier
+        if (this.priority != other.priority) {
+            return Integer.compare(this.priority, other.priority);
         }
 
-        return this.dueDate.compareTo(other.dueDate);
-    }
-
-    /**
-     * Computes a numeric rank for a priority.
-     */
-    private int priorityRank(String p) {
-        switch (p) {
-            case "High":
-                return 3;
-            case "Medium":
-                return 2;
-            case "Low":
-                return 1;
-            default:
-                return 0;
-        }
+        return Integer.compare(Validator.deadlineSortKey(this.deadline),
+                Validator.deadlineSortKey(other.deadline));
     }
 
     /**
@@ -205,7 +200,7 @@ public class StudyTask implements Comparable<StudyTask> {
                 taskId,
                 title,
                 (course != null ? course.getCourseCode() : "N/A"),
-                dueDate,
+                deadline,
                 priority,
                 estimatedHours,
                 completed,

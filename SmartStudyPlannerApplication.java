@@ -1,4 +1,3 @@
-
 /*
  * Course: [COURSE_CODE]
  * Section: [SECTION]
@@ -10,238 +9,436 @@
  *   [Member 4 Name] - [Member 4 ID]
  */
 
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
  * Main application class for the Smart Study Planner.
- * Demonstrates the planner by creating sample courses, tasks, and sessions,
- * then running the schedule generator and printing results.
+ * Provides a resilient menu shell with 12 options plus exit (0).
+ * Uses a switch statement for dispatch and handles bad input gracefully.
+ * All input is read line by line so a bad entry never desynchronises the scanner.
  */
 public class SmartStudyPlannerApplication {
 
+    /** Sentinel returned by readInt when the input is not a whole number. */
+    private static final int INVALID_INT = Integer.MIN_VALUE;
+
+    /** Sentinel returned by readDouble when the input is not a number. */
+    private static final double INVALID_DOUBLE = Double.NaN;
+
+    private static SmartStudyPlannerManager planner;
+    private static Scanner scanner;
+
     /**
-     * Main entry point for the Smart Study Planner application.
+     * Entry point: runs the menu loop until the user chooses 0 or input ends.
      *
      * @param args command-line arguments (unused)
      */
     public static void main(String[] args) {
-        SmartStudyPlannerManager planner = new SmartStudyPlannerManager();
+        planner = new SmartStudyPlannerManager();
+        scanner = new Scanner(System.in);
 
-        System.out.println("=== Smart Study Planner ===\n");
-
-        // ---- Create courses ----
-        Course math = new Course(101, "Introduction to Programming", "Dr. Smith", 4);
-        Course phys = new Course(102, "Physics I", "Prof. Johnson", 3);
-        Course chem = new Course(103, "General Chemistry", "Dr. Lee", 3);
-
-        System.out.println("Adding courses:");
-        System.out.println("  Add CS101 (101): " + planner.addCourse(math));
-        System.out.println("  Add PHYS201 (102): " + planner.addCourse(phys));
-        System.out.println("  Add CHEM101 (103): " + planner.addCourse(chem));
-
-        System.out.println("Courses added:");
-        List<Course> allCourses = planner.getAllCourses();
-        for (int i = 0; i < allCourses.size(); i++) {
-            System.out.println("  " + allCourses.get(i));
-        }
-
-        // Test duplicate courseID rejection
-        Course mathDup = new Course(101, "Duplicate Programming", "Dr. Smith", 4);
-        System.out.println("  Add duplicate (101): " + planner.addCourse(mathDup));
-
-        System.out.println("\n=== All Courses ===");
-        planner.displayAllCourses();
-
-        // ---- Create study tasks ----
-        StudyTask t1 = new StudyTask(1, "Finish Chapter 3 exercises",
-                "Complete exercises 3.1 through 3.10", math, "2026-12-01", "High", 2.5);
-        StudyTask t2 = new StudyTask(2, "Lab report",
-                "Write and submit physics lab report", phys, "2026-12-02", "High", 3.0);
-        StudyTask t3 = new StudyTask(3, "Review periodic table",
-                "Memorize elements and groups", chem, "2026-12-05", "Medium", 1.5);
-        StudyTask t4 = new StudyTask(4, "Debug assignment",
-                "Fix bugs in sorting algorithm", math, "2026-11-30", "High", 1.0);
-        StudyTask t5 = new StudyTask(5, "Read chapter 5",
-                "Read and summarize chemistry chapter 5", chem, "2026-12-07", "Low", 2.0);
-
-        System.out.println("Adding tasks:");
-        System.out.println("  Add task 1: " + planner.addTask(t1));
-        System.out.println("  Add task 2: " + planner.addTask(t2));
-        System.out.println("  Add task 3: " + planner.addTask(t3));
-        System.out.println("  Add task 4: " + planner.addTask(t4));
-        System.out.println("  Add task 5: " + planner.addTask(t5));
-
-        System.out.println("\nTasks added:");
-        List<StudyTask> allTasks = planner.getAllTasks();
-        for (int i = 0; i < allTasks.size(); i++) {
-            System.out.println("  " + allTasks.get(i));
-        }
-
-        // Test duplicate taskID rejection
-        StudyTask tDup = new StudyTask(1, "Duplicate task", "Should be rejected",
-                math, "2026-12-10", "Low", 1.0);
-        System.out.println("  Add duplicate taskID (1): " + planner.addTask(tDup));
-
-        // Test task with non-existent course ID
-        Course noCourse = new Course(999, "Nonexistent", "N/A", 1);
-        StudyTask tBadCourse = new StudyTask(6, "Bad course task", "Should be rejected",
-                noCourse, "2026-12-10", "Low", 1.0);
-        System.out.println("  Add task with bad courseID (999): " + planner.addTask(tBadCourse));
-
-        System.out.println("\n=== All Tasks ===");
-        planner.displayAllStudyTasks();
-
-        // ---- Search task by ID ----
-        System.out.println("\n=== Search Task by ID ===");
-        StudyTask found = planner.searchTaskByID(3);
-        System.out.println("  Search task 3: " + (found != null ? found.getTitle() : "not found"));
-        StudyTask notFound = planner.searchTaskByID(99);
-        System.out.println("  Search task 99: " + (notFound != null ? notFound.getTitle() : "not found"));
-
-        // ---- Update task status ----
-        System.out.println("\n=== Update Task Status ===");
-        System.out.println("  Update task 2 to 'In Progress': " + planner.updateTaskStatus(2, "In Progress"));
-        System.out.println("  Update task 99 to 'Completed' (unknown ID): " + planner.updateTaskStatus(99, "Completed"));
-        System.out.println("  Update task 1 to 'InvalidStatus' (invalid): " + planner.updateTaskStatus(1, "InvalidStatus"));
-        System.out.println("  Update task 4 to 'Completed': " + planner.updateTaskStatus(4, "Completed"));
-
-        // ---- Mark one task complete ----
-        planner.markTaskComplete(4);
-        System.out.println("\nMarked task 4 as complete.");
-
-        // ---- Display high-priority incomplete tasks ----
-        System.out.println("\n=== High-Priority Incomplete Tasks ===");
-        planner.displayHighPriorityIncompleteTasks();
-
-        // ---- Create study sessions ----
-        StudySession s1 = new StudySession(1, "2026-11-25", "10:00", "12:00", math, "Morning study block");
-        StudySession s2 = new StudySession(2, "2026-11-25", "14:00", "16:00", phys, "Afternoon lab prep");
-        StudySession s3 = new StudySession(3, "2026-11-26", "09:00", "11:00", chem, "Review session");
-
-        planner.addSession(s1);
-        planner.addSession(s2);
-        planner.addSession(s3);
-
-        System.out.println("\nSessions added:");
-        List<StudySession> allSessions = planner.getAllSessions();
-        for (int i = 0; i < allSessions.size(); i++) {
-            System.out.println("  " + allSessions.get(i));
-        }
-
-        // ---- Generate schedule ----
-        System.out.println("\n=== Generated Schedule ===");
-        List<StudySession> schedule = planner.generateSchedule(planner.getAllSessions());
-
-        for (int i = 0; i < schedule.size(); i++) {
-            System.out.println("  " + schedule.get(i));
-        }
-
-        // ---- Print summary ----
-        System.out.println(planner.getSummary());
-
-        // ---- Interactive menu (Options 11 & 12) ----
-        Scanner sc = new Scanner(System.in);
         boolean running = true;
+        while (running && scanner.hasNextLine()) {
+            printMenu();
+            int choice = readInt("Enter your choice: ");
+            if (choice == INVALID_INT) {
+                System.out.println("Invalid input. Please enter a number.");
+                continue;
+            }
+            running = handleChoice(choice);
+        }
 
-        while (running) {
-            System.out.println("\n=== Smart Study Planner Menu ===");
-            System.out.println("0. Exit");
-            System.out.println("4. Update task status");
-            System.out.println("5. Search task by ID");
-            System.out.println("11. Check task sessions");
-            System.out.println("12. Show completion percentage");
-            System.out.print("Select an option: ");
+        System.out.println("Goodbye!");
+        scanner.close();
+    }
 
-            String choice = sc.nextLine();
+    /**
+     * Prints the main menu.
+     */
+    private static void printMenu() {
+        System.out.println("\n=== Smart Study Planner Menu ===");
+        System.out.println("0. Exit");
+        System.out.println("1. Add Course");
+        System.out.println("2. Display All Courses");
+        System.out.println("3. Delete Course");
+        System.out.println("4. Update Task Status");
+        System.out.println("5. Search Task by ID");
+        System.out.println("6. Add Study Task");
+        System.out.println("7. Display All Study Tasks");
+        System.out.println("8. Delete Study Task");
+        System.out.println("9. Log Study Session");
+        System.out.println("10. Display All Sessions");
+        System.out.println("11. Delete Study Session");
+        System.out.println("12. Display High-Priority Incomplete Tasks");
+        System.out.print("------------------------------\n");
+    }
 
-            switch (choice) {
-                case "0":
-                    running = false;
-                    System.out.println("Goodbye!");
-                    break;
+    /**
+     * Prompts for and reads one full line of input, trimmed.
+     *
+     * @param prompt the prompt to display
+     * @return the trimmed line, or an empty string if input has ended
+     */
+    private static String readLine(String prompt) {
+        System.out.print(prompt);
+        if (!scanner.hasNextLine()) {
+            return "";
+        }
+        return scanner.nextLine().trim();
+    }
 
-                case "11": {
-                    System.out.print("Enter task ID: ");
-                    String taskId = sc.nextLine();
+    /**
+     * Prompts for a whole number.
+     *
+     * @param prompt the prompt to display
+     * @return the parsed value, or INVALID_INT if the input is not a whole number
+     */
+    private static int readInt(String prompt) {
+        String line = readLine(prompt);
+        try {
+            return Integer.parseInt(line);
+        } catch (NumberFormatException e) {
+            return INVALID_INT;
+        }
+    }
 
-                    StudyTask task = planner.getTaskById(taskId);
+    /**
+     * Prompts for a decimal number.
+     *
+     * @param prompt the prompt to display
+     * @return the parsed value, or INVALID_DOUBLE (NaN) if the input is not a number
+     */
+    private static double readDouble(String prompt) {
+        String line = readLine(prompt);
+        try {
+            return Double.parseDouble(line);
+        } catch (NumberFormatException e) {
+            return INVALID_DOUBLE;
+        }
+    }
 
-                    if (task == null) {
-                        System.out.println("Task not found.");
-                    } else if (!planner.hasSessionsForTask(taskId)) {
-                        System.out.println("No sessions recorded for this task.");
-                    } else {
-                        System.out.println("Sessions recorded for task '" + task.getTitle()
-                                + "' (ID: " + taskId + ").");
-                    }
-                    break;
-                }
+    /**
+     * Dispatches a menu choice.
+     *
+     * @param choice the selected option
+     * @return false if the user chose to exit, true otherwise
+     */
+    private static boolean handleChoice(int choice) {
+        switch (choice) {
+            case 0:
+                return false;
+            case 1:
+                handleAddCourse();
+                break;
+            case 2:
+                handleDisplayAllCourses();
+                break;
+            case 3:
+                handleDeleteCourse();
+                break;
+            case 4:
+                handleUpdateTaskStatus();
+                break;
+            case 5:
+                handleSearchTaskByID();
+                break;
+            case 6:
+                handleAddStudyTask();
+                break;
+            case 7:
+                handleDisplayAllStudyTasks();
+                break;
+            case 8:
+                handleDeleteStudyTask();
+                break;
+            case 9:
+                handleLogStudySession();
+                break;
+            case 10:
+                handleDisplayAllSessions();
+                break;
+            case 11:
+                handleDeleteStudySession();
+                break;
+            case 12:
+                handleDisplayHighPriorityIncompleteTasks();
+                break;
+            default:
+                System.out.println("Invalid choice. Please select 0-12.");
+                break;
+        }
+        return true;
+    }
 
-                case "12": {
-                    double pct = planner.calculateCompletionPercentage();
+    /**
+     * Option 1: prompts for all course fields, validates each one, and adds the course.
+     */
+    private static void handleAddCourse() {
+        int id = readInt("Enter course ID (5 digits): ");
+        if (!Validator.isValidCourseID(id)) {
+            System.out.println("Invalid course ID: must be exactly 5 digits (10000-99999).");
+            return;
+        }
+        String name = readLine("Enter course name: ");
+        if (!Validator.isNonEmpty(name)) {
+            System.out.println("Invalid course name: cannot be empty.");
+            return;
+        }
+        String instructor = readLine("Enter instructor name: ");
+        if (!Validator.isNonEmpty(instructor)) {
+            System.out.println("Invalid instructor name: cannot be empty.");
+            return;
+        }
+        int credits = readInt("Enter credit hours (1-6): ");
+        if (!Validator.isValidCreditHours(credits)) {
+            System.out.println("Invalid credit hours: must be a whole number between 1 and 6.");
+            return;
+        }
 
-                    if (pct < 0) {
-                        System.out.println("No tasks exist.");
-                    } else {
-                        System.out.printf("Completion percentage: %.2f%%%n", pct);
-                    }
-                    break;
-                }
+        boolean success = planner.addCourse(new Course(id, name, instructor, credits));
+        if (success) {
+            System.out.println("Course " + id + " added successfully.");
+        } else {
+            System.out.println("Failed to add course: duplicate ID " + id + " already exists.");
+        }
+    }
 
-                case "4": {
-                    // Option 4: prompt taskID; if not found print message;
-                    // else prompt new status, validate against the allowed values,
-                    // call manager, print result. Invalid status is rejected
-                    // before any data is changed.
-                    System.out.print("Enter task ID: ");
-                    int id;
-                    try {
-                        id = Integer.parseInt(sc.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid task ID.");
-                        break;
-                    }
-                    if (planner.searchTaskByID(id) == null) {
-                        System.out.println("Task not found.");
-                    } else {
-                        System.out.print("Enter new status (Pending / In Progress / Completed): ");
-                        String newStatus = sc.nextLine();
-                        boolean updated = planner.updateTaskStatus(id, newStatus);
-                        if (updated) {
-                            System.out.println("Status updated successfully.");
-                        } else {
-                            System.out.println("Invalid status. Allowed values: Pending, In Progress, Completed.");
-                        }
-                    }
-                    break;
-                }
+    /**
+     * Option 2: displays all courses.
+     */
+    private static void handleDisplayAllCourses() {
+        planner.displayAllCourses();
+    }
 
-                case "5": {
-                    // Option 5: prompt taskID; print full task details if found,
-                    // else "no matching task".
-                    System.out.print("Enter task ID: ");
-                    int id;
-                    try {
-                        id = Integer.parseInt(sc.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid task ID.");
-                        break;
-                    }
-                    StudyTask task = planner.searchTaskByID(id);
-                    if (task == null) {
-                        System.out.println("no matching task");
-                    } else {
-                        System.out.println(task);
-                    }
-                    break;
-                }
+    /**
+     * Option 3: deletes a course if no tasks reference it.
+     */
+    private static void handleDeleteCourse() {
+        int courseID = readInt("Enter course ID to delete: ");
+        if (courseID == INVALID_INT) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
+        int result = planner.deleteCourse(courseID);
+        switch (result) {
+            case 0:
+                System.out.println("Course deleted successfully.");
+                break;
+            case 1:
+                System.out.println("Course not found.");
+                break;
+            case 2:
+                System.out.println("Cannot delete course: one or more study tasks reference this course.");
+                break;
+            default:
+                System.out.println("Unexpected error.");
+                break;
+        }
+    }
 
-                default:
-                    System.out.println("Invalid option.");
+    /**
+     * Option 6: prompts for all task fields, validates each one, and adds the task.
+     */
+    private static void handleAddStudyTask() {
+        int id = readInt("Enter task ID (6 digits): ");
+        if (!Validator.isValidTaskID(id)) {
+            System.out.println("Invalid task ID: must be exactly 6 digits (100000-999999).");
+            return;
+        }
+        String title = readLine("Enter task title: ");
+        if (!Validator.isNonEmpty(title)) {
+            System.out.println("Invalid title: cannot be empty.");
+            return;
+        }
+        String description = readLine("Enter task description: ");
+        int courseID = readInt("Enter course ID: ");
+        Course course = planner.getCourseByID(courseID);
+        if (course == null) {
+            System.out.println("Unknown course: no course exists with that ID.");
+            return;
+        }
+        String deadline = readLine("Enter deadline (DD/MM/YYYY): ");
+        if (!Validator.isValidDeadline(deadline)) {
+            System.out.println("Invalid deadline: must be a real date in DD/MM/YYYY format.");
+            return;
+        }
+        int priority = readInt("Enter priority (1 = High, 2 = Medium, 3 = Low): ");
+        if (!Validator.isValidPriority(priority)) {
+            System.out.println("Invalid priority: must be 1, 2, or 3.");
+            return;
+        }
+        String status = readLine("Enter status (Pending / In Progress / Completed): ");
+        if (!Validator.isValidStatus(status)) {
+            System.out.println("Invalid status: must be Pending, In Progress, or Completed.");
+            return;
+        }
+        double hours = readDouble("Enter estimated hours: ");
+        if (!Validator.isValidDuration(hours)) {
+            System.out.println("Invalid estimated hours: must be a number greater than 0.");
+            return;
+        }
+
+        StudyTask t = new StudyTask(id, title, description, course, deadline, priority, hours);
+        t.setStatus(status);
+        boolean success = planner.addTask(t);
+        if (success) {
+            System.out.println("Task " + id + " added successfully to course " + courseID + ".");
+        } else {
+            System.out.println("Failed to add task: duplicate ID " + id + " already exists.");
+        }
+    }
+
+    /**
+     * Option 7: displays all study tasks.
+     */
+    private static void handleDisplayAllStudyTasks() {
+        planner.displayAllStudyTasks();
+    }
+
+    /**
+     * Option 8: deletes a task if no sessions reference it.
+     */
+    private static void handleDeleteStudyTask() {
+        int taskID = readInt("Enter task ID to delete: ");
+        if (taskID == INVALID_INT) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
+        int result = planner.deleteStudyTask(taskID);
+        switch (result) {
+            case 0:
+                System.out.println("Task deleted successfully.");
+                break;
+            case 1:
+                System.out.println("Task not found.");
+                break;
+            case 2:
+                System.out.println("Cannot delete task: one or more study sessions reference this task.");
+                break;
+            default:
+                System.out.println("Unexpected error.");
+                break;
+        }
+    }
+
+    /**
+     * Option 5: searches for a task by ID.
+     */
+    private static void handleSearchTaskByID() {
+        int id = readInt("Enter task ID: ");
+        if (id == INVALID_INT) {
+            System.out.println("Invalid task ID.");
+            return;
+        }
+
+        StudyTask task = planner.searchTaskByID(id);
+        if (task == null) {
+            System.out.println("no matching task");
+        } else {
+            System.out.println(task);
+        }
+    }
+
+    /**
+     * Option 4: updates a task's status after checking the task and validating the status.
+     */
+    private static void handleUpdateTaskStatus() {
+        int id = readInt("Enter task ID: ");
+        if (id == INVALID_INT) {
+            System.out.println("Invalid task ID.");
+            return;
+        }
+
+        StudyTask task = planner.searchTaskByID(id);
+        if (task == null) {
+            System.out.println("Task not found.");
+            return;
+        }
+
+        String newStatus = readLine("Enter new status (Pending / In Progress / Completed): ");
+        if (!Validator.isValidStatus(newStatus)) {
+            System.out.println("Invalid status. Allowed values: Pending, In Progress, Completed.");
+            return;
+        }
+
+        boolean updated = planner.updateTaskStatus(id, newStatus);
+        if (updated) {
+            System.out.println("Status updated successfully.");
+        } else {
+            System.out.println("Failed to update task status.");
+        }
+    }
+
+    /**
+     * Option 9: logs a study session of a given duration against an existing task.
+     */
+    private static void handleLogStudySession() {
+        int sessionID = readInt("Enter session ID (6 digits): ");
+        if (!Validator.isValidSessionID(sessionID)) {
+            System.out.println("Invalid session ID: must be exactly 6 digits (100000-999999).");
+            return;
+        }
+        int taskID = readInt("Enter task ID: ");
+        if (taskID == INVALID_INT) {
+            System.out.println("Failure: task not found.");
+            return;
+        }
+        double hours = readDouble("Enter duration in hours: ");
+        if (!Validator.isValidDuration(hours)) {
+            System.out.println("Failure: duration must be a number greater than 0.");
+            return;
+        }
+
+        int result = planner.logStudySession(sessionID, taskID, hours);
+        switch (result) {
+            case 0:
+                StudyTask task = planner.searchTaskByID(taskID);
+                System.out.printf("Session %d logged successfully: %.2f hour(s) on task %d (%s).%n",
+                        sessionID, hours, taskID, task.getTitle());
+                break;
+            case 1:
+                System.out.println("Failure: duplicate session ID " + sessionID + ".");
+                break;
+            case 2:
+                System.out.println("Failure: task not found.");
+                break;
+            case 3:
+                System.out.println("Failure: duration must be a number greater than 0.");
+                break;
+            default:
+                System.out.println("Failure: invalid session ID.");
+                break;
+        }
+    }
+
+    /**
+     * Option 10: displays all sessions.
+     */
+    private static void handleDisplayAllSessions() {
+        LinkedList<StudySession> sessions = planner.getAllSessions();
+        if (sessions.isEmpty()) {
+            System.out.println("No sessions available.");
+        } else {
+            for (int i = 0; i < sessions.size(); i++) {
+                System.out.println("  " + sessions.get(i));
             }
         }
+    }
 
-        sc.close();
+    /**
+     * Option 11: deletes a session by ID.
+     */
+    private static void handleDeleteStudySession() {
+        String sessionId = readLine("Enter session ID to delete: ");
+        boolean success = planner.removeSession(sessionId);
+        System.out.println(success ? "Session deleted successfully." : "Session not found.");
+    }
+
+    /**
+     * Option 12: displays all high-priority incomplete tasks.
+     */
+    private static void handleDisplayHighPriorityIncompleteTasks() {
+        planner.displayHighPriorityIncompleteTasks();
     }
 }
