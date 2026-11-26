@@ -9,7 +9,6 @@
  *   [Member 4 Name] - [Member 4 ID]
  */
 
-import java.util.InputMismatchException;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -17,21 +16,34 @@ import java.util.Scanner;
  * Main application class for the Smart Study Planner.
  * Provides a resilient menu shell with 12 options plus exit (0).
  * Uses a switch statement for dispatch and handles bad input gracefully.
+ * All input is read line by line so a bad entry never desynchronises the scanner.
  */
 public class SmartStudyPlannerApplication {
+
+    /** Sentinel returned by readInt when the input is not a whole number. */
+    private static final int INVALID_INT = Integer.MIN_VALUE;
+
+    /** Sentinel returned by readDouble when the input is not a number. */
+    private static final double INVALID_DOUBLE = Double.NaN;
 
     private static SmartStudyPlannerManager planner;
     private static Scanner scanner;
 
+    /**
+     * Entry point: runs the menu loop until the user chooses 0 or input ends.
+     *
+     * @param args command-line arguments (unused)
+     */
     public static void main(String[] args) {
         planner = new SmartStudyPlannerManager();
         scanner = new Scanner(System.in);
 
         boolean running = true;
-        while (running) {
+        while (running && scanner.hasNextLine()) {
             printMenu();
             int choice = readInt("Enter your choice: ");
-            if (choice == Integer.MIN_VALUE) {
+            if (choice == INVALID_INT) {
+                System.out.println("Invalid input. Please enter a number.");
                 continue;
             }
             running = handleChoice(choice);
@@ -41,6 +53,9 @@ public class SmartStudyPlannerApplication {
         scanner.close();
     }
 
+    /**
+     * Prints the main menu.
+     */
     private static void printMenu() {
         System.out.println("\n=== Smart Study Planner Menu ===");
         System.out.println("0. Exit");
@@ -52,40 +67,63 @@ public class SmartStudyPlannerApplication {
         System.out.println("6. Delete Study Task");
         System.out.println("7. Search Task by ID");
         System.out.println("8. Update Task Status");
-        System.out.println("9. Add Study Session");
+        System.out.println("9. Log Study Session");
         System.out.println("10. Display All Sessions");
         System.out.println("11. Delete Study Session");
         System.out.println("12. Display High-Priority Incomplete Tasks");
         System.out.print("------------------------------\n");
     }
 
-    private static int readInt(String prompt) {
-        System.out.print(prompt);
-        try {
-            return scanner.nextInt();
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Invalid input. Please enter a number.");
-            return Integer.MIN_VALUE;
-        }
-    }
-
+    /**
+     * Prompts for and reads one full line of input, trimmed.
+     *
+     * @param prompt the prompt to display
+     * @return the trimmed line, or an empty string if input has ended
+     */
     private static String readLine(String prompt) {
         System.out.print(prompt);
-        return scanner.nextLine();
+        if (!scanner.hasNextLine()) {
+            return "";
+        }
+        return scanner.nextLine().trim();
     }
 
-    private static double readDouble(String prompt) {
-        System.out.print(prompt);
+    /**
+     * Prompts for a whole number.
+     *
+     * @param prompt the prompt to display
+     * @return the parsed value, or INVALID_INT if the input is not a whole number
+     */
+    private static int readInt(String prompt) {
+        String line = readLine(prompt);
         try {
-            return scanner.nextDouble();
-        } catch (InputMismatchException e) {
-            scanner.nextLine();
-            System.out.println("Invalid input. Please enter a number.");
-            return Double.MIN_VALUE;
+            return Integer.parseInt(line);
+        } catch (NumberFormatException e) {
+            return INVALID_INT;
         }
     }
 
+    /**
+     * Prompts for a decimal number.
+     *
+     * @param prompt the prompt to display
+     * @return the parsed value, or INVALID_DOUBLE (NaN) if the input is not a number
+     */
+    private static double readDouble(String prompt) {
+        String line = readLine(prompt);
+        try {
+            return Double.parseDouble(line);
+        } catch (NumberFormatException e) {
+            return INVALID_DOUBLE;
+        }
+    }
+
+    /**
+     * Dispatches a menu choice.
+     *
+     * @param choice the selected option
+     * @return false if the user chose to exit, true otherwise
+     */
     private static boolean handleChoice(int choice) {
         switch (choice) {
             case 0:
@@ -115,7 +153,7 @@ public class SmartStudyPlannerApplication {
                 handleUpdateTaskStatus();
                 break;
             case 9:
-                handleAddStudySession();
+                handleLogStudySession();
                 break;
             case 10:
                 handleDisplayAllSessions();
@@ -133,28 +171,55 @@ public class SmartStudyPlannerApplication {
         return true;
     }
 
+    /**
+     * Option 1: prompts for all course fields, validates each one, and adds the course.
+     */
     private static void handleAddCourse() {
-        int id = readInt("Enter course ID: ");
-        if (id == Integer.MIN_VALUE) return;
-        scanner.nextLine();
+        int id = readInt("Enter course ID (5 digits): ");
+        if (!Validator.isValidCourseID(id)) {
+            System.out.println("Invalid course ID: must be exactly 5 digits (10000-99999).");
+            return;
+        }
         String name = readLine("Enter course name: ");
+        if (!Validator.isNonEmpty(name)) {
+            System.out.println("Invalid course name: cannot be empty.");
+            return;
+        }
         String instructor = readLine("Enter instructor name: ");
-        int credits = readInt("Enter credit hours: ");
-        if (credits == Integer.MIN_VALUE) return;
+        if (!Validator.isNonEmpty(instructor)) {
+            System.out.println("Invalid instructor name: cannot be empty.");
+            return;
+        }
+        int credits = readInt("Enter credit hours (1-6): ");
+        if (!Validator.isValidCreditHours(credits)) {
+            System.out.println("Invalid credit hours: must be a whole number between 1 and 6.");
+            return;
+        }
 
-        Course c = new Course(id, name, instructor, credits);
-        boolean success = planner.addCourse(c);
-        System.out.println(success ? "Course added successfully."
-                : "Failed to add course (duplicate ID or invalid data).");
+        boolean success = planner.addCourse(new Course(id, name, instructor, credits));
+        if (success) {
+            System.out.println("Course " + id + " added successfully.");
+        } else {
+            System.out.println("Failed to add course: duplicate ID " + id + " already exists.");
+        }
     }
 
+    /**
+     * Option 2: displays all courses.
+     */
     private static void handleDisplayAllCourses() {
         planner.displayAllCourses();
     }
 
+    /**
+     * Option 3: deletes a course if no tasks reference it.
+     */
     private static void handleDeleteCourse() {
         int courseID = readInt("Enter course ID to delete: ");
-        if (courseID == Integer.MIN_VALUE) return;
+        if (courseID == INVALID_INT) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
         int result = planner.deleteCourse(courseID);
         switch (result) {
             case 0:
@@ -172,39 +237,74 @@ public class SmartStudyPlannerApplication {
         }
     }
 
+    /**
+     * Option 4: prompts for all task fields, validates each one, and adds the task.
+     */
     private static void handleAddStudyTask() {
-        int id = readInt("Enter task ID: ");
-        if (id == Integer.MIN_VALUE) return;
-        scanner.nextLine();
+        int id = readInt("Enter task ID (6 digits): ");
+        if (!Validator.isValidTaskID(id)) {
+            System.out.println("Invalid task ID: must be exactly 6 digits (100000-999999).");
+            return;
+        }
         String title = readLine("Enter task title: ");
+        if (!Validator.isNonEmpty(title)) {
+            System.out.println("Invalid title: cannot be empty.");
+            return;
+        }
         String description = readLine("Enter task description: ");
         int courseID = readInt("Enter course ID: ");
-        if (courseID == Integer.MIN_VALUE) return;
-        scanner.nextLine();
-        String dueDate = readLine("Enter due date (YYYY-MM-DD): ");
-        String priority = readLine("Enter priority (High/Medium/Low): ");
-        double hours = readDouble("Enter estimated hours: ");
-        if (hours == Double.MIN_VALUE) return;
-
         Course course = planner.getCourseByID(courseID);
         if (course == null) {
-            System.out.println("Failed to add task: course ID " + courseID + " does not exist.");
+            System.out.println("Unknown course: no course exists with that ID.");
+            return;
+        }
+        String deadline = readLine("Enter deadline (DD/MM/YYYY): ");
+        if (!Validator.isValidDeadline(deadline)) {
+            System.out.println("Invalid deadline: must be a real date in DD/MM/YYYY format.");
+            return;
+        }
+        int priority = readInt("Enter priority (1 = High, 2 = Medium, 3 = Low): ");
+        if (!Validator.isValidPriority(priority)) {
+            System.out.println("Invalid priority: must be 1, 2, or 3.");
+            return;
+        }
+        String status = readLine("Enter status (Pending / In Progress / Completed): ");
+        if (!Validator.isValidStatus(status)) {
+            System.out.println("Invalid status: must be Pending, In Progress, or Completed.");
+            return;
+        }
+        double hours = readDouble("Enter estimated hours: ");
+        if (!Validator.isValidDuration(hours)) {
+            System.out.println("Invalid estimated hours: must be a number greater than 0.");
             return;
         }
 
-        StudyTask t = new StudyTask(id, title, description, course, dueDate, priority, hours);
+        StudyTask t = new StudyTask(id, title, description, course, deadline, priority, hours);
+        t.setStatus(status);
         boolean success = planner.addTask(t);
-        System.out.println(success ? "Task added successfully."
-                : "Failed to add task (duplicate ID or invalid data).");
+        if (success) {
+            System.out.println("Task " + id + " added successfully to course " + courseID + ".");
+        } else {
+            System.out.println("Failed to add task: duplicate ID " + id + " already exists.");
+        }
     }
 
+    /**
+     * Option 5: displays all study tasks.
+     */
     private static void handleDisplayAllStudyTasks() {
         planner.displayAllStudyTasks();
     }
 
+    /**
+     * Option 6: deletes a task if no sessions reference it.
+     */
     private static void handleDeleteStudyTask() {
         int taskID = readInt("Enter task ID to delete: ");
-        if (taskID == Integer.MIN_VALUE) return;
+        if (taskID == INVALID_INT) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
         int result = planner.deleteStudyTask(taskID);
         switch (result) {
             case 0:
@@ -222,9 +322,15 @@ public class SmartStudyPlannerApplication {
         }
     }
 
+    /**
+     * Option 7: searches for a task by ID.
+     */
     private static void handleSearchTaskByID() {
         int id = readInt("Enter task ID to search: ");
-        if (id == Integer.MIN_VALUE) return;
+        if (id == INVALID_INT) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
         StudyTask t = planner.searchTaskByID(id);
         if (t != null) {
             System.out.println("Found: " + t);
@@ -233,10 +339,15 @@ public class SmartStudyPlannerApplication {
         }
     }
 
+    /**
+     * Option 8: updates a task's status.
+     */
     private static void handleUpdateTaskStatus() {
         int id = readInt("Enter task ID: ");
-        if (id == Integer.MIN_VALUE) return;
-        scanner.nextLine();
+        if (id == INVALID_INT) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
         String newStatus = readLine("Enter new status (Pending / In Progress / Completed): ");
         boolean success = planner.updateTaskStatus(id, newStatus);
         if (success) {
@@ -246,28 +357,51 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    private static void handleAddStudySession() {
-        scanner.nextLine();
-        String sessionId = readLine("Enter session ID: ");
-        String date = readLine("Enter date (YYYY-MM-DD): ");
-        String startTime = readLine("Enter start time (HH:MM): ");
-        String endTime = readLine("Enter end time (HH:MM): ");
-        int courseID = readInt("Enter course ID: ");
-        if (courseID == Integer.MIN_VALUE) return;
-        scanner.nextLine();
-        String notes = readLine("Enter notes: ");
-
-        Course course = planner.getCourseByID(courseID);
-        if (course == null) {
-            System.out.println("Failed to add session: course ID " + courseID + " does not exist.");
+    /**
+     * Option 9: logs a study session of a given duration against an existing task.
+     */
+    private static void handleLogStudySession() {
+        int sessionID = readInt("Enter session ID (6 digits): ");
+        if (!Validator.isValidSessionID(sessionID)) {
+            System.out.println("Invalid session ID: must be exactly 6 digits (100000-999999).");
+            return;
+        }
+        int taskID = readInt("Enter task ID: ");
+        if (taskID == INVALID_INT) {
+            System.out.println("Failure: task not found.");
+            return;
+        }
+        double hours = readDouble("Enter duration in hours: ");
+        if (!Validator.isValidDuration(hours)) {
+            System.out.println("Failure: duration must be a number greater than 0.");
             return;
         }
 
-        StudySession s = new StudySession(sessionId, date, startTime, endTime, course, notes);
-        boolean success = planner.addSession(s);
-        System.out.println(success ? "Session added successfully." : "Failed to add session.");
+        int result = planner.logStudySession(sessionID, taskID, hours);
+        switch (result) {
+            case 0:
+                StudyTask task = planner.searchTaskByID(taskID);
+                System.out.printf("Session %d logged successfully: %.2f hour(s) on task %d (%s).%n",
+                        sessionID, hours, taskID, task.getTitle());
+                break;
+            case 1:
+                System.out.println("Failure: duplicate session ID " + sessionID + ".");
+                break;
+            case 2:
+                System.out.println("Failure: task not found.");
+                break;
+            case 3:
+                System.out.println("Failure: duration must be a number greater than 0.");
+                break;
+            default:
+                System.out.println("Failure: invalid session ID.");
+                break;
+        }
     }
 
+    /**
+     * Option 10: displays all sessions.
+     */
     private static void handleDisplayAllSessions() {
         LinkedList<StudySession> sessions = planner.getAllSessions();
         if (sessions.isEmpty()) {
@@ -279,13 +413,18 @@ public class SmartStudyPlannerApplication {
         }
     }
 
+    /**
+     * Option 11: deletes a session by ID.
+     */
     private static void handleDeleteStudySession() {
-        scanner.nextLine();
         String sessionId = readLine("Enter session ID to delete: ");
         boolean success = planner.removeSession(sessionId);
         System.out.println(success ? "Session deleted successfully." : "Session not found.");
     }
 
+    /**
+     * Option 12: displays all high-priority incomplete tasks.
+     */
     private static void handleDisplayHighPriorityIncompleteTasks() {
         planner.displayHighPriorityIncompleteTasks();
     }

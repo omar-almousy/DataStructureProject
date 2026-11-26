@@ -258,30 +258,13 @@ public class SmartStudyPlannerManager {
         for (int i = 0; i < pending.size(); i++) {
             StudyTask t = pending.get(i);
             int insertPos = 0;
-            while (insertPos < sorted.size() && shouldComeBefore(sorted.get(insertPos), t)) {
+            // Insertion sort: priority (1 = High first), then earliest deadline
+            while (insertPos < sorted.size() && sorted.get(insertPos).compareTo(t) <= 0) {
                 insertPos++;
             }
             sorted.add(insertPos, t);
         }
         return sorted;
-    }
-
-    private boolean shouldComeBefore(StudyTask a, StudyTask b) {
-        int rankA = priorityRank(a.getPriority());
-        int rankB = priorityRank(b.getPriority());
-        if (rankA != rankB) {
-            return rankA > rankB;
-        }
-        return a.getDueDate().compareTo(b.getDueDate()) < 0;
-    }
-
-    private int priorityRank(String p) {
-        switch (p) {
-            case "High": return 3;
-            case "Medium": return 2;
-            case "Low": return 1;
-            default: return 0;
-        }
     }
 
     public boolean markTaskComplete(int id) {
@@ -322,11 +305,7 @@ public class SmartStudyPlannerManager {
      * @return true if updated successfully, false if task not found or invalid status
      */
     public boolean updateTaskStatus(int id, String newStatus) {
-        if (newStatus == null) {
-            return false;
-        }
-        if (!"Pending".equals(newStatus) && !"In Progress".equals(newStatus)
-                && !"Completed".equals(newStatus)) {
+        if (!Validator.isValidStatus(newStatus)) {
             return false;
         }
         StudyTask t = findTaskByID(id);
@@ -364,6 +343,54 @@ public class SmartStudyPlannerManager {
         return sessions.add(session);
     }
 
+    /**
+     * Logs a study session of the given duration against an existing task.
+     * Checks are applied in order: duration, duplicate session ID, task existence.
+     *
+     * @param sessionID the six-digit session ID
+     * @param taskID the ID of the task the session is logged to
+     * @param durationHours the session length in hours (must be greater than 0)
+     * @return 0 = success, 1 = duplicate session ID, 2 = task not found,
+     *         3 = invalid duration, 4 = invalid session ID
+     */
+    public int logStudySession(int sessionID, int taskID, double durationHours) {
+        if (!Validator.isValidSessionID(sessionID)) {
+            return 4;
+        }
+        if (!Validator.isValidDuration(durationHours)) {
+            return 3;
+        }
+        if (findSessionByID(sessionID) != null) {
+            return 1;
+        }
+        StudyTask task = findTaskByID(taskID);
+        if (task == null) {
+            return 2;
+        }
+        sessions.add(new StudySession(sessionID, task, durationHours));
+        return 0;
+    }
+
+    /**
+     * Helper: finds a session by its integer ID using an indexed for loop.
+     *
+     * @param id the session ID to search for
+     * @return the StudySession if found, null otherwise
+     */
+    private StudySession findSessionByID(int id) {
+        for (int i = 0; i < sessions.size(); i++) {
+            if (sessions.get(i).getId() == id) {
+                return sessions.get(i);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns a copy of the sessions list.
+     *
+     * @return a LinkedList containing all sessions
+     */
     public LinkedList<StudySession> getAllSessions() {
         return new LinkedList<>(sessions);
     }
