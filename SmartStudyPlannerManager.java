@@ -9,6 +9,7 @@
  */
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Manages courses, study tasks, and study sessions for the Smart Study Planner.
@@ -151,7 +152,7 @@ public class SmartStudyPlannerManager {
         // Check if any session references this task
         for (int i = 0; i < sessions.size(); i++) {
             StudySession s = sessions.get(i);
-            LinkedList<StudyTask> sessionTasks = s.getTasks();
+            List<StudyTask> sessionTasks = s.getTasks();
             for (int j = 0; j < sessionTasks.size(); j++) {
                 if (sessionTasks.get(j).getTaskId() == taskID) {
                     return 2; // blocked by dependent sessions
