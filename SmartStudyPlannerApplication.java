@@ -62,11 +62,11 @@ public class SmartStudyPlannerApplication {
         System.out.println("1. Add Course");
         System.out.println("2. Display All Courses");
         System.out.println("3. Delete Course");
-        System.out.println("4. Add Study Task");
-        System.out.println("5. Display All Study Tasks");
-        System.out.println("6. Delete Study Task");
-        System.out.println("7. Search Task by ID");
-        System.out.println("8. Update Task Status");
+        System.out.println("4. Update Task Status");
+        System.out.println("5. Search Task by ID");
+        System.out.println("6. Add Study Task");
+        System.out.println("7. Display All Study Tasks");
+        System.out.println("8. Delete Study Task");
         System.out.println("9. Log Study Session");
         System.out.println("10. Display All Sessions");
         System.out.println("11. Delete Study Session");
@@ -138,19 +138,19 @@ public class SmartStudyPlannerApplication {
                 handleDeleteCourse();
                 break;
             case 4:
-                handleAddStudyTask();
+                handleUpdateTaskStatus();
                 break;
             case 5:
-                handleDisplayAllStudyTasks();
-                break;
-            case 6:
-                handleDeleteStudyTask();
-                break;
-            case 7:
                 handleSearchTaskByID();
                 break;
+            case 6:
+                handleAddStudyTask();
+                break;
+            case 7:
+                handleDisplayAllStudyTasks();
+                break;
             case 8:
-                handleUpdateTaskStatus();
+                handleDeleteStudyTask();
                 break;
             case 9:
                 handleLogStudySession();
@@ -238,7 +238,7 @@ public class SmartStudyPlannerApplication {
     }
 
     /**
-     * Option 4: prompts for all task fields, validates each one, and adds the task.
+     * Option 6: prompts for all task fields, validates each one, and adds the task.
      */
     private static void handleAddStudyTask() {
         int id = readInt("Enter task ID (6 digits): ");
@@ -290,14 +290,14 @@ public class SmartStudyPlannerApplication {
     }
 
     /**
-     * Option 5: displays all study tasks.
+     * Option 7: displays all study tasks.
      */
     private static void handleDisplayAllStudyTasks() {
         planner.displayAllStudyTasks();
     }
 
     /**
-     * Option 6: deletes a task if no sessions reference it.
+     * Option 8: deletes a task if no sessions reference it.
      */
     private static void handleDeleteStudyTask() {
         int taskID = readInt("Enter task ID to delete: ");
@@ -323,37 +323,50 @@ public class SmartStudyPlannerApplication {
     }
 
     /**
-     * Option 7: searches for a task by ID.
+     * Option 5: searches for a task by ID.
      */
     private static void handleSearchTaskByID() {
-        int id = readInt("Enter task ID to search: ");
+        int id = readInt("Enter task ID: ");
         if (id == INVALID_INT) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("Invalid task ID.");
             return;
         }
-        StudyTask t = planner.searchTaskByID(id);
-        if (t != null) {
-            System.out.println("Found: " + t);
+
+        StudyTask task = planner.searchTaskByID(id);
+        if (task == null) {
+            System.out.println("no matching task");
         } else {
-            System.out.println("Task not found.");
+            System.out.println(task);
         }
     }
 
     /**
-     * Option 8: updates a task's status.
+     * Option 4: updates a task's status after checking the task and validating the status.
      */
     private static void handleUpdateTaskStatus() {
         int id = readInt("Enter task ID: ");
         if (id == INVALID_INT) {
-            System.out.println("Invalid input. Please enter a number.");
+            System.out.println("Invalid task ID.");
             return;
         }
+
+        StudyTask task = planner.searchTaskByID(id);
+        if (task == null) {
+            System.out.println("Task not found.");
+            return;
+        }
+
         String newStatus = readLine("Enter new status (Pending / In Progress / Completed): ");
-        boolean success = planner.updateTaskStatus(id, newStatus);
-        if (success) {
-            System.out.println("Task status updated successfully.");
+        if (!Validator.isValidStatus(newStatus)) {
+            System.out.println("Invalid status. Allowed values: Pending, In Progress, Completed.");
+            return;
+        }
+
+        boolean updated = planner.updateTaskStatus(id, newStatus);
+        if (updated) {
+            System.out.println("Status updated successfully.");
         } else {
-            System.out.println("Failed to update status (task not found or invalid status).");
+            System.out.println("Failed to update task status.");
         }
     }
 
