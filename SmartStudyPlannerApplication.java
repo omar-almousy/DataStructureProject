@@ -39,9 +39,18 @@ public class SmartStudyPlannerApplication {
         scanner = new Scanner(System.in);
 
         boolean running = true;
-        while (running && scanner.hasNextLine()) {
+        while (running) {
             printMenu();
-            int choice = readInt("Enter your choice: ");
+            System.out.print("Enter your choice: ");
+            if (!scanner.hasNextLine()) {
+                break; // input closed (e.g. Ctrl+Z / end of piped input)
+            }
+            int choice;
+            try {
+                choice = Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                choice = INVALID_INT;
+            }
             if (choice == INVALID_INT) {
                 System.out.println("Invalid input. Please enter a number.");
                 continue;
