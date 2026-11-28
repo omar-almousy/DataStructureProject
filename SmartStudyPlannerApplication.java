@@ -13,33 +13,19 @@ import java.util.function.DoublePredicate;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
-/**
- * Main application class for the Smart Study Planner.
- * Provides a resilient menu shell with 14 options plus exit (0).
- * Uses a switch statement for dispatch and handles bad input gracefully.
- * All input is read line by line so a bad entry never desynchronises the scanner.
- * <p>
- * Validation: this is the layer that checks everything the user types.
- * Every check goes through one of the {@code readValid...} helpers below,
- * using a rule and message from {@link Validator}, so no option has its
- * own copy of a validation block. See {@link Validator} for the full policy.
- */
+/* Main class: runs the menu, validates every input with Validator, and calls the manager. */
 public class SmartStudyPlannerApplication {
 
-    /** Sentinel returned by the int readers when the input is missing or invalid. */
+    /* Sentinel returned by the int readers when the input is missing or invalid. */
     private static final int INVALID_INT = Integer.MIN_VALUE;
 
-    /** Sentinel returned by the double readers when the input is missing or invalid. */
+    /* Sentinel returned by the double readers when the input is missing or invalid. */
     private static final double INVALID_DOUBLE = Double.NaN;
 
     private static SmartStudyPlannerManager planner;
     private static Scanner scanner;
 
-    /**
-     * Entry point: runs the menu loop until the user chooses 0 or input ends.
-     *
-     * @param args command-line arguments (unused)
-     */
+    /* Entry point: runs the menu loop until the user chooses 0 or input ends. */
     public static void main(String[] args) {
         planner = new SmartStudyPlannerManager();
         scanner = new Scanner(System.in);
@@ -63,9 +49,7 @@ public class SmartStudyPlannerApplication {
         scanner.close();
     }
 
-    /**
-     * Prints the main menu.
-     */
+    /* Prints the main menu. */
    /* private static void printMenu() {
         System.out.println("\n=== Smart Study Planner Menu ===");
         System.out.println("0. Exit");
@@ -106,12 +90,7 @@ public class SmartStudyPlannerApplication {
 
     // ----- Raw input -----
 
-    /**
-     * Prompts for and reads one full line of input, trimmed.
-     *
-     * @param prompt the prompt to display
-     * @return the trimmed line, or an empty string if input has ended
-     */
+    /* Prompts for and reads one full line of input, trimmed. Returns the trimmed line, or an empty string if input has ended */
     private static String readLine(String prompt) {
         System.out.print(prompt);
         if (!scanner.hasNextLine()) {
@@ -120,24 +99,12 @@ public class SmartStudyPlannerApplication {
         return clean(scanner.nextLine());
     }
 
-    /**
-     * Trims a line and removes any invisible byte-order mark (U+FEFF).
-     * Windows PowerShell can add one in front of input piped from a file,
-     * which would otherwise make the first number look invalid.
-     *
-     * @param line the raw line
-     * @return the cleaned line
-     */
+    /* Trims a line and removes an invisible byte-order mark that PowerShell can add to piped input. */
     private static String clean(String line) {
         return line.replace("﻿", "").trim();
     }
 
-    /**
-     * Parses a whole number, catching bad input.
-     *
-     * @param text the text to parse
-     * @return the number, or INVALID_INT if the text is not a whole number
-     */
+    /* Parses a whole number, catching bad input. Returns the number, or INVALID_INT if the text is not a whole number */
     private static int parseInt(String text) {
         try {
             return Integer.parseInt(text.trim());
@@ -146,12 +113,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Parses a decimal number, catching bad input.
-     *
-     * @param text the text to parse
-     * @return the number, or INVALID_DOUBLE (NaN) if the text is not a number
-     */
+    /* Parses a decimal number, catching bad input. Returns the number, or INVALID_DOUBLE (NaN) if the text is not a number */
     private static double parseDouble(String text) {
         try {
             return Double.parseDouble(text.trim());
@@ -162,15 +124,7 @@ public class SmartStudyPlannerApplication {
 
     // ----- Validated input (the only place user input is checked) -----
 
-    /**
-     * Prompts for a whole number and checks it against a Validator rule.
-     * Prints the error message if the input is not a number or breaks the rule.
-     *
-     * @param prompt the prompt to display
-     * @param rule the Validator rule the value must satisfy
-     * @param error the message to print when the value is rejected
-     * @return the valid value, or INVALID_INT if it was rejected
-     */
+    /* Reads a whole number and checks it against a Validator rule. Returns INVALID_INT if rejected. */
     private static int readValidInt(String prompt, IntPredicate rule, String error) {
         int value = parseInt(readLine(prompt));
         if (value == INVALID_INT || !rule.test(value)) {
@@ -180,14 +134,7 @@ public class SmartStudyPlannerApplication {
         return value;
     }
 
-    /**
-     * Prompts for a decimal number and checks it against a Validator rule.
-     *
-     * @param prompt the prompt to display
-     * @param rule the Validator rule the value must satisfy
-     * @param error the message to print when the value is rejected
-     * @return the valid value, or INVALID_DOUBLE (NaN) if it was rejected
-     */
+    /* Prompts for a decimal number and checks it against a Validator rule. Returns the valid value, or INVALID_DOUBLE (NaN) if it was rejected */
     private static double readValidDouble(String prompt, DoublePredicate rule, String error) {
         double value = parseDouble(readLine(prompt));
         if (Double.isNaN(value) || !rule.test(value)) {
@@ -197,14 +144,7 @@ public class SmartStudyPlannerApplication {
         return value;
     }
 
-    /**
-     * Prompts for text and checks it against a Validator rule.
-     *
-     * @param prompt the prompt to display
-     * @param rule the Validator rule the value must satisfy
-     * @param error the message to print when the value is rejected
-     * @return the valid text, or null if it was rejected
-     */
+    /* Prompts for text and checks it against a Validator rule. Returns the valid text, or null if it was rejected */
     private static String readValidLine(String prompt, Predicate<String> rule, String error) {
         String value = readLine(prompt);
         if (!rule.test(value)) {
@@ -214,39 +154,23 @@ public class SmartStudyPlannerApplication {
         return value;
     }
 
-    /**
-     * Prompts for a six-digit task ID (shared by every option that asks for one).
-     *
-     * @return the valid task ID, or INVALID_INT if it was rejected
-     */
+    /* Prompts for a six-digit task ID (shared by every option that asks for one). Returns the valid task ID, or INVALID_INT if it was rejected */
     private static int readTaskID() {
         return readValidInt("Enter task ID (6 digits): ", Validator::isValidTaskID, Validator.MSG_TASK_ID);
     }
 
-    /**
-     * Prompts for a five-digit course ID (shared by every option that asks for one).
-     *
-     * @return the valid course ID, or INVALID_INT if it was rejected
-     */
+    /* Prompts for a five-digit course ID (shared by every option that asks for one). Returns the valid course ID, or INVALID_INT if it was rejected */
     private static int readCourseID() {
         return readValidInt("Enter course ID (5 digits): ", Validator::isValidCourseID, Validator.MSG_COURSE_ID);
     }
 
-    /**
-     * Prompts for a six-digit session ID (shared by every option that asks for one).
-     *
-     * @return the valid session ID, or INVALID_INT if it was rejected
-     */
+    /* Prompts for a six-digit session ID (shared by every option that asks for one). Returns the valid session ID, or INVALID_INT if it was rejected */
     private static int readSessionID() {
         return readValidInt("Enter session ID (6 digits): ", Validator::isValidSessionID,
                 Validator.MSG_SESSION_ID);
     }
 
-    /**
-     * Prompts for a status from the whitelist (shared by Add Task and Update Status).
-     *
-     * @return the valid status, or null if it was rejected
-     */
+    /* Prompts for a status from the whitelist (shared by Add Task and Update Status). Returns the valid status, or null if it was rejected */
     private static String readStatus() {
         return readValidLine("Enter status (Pending / In Progress / Completed): ",
                 Validator::isValidStatus, Validator.MSG_STATUS);
@@ -254,12 +178,7 @@ public class SmartStudyPlannerApplication {
 
     // ----- Menu dispatch -----
 
-    /**
-     * Dispatches a menu choice.
-     *
-     * @param choice the selected option
-     * @return false if the user chose to exit, true otherwise
-     */
+    /* Dispatches a menu choice. Returns false if the user chose to exit, true otherwise */
     private static boolean handleChoice(int choice) {
     switch (choice) {
         case 0:
@@ -315,9 +234,7 @@ public class SmartStudyPlannerApplication {
 
     // ----- Options -----
 
-    /**
-     * Option 1: prompts for all course fields, validates each one, and adds the course.
-     */
+    /* Option 1: prompts for all course fields, validates each one, and adds the course. */
     private static void handleAddCourse() {
         int id = readCourseID();
         if (id == INVALID_INT) return;
@@ -339,9 +256,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 2: deletes a course if no tasks reference it.
-     */
+    /* Option 2: deletes a course if no tasks reference it. */
     private static void handleDeleteCourse() {
         int courseID = readCourseID();
         if (courseID == INVALID_INT) return;
@@ -362,9 +277,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 3: updates a task's status after checking the task and validating the status.
-     */
+    /* Option 3: updates a task's status after checking the task and validating the status. */
     private static void handleUpdateTaskStatus() {
         int id = readTaskID();
         if (id == INVALID_INT) return;
@@ -379,9 +292,7 @@ public class SmartStudyPlannerApplication {
         System.out.println("Status updated successfully.");
     }
 
-    /**
-     * Option 4: searches for a task by ID.
-     */
+    /* Option 4: searches for a task by ID. */
     private static void handleSearchTaskByID() {
         int id = readTaskID();
         if (id == INVALID_INT) return;
@@ -394,9 +305,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 5: prompts for all task fields, validates each one, and adds the task.
-     */
+    /* Option 5: prompts for all task fields, validates each one, and adds the task. */
     private static void handleAddStudyTask() {
         int id = readTaskID();
         if (id == INVALID_INT) return;
@@ -433,9 +342,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 6: deletes a task if no sessions reference it.
-     */
+    /* Option 6: deletes a task if no sessions reference it. */
     private static void handleDeleteStudyTask() {
         int taskID = readTaskID();
         if (taskID == INVALID_INT) return;
@@ -456,9 +363,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 7: logs a study session of a given duration against an existing task.
-     */
+    /* Option 7: logs a study session of a given duration against an existing task. */
     private static void handleLogStudySession() {
         int sessionID = readSessionID();
         if (sessionID == INVALID_INT) return;
@@ -488,30 +393,22 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 8: displays all courses.
-     */
+    /* Option 8: displays all courses. */
     private static void handleDisplayAllCourses() {
         planner.displayAllCourses();
     }
 
-    /**
-     * Option 9: displays all study tasks.
-     */
+    /* Option 9: displays all study tasks. */
     private static void handleDisplayAllStudyTasks() {
         planner.displayAllStudyTasks();
     }
 
-    /**
-     * Option 10: displays all high-priority incomplete tasks.
-     */
+    /* Option 10: displays all high-priority incomplete tasks. */
     private static void handleDisplayHighPriorityIncompleteTasks() {
         planner.displayHighPriorityIncompleteTasks();
     }
 
-    /**
-     * Option 11: displays all sessions.
-     */
+    /* Option 11: displays all sessions. */
     private static void handleDisplayAllSessions() {
         KWLinkedList<StudySession> sessions = planner.getAllSessions();
         if (sessions.isEmpty()) {
@@ -523,9 +420,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 12: deletes a session by ID.
-     */
+    /* Option 12: deletes a session by ID. */
     private static void handleDeleteStudySession() {
         int sessionID = readSessionID();
         if (sessionID == INVALID_INT) return;
@@ -533,10 +428,7 @@ public class SmartStudyPlannerApplication {
         System.out.println(success ? "Session deleted successfully." : "Session not found.");
     }
 
-    /**
-     * Option 13: shows the sessions logged to one task.
-     * Distinguishes "task not found" from "task exists but has no sessions".
-     */
+    /* Option 13: shows the sessions logged to one task. Distinguishes "task not found" from "task exists but has no sessions". */
     private static void handleShowSessionsForTask() {
         int taskID = readTaskID();
         if (taskID == INVALID_INT) return;
@@ -556,9 +448,7 @@ public class SmartStudyPlannerApplication {
         }
     }
 
-    /**
-     * Option 14: shows the percentage of tasks that are Completed, to 2 decimals.
-     */
+    /* Option 14: shows the percentage of tasks that are Completed, to 2 decimals. */
     private static void handleShowCompletionPercentage() {
         double percent = planner.calculateCompletionPercentage();
         if (percent < 0) {

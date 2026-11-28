@@ -8,10 +8,7 @@
  *   oakba - 202504174
  */
 
-/**
- * Represents a scheduled study session.
- * A session has an ID, date, time range, associated course, and a list of tasks.
- */
+/* Represents a scheduled study session. A session has an ID, date, time range, associated course, and a list of tasks. */
 public class StudySession {
 
     private int id;
@@ -23,13 +20,7 @@ public class StudySession {
     private String notes;
     private double loggedHours; // used when the session is logged with a duration instead of times
 
-    /**
-     * Constructs a logged study session of a fixed duration for one task.
-     *
-     * @param id the six-digit session ID
-     * @param task the task this session is logged to
-     * @param durationHours the session length in hours
-     */
+    /* Constructs a logged study session of a fixed duration for one task. */
     public StudySession(int id, StudyTask task, double durationHours) {
         // Last-line guard only: the application validates input before calling this.
         if (!Validator.isValidSessionID(id)) {
@@ -48,9 +39,7 @@ public class StudySession {
         }
     }
 
-    /**
-     * Constructs a study session using an integer ID.
-     */
+    /* Constructs a study session using an integer ID. */
     public StudySession(int id, String date, String startTime,
                         String endTime, Course course, String notes) {
         this.id = id;
@@ -62,18 +51,14 @@ public class StudySession {
         this.tasks = new KWArrayList<>();
     }
 
-    /**
-     * Constructs a study session using a String ID.
-     */
+    /* Constructs a study session using a String ID. */
     public StudySession(String sessionId, String date, String startTime,
                         String endTime, Course course, String notes) {
         this(Integer.parseInt(sessionId), date, startTime,
                 endTime, course, notes);
     }
 
-    /**
-     * Returns the session ID.
-     */
+    /* Returns the session ID. */
     public int getId() {
         return id;
     }
@@ -148,11 +133,7 @@ public class StudySession {
         this.notes = notes;
     }
 
-    /**
-     * Calculates the session duration in hours.
-     *
-     * @return duration in hours
-     */
+    /* Calculates the session duration in hours. Returns duration in hours */
     public double getDurationHours() {
         if (startTime == null || endTime == null) {
             return loggedHours;
@@ -174,9 +155,7 @@ public class StudySession {
         }
     }
 
-    /**
-     * Returns a string representation of this session.
-     */
+    /* Returns a string representation of this session. */
     @Override
     public String toString() {
 

@@ -10,15 +10,7 @@
 
 import java.util.Objects;
 
-/**
- * Represents a study task in the Smart Study Planner (Part B).
- * <p>
- * A task has a unique six-digit ID, a title, an associated course ID,
- * a deadline (DD/MM/YYYY), a priority (1 = High, 2 = Medium, 3 = Low),
- * and a status (Pending / In Progress / Completed).
- * <p>
- * Equality is based solely on the task ID.
- */
+/* Part B task: six-digit ID, title, course ID, deadline, priority 1-3 and status. Equal when IDs match. */
 public class Task {
     private int taskID;      // unique six-digit task identifier
     private String taskTitle;// non-empty task title
@@ -27,16 +19,7 @@ public class Task {
     private int priority;    // 1 = High, 2 = Medium, 3 = Low
     private String status;   // Pending / In Progress / Completed
 
-    /**
-     * Constructs a task initializing all fields.
-     *
-     * @param taskID    unique six-digit task ID
-     * @param taskTitle non-empty task title
-     * @param courseID  associated course ID
-     * @param deadline  deadline in DD/MM/YYYY format
-     * @param priority  task priority (1 = High, 2 = Medium, 3 = Low)
-     * @param status    task status (Pending / In Progress / Completed)
-     */
+    /* Constructs a task initializing all fields. */
     public Task(int taskID, String taskTitle, int courseID,
                 String deadline, int priority, String status) {
         this.taskID = taskID;
@@ -99,12 +82,7 @@ public class Task {
         this.status = status;
     }
 
-    /**
-     * Two tasks are equal if and only if they have the same taskID.
-     *
-     * @param o the reference object to compare with
-     * @return true if the other object is a Task with the same taskID
-     */
+    /* Two tasks are equal if and only if they have the same taskID. Returns true if the other object is a Task with the same taskID */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -122,20 +100,12 @@ public class Task {
         return Objects.hash(taskID);
     }
 
-    /**
-     * Returns true if the task status is Completed (case-safe comparison).
-     *
-     * @return true only when status represents "Completed"
-     */
+    /* Returns true if the task status is Completed (case-safe comparison). Returns true only when status represents "Completed" */
     public boolean isCompleted() {
         return status != null && status.equalsIgnoreCase("Completed");
     }
 
-    /**
-     * Returns true if the task priority is High (priority == 1).
-     *
-     * @return true only when priority is 1
-     */
+    /* Returns true if the task priority is High (priority == 1). Returns true only when priority is 1 */
     public boolean isHighPriority() {
         return priority == 1;
     }

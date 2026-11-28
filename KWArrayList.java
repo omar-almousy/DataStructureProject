@@ -8,9 +8,7 @@
  *   oakba - 202504174
  */
 
-/** This class implements some methods of the Java ArrayList class.
- * This is the course's KWArrayList class. The project uses it instead of
- * java.util.ArrayList for the tasks inside a session and in TaskManager. */
+/* Course KWArrayList class (array list); used instead of java.util.ArrayList. */
 public class KWArrayList <E>{
     private static final int INITIAL_CAPACITY = 10; // The default initial capacity
     private E[] theData; // array

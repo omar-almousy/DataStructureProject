@@ -15,14 +15,7 @@ public class Course {
     private String instructorName;
     private int creditHours;
 
-    /**
-     * Constructs a course with the given details.
-     *
-     * @param courseID the course ID
-     * @param courseName the course name
-     * @param instructorName the instructor name
-     * @param creditHours the credit hours
-     */
+    /* Constructs a course with the given details. */
     public Course(int courseID, String courseName, String instructorName, int creditHours) {
         // Last-line guard only: the application validates input before calling this.
         if (!Validator.isValidCourseID(courseID)) {
@@ -43,89 +36,52 @@ public class Course {
         this.creditHours = creditHours;
     }
 
-    /**
-     * Returns the course ID.
-     *
-     * @return the course ID
-     */
+    /* Returns the course ID. Returns the course ID */
     public int getCourseID() {
         return courseID;
     }
 
-    /**
-     * Sets the course ID.
-     *
-     * @param courseID the course ID to set
-     */
+    /* Sets the course ID. */
     public void setCourseID(int courseID) {
         this.courseID = courseID;
     }
 
-    /**
-     * Returns the course code used as the key in course maps.
-     */
+    /* Returns the course code used as the key in course maps. */
     public String getCourseCode() {
         return String.valueOf(courseID);
     }
 
-    /**
-     * Returns the course name.
-     */
+    /* Returns the course name. */
     public String getCourseName() {
         return courseName;
     }
 
-    /**
-     * Sets the course name.
-     *
-     * @param courseName the course name to set
-     */
+    /* Sets the course name. */
     public void setCourseName(String courseName) {
         this.courseName = courseName;
     }
 
-    /**
-     * Returns the instructor name.
-     *
-     * @return the instructor name
-     */
+    /* Returns the instructor name. Returns the instructor name */
     public String getInstructorName() {
         return instructorName;
     }
 
-    /**
-     * Sets the instructor name.
-     *
-     * @param instructorName the instructor name to set
-     */
+    /* Sets the instructor name. */
     public void setInstructorName(String instructorName) {
         this.instructorName = instructorName;
     }
 
-    /**
-     * Returns the credit hours.
-     *
-     * @return the credit hours
-     */
+    /* Returns the credit hours. Returns the credit hours */
     public int getCreditHours() {
         return creditHours;
     }
 
-    /**
-     * Sets the credit hours.
-     *
-     * @param creditHours the credit hours to set
-     */
+    /* Sets the credit hours. */
     public void setCreditHours(int creditHours) {
         this.creditHours = creditHours;
     }
 
-    /**
-     * Compares this course to another object for equality based on course ID.
-     *
-     * @param o the reference object to compare with
-     * @return true if the other object is a Course with the same course ID
-     */
+    /* Compares this course to another object for equality based on course ID. Returns true if the other object is a Course with the same course ID */
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -138,11 +94,7 @@ public class Course {
         return this.courseID == other.courseID;
     }
 
-    /**
-     * Returns a string representation of this course.
-     *
-     * @return a string containing course ID, name, instructor, and credit hours
-     */
+    /* Returns a string representation of this course. Returns a string containing course ID, name, instructor, and credit hours */
     @Override
     public String toString() {
         return "Course ID: " + courseID

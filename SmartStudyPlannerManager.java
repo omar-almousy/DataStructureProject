@@ -8,33 +8,20 @@
  *   oakba - 202504174
  */
 
-/**
- * Manages courses, study tasks, and study sessions for the Smart Study Planner.
- * Stores them in the course's KWLinkedList class (not java.util.LinkedList).
- * All iterations use indexed for loops (no enhanced for-each).
- */
+/* Manages courses, tasks and sessions, stored in the course's KWLinkedList class. */
 public class SmartStudyPlannerManager {
     private KWLinkedList<Course> courses;
     private KWLinkedList<StudyTask> tasks;
     private KWLinkedList<StudySession> sessions;
 
-    /**
-     * Constructor initializing all three KWLinkedLists.
-     */
+    /* Constructor initializing all three KWLinkedLists. */
     public SmartStudyPlannerManager() {
         this.courses = new KWLinkedList<>();
         this.tasks = new KWLinkedList<>();
         this.sessions = new KWLinkedList<>();
     }
 
-    /**
-     * Returns a new KWLinkedList holding the same elements, so callers
-     * cannot change the manager's own lists.
-     *
-     * @param source the list to copy
-     * @param <T> the element type
-     * @return a copy of source
-     */
+    /* Returns a new KWLinkedList holding the same elements, so callers cannot change the manager's own lists. Returns a copy of source */
     private static <T> KWLinkedList<T> copyOf(KWLinkedList<T> source) {
         KWLinkedList<T> copy = new KWLinkedList<>();
         for (int i = 0; i < source.size(); i++) {
@@ -45,12 +32,7 @@ public class SmartStudyPlannerManager {
 
     // ----- Course management -----
 
-    /**
-     * Adds a course only if its courseID is not already present.
-     *
-     * @param c the course to add
-     * @return true if the course was added, false if it is null or a duplicate courseID
-     */
+    /* Adds a course only if its courseID is not already present. Returns true if the course was added, false if it is null or a duplicate courseID */
     public boolean addCourse(Course c) {
         if (c == null) {
             return false;
@@ -61,12 +43,7 @@ public class SmartStudyPlannerManager {
         return courses.add(c);
     }
 
-    /**
-     * Finds a course by its ID using an indexed for loop.
-     *
-     * @param id the course ID to search for
-     * @return the Course if found, null otherwise
-     */
+    /* Finds a course by its ID using an indexed for loop. Returns the Course if found, null otherwise */
     public Course findCourseByID(int id) {
         for (int i = 0; i < courses.size(); i++) {
             Course c = courses.get(i);
@@ -77,20 +54,12 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
-    /**
-     * Returns the course with the given ID (alias for findCourseByID).
-     *
-     * @param id the course ID to search for
-     * @return the Course if found, null otherwise
-     */
+    /* Returns the course with the given ID (alias for findCourseByID). Returns the Course if found, null otherwise */
     public Course getCourseByID(int id) {
         return findCourseByID(id);
     }
 
-    /**
-     * Displays all courses using an indexed for loop.
-     * Prints an appropriate message if the list is empty.
-     */
+    /* Displays all courses using an indexed for loop. Prints an appropriate message if the list is empty. */
     public void displayAllCourses() {
         if (courses.isEmpty()) {
             System.out.println("No courses available.");
@@ -101,22 +70,12 @@ public class SmartStudyPlannerManager {
         }
     }
 
-    /**
-     * Returns a copy of the courses list.
-     *
-     * @return a LinkedList containing all courses
-     */
+    /* Returns a copy of the courses list. Returns a LinkedList containing all courses */
     public KWLinkedList<Course> getAllCourses() {
         return copyOf(courses);
     }
 
-    /**
-     * Deletes a course by its courseID.
-     * Blocks deletion if any StudyTask references this courseID (no cascade delete).
-     *
-     * @param courseID the ID of the course to delete
-     * @return 0 = success, 1 = course not found, 2 = blocked because tasks reference it
-     */
+    /* Deletes a course unless tasks use it. Returns 0 = deleted, 1 = not found, 2 = blocked by tasks. */
     public int deleteCourse(int courseID) {
         // Find the course
         int courseIndex = -1;
@@ -142,13 +101,7 @@ public class SmartStudyPlannerManager {
         return 0; // success
     }
 
-    /**
-     * Deletes a study task by its taskID.
-     * Blocks deletion if any StudySession references this taskID (no cascade delete).
-     *
-     * @param taskID the ID of the task to delete
-     * @return 0 = success, 1 = task not found, 2 = blocked because sessions reference it
-     */
+    /* Deletes a task unless sessions use it. Returns 0 = deleted, 1 = not found, 2 = blocked by sessions. */
     public int deleteStudyTask(int taskID) {
         // Find the task
         int taskIndex = -1;
@@ -179,14 +132,7 @@ public class SmartStudyPlannerManager {
 
     // ----- Task management -----
 
-    /**
-     * Adds a study task to the list.
-     * Rejects if task is null, has no course, taskID is duplicate,
-     * or the associated courseID does not exist.
-     *
-     * @param t the task to add
-     * @return true if added, false otherwise
-     */
+    /* Adds a task if its ID is new and its course exists. Returns true if added. */
     public boolean addTask(StudyTask t) {
         if (t == null || t.getCourse() == null) {
             return false;
@@ -202,12 +148,7 @@ public class SmartStudyPlannerManager {
         return tasks.add(t);
     }
 
-    /**
-     * Helper: finds a task by its ID using an indexed for loop.
-     *
-     * @param id the task ID to search for
-     * @return the StudyTask if found, null otherwise
-     */
+    /* Helper: finds a task by its ID using an indexed for loop. Returns the StudyTask if found, null otherwise */
     private StudyTask findTaskByID(int id) {
         for (int i = 0; i < tasks.size(); i++) {
             StudyTask t = tasks.get(i);
@@ -218,12 +159,7 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
-    /**
-     * Searches for a task by its ID.
-     *
-     * @param id the task ID to search for
-     * @return the StudyTask if found, null otherwise
-     */
+    /* Searches for a task by its ID. Returns the StudyTask if found, null otherwise */
     public StudyTask searchTaskByID(int id) {
         return findTaskByID(id);
     }
@@ -293,10 +229,7 @@ public class SmartStudyPlannerManager {
         return deleteStudyTask(id) == 0;
     }
 
-    /**
-     * Displays all study tasks with course info using an indexed for loop.
-     * Prints an appropriate message if the list is empty.
-     */
+    /* Displays all study tasks with course info using an indexed for loop. Prints an appropriate message if the list is empty. */
     public void displayAllStudyTasks() {
         if (tasks.isEmpty()) {
             System.out.println("No study tasks available.");
@@ -307,15 +240,7 @@ public class SmartStudyPlannerManager {
         }
     }
 
-    /**
-     * Updates the status of a task by its ID.
-     * The status value itself is validated by the caller with
-     * {@link Validator#isValidStatus(String)}; this method only checks that the task exists.
-     *
-     * @param id the task ID
-     * @param newStatus the new status to set (already validated)
-     * @return true if updated successfully, false if the task was not found
-     */
+    /* Sets a task's status (already validated by the caller). Returns false if the task was not found. */
     public boolean updateTaskStatus(int id, String newStatus) {
         StudyTask t = findTaskByID(id);
         if (t != null) {
@@ -325,10 +250,7 @@ public class SmartStudyPlannerManager {
         return false;
     }
 
-    /**
-     * Displays all high-priority incomplete tasks using indexed loops.
-     * Prints a message if none are found.
-     */
+    /* Displays all high-priority incomplete tasks using indexed loops. Prints a message if none are found. */
     public void displayHighPriorityIncompleteTasks() {
         boolean found = false;
         for (int i = 0; i < tasks.size(); i++) {
@@ -352,17 +274,7 @@ public class SmartStudyPlannerManager {
         return sessions.add(session);
     }
 
-    /**
-     * Logs a study session of the given duration against an existing task.
-     * Field formats (six-digit session ID, positive duration) are validated by the
-     * caller with {@link Validator}; this method checks only the rules that need
-     * the stored data: duplicate session ID, then task existence.
-     *
-     * @param sessionID the six-digit session ID (already validated)
-     * @param taskID the ID of the task the session is logged to
-     * @param durationHours the session length in hours (already validated)
-     * @return 0 = success, 1 = duplicate session ID, 2 = task not found
-     */
+    /* Logs a session to a task. Returns 0 = logged, 1 = duplicate session ID, 2 = task not found. */
     public int logStudySession(int sessionID, int taskID, double durationHours) {
         if (findSessionByID(sessionID) != null) {
             return 1;
@@ -375,14 +287,7 @@ public class SmartStudyPlannerManager {
         return 0;
     }
 
-    /**
-     * Returns every session that was logged to the given task.
-     * The caller checks first that the task exists (see {@link #searchTaskByID(int)}),
-     * so an empty list means "the task exists but has no sessions".
-     *
-     * @param taskID the task ID
-     * @return a new list of matching sessions (empty if none)
-     */
+    /* Returns every session logged to the given task (empty list if none). */
     public KWLinkedList<StudySession> getSessionsForTask(int taskID) {
         KWLinkedList<StudySession> result = new KWLinkedList<>();
         for (int i = 0; i < sessions.size(); i++) {
@@ -398,14 +303,7 @@ public class SmartStudyPlannerManager {
         return result;
     }
 
-    /**
-     * Calculates the percentage of study tasks whose status is Completed.
-     * Formula: (completed tasks / total tasks) * 100.
-     * Display formatting is done with {@link OutputFormat#percentage(double)}.
-     *
-     * @return the percentage in [0, 100], or -1 when there are no tasks
-     *         (avoids division by zero)
-     */
+    /* Returns the percentage of tasks that are Completed, or -1 if there are no tasks. */
     public double calculateCompletionPercentage() {
         if (tasks.isEmpty()) {
             return -1;
@@ -419,12 +317,7 @@ public class SmartStudyPlannerManager {
         return completed * 100.0 / tasks.size();
     }
 
-    /**
-     * Helper: finds a session by its integer ID using an indexed for loop.
-     *
-     * @param id the session ID to search for
-     * @return the StudySession if found, null otherwise
-     */
+    /* Helper: finds a session by its integer ID using an indexed for loop. Returns the StudySession if found, null otherwise */
     private StudySession findSessionByID(int id) {
         for (int i = 0; i < sessions.size(); i++) {
             if (sessions.get(i).getId() == id) {
@@ -434,11 +327,7 @@ public class SmartStudyPlannerManager {
         return null;
     }
 
-    /**
-     * Returns a copy of the sessions list.
-     *
-     * @return a LinkedList containing all sessions
-     */
+    /* Returns a copy of the sessions list. Returns a LinkedList containing all sessions */
     public KWLinkedList<StudySession> getAllSessions() {
         return copyOf(sessions);
     }

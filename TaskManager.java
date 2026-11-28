@@ -8,24 +8,12 @@
  *   oakba - 202504174
  */
 
-/**
- * Manages a collection of Part B {@link Task} objects.
- * Provides add, display, search, update, high-priority incomplete listing, and
- * completion-percentage calculation operations.
- * Stores tasks in the course's KWArrayList class (not java.util.ArrayList).
- * <p>
- * All iterations use indexed loops only (no enhanced for-loops).
- */
+/* Part B manager for Task objects, stored in the course's KWArrayList class. */
 public class TaskManager {
     private KWArrayList<Task> tasks;
     private KWArrayList<Integer> validCourseIDs;
 
-    /**
-     * Constructs a task manager with the given set of valid (existing) course IDs.
-     * The IDs are copied, so later changes to the caller's list have no effect.
-     *
-     * @param validCourseIDs course IDs that are considered valid/existing
-     */
+    /* Constructs a task manager with the given set of valid (existing) course IDs. The IDs are copied, so later changes to the caller's list have no effect. */
     public TaskManager(KWArrayList<Integer> validCourseIDs) {
         this.tasks = new KWArrayList<>();
         this.validCourseIDs = new KWArrayList<>();
@@ -36,13 +24,7 @@ public class TaskManager {
         }
     }
 
-    /**
-     * Adds a task if its taskID is not a duplicate and its courseID exists.
-     *
-     * @param task the task to add
-     * @return true if the task was added; false if rejected (null task, duplicate
-     *         taskID, or unknown courseID)
-     */
+    /* Adds a task if its ID is new and its course ID exists. Returns true if added. */
     public boolean addTask(Task task) {
         if (task == null) {
             return false;
@@ -57,9 +39,7 @@ public class TaskManager {
         return true;
     }
 
-    /**
-     * Displays all tasks with their course info, or an empty-list message if none.
-     */
+    /* Displays all tasks with their course info, or an empty-list message if none. */
     public void displayAllStudyTasks() {
         if (tasks.isEmpty()) {
             System.out.println("No study tasks to display.");
@@ -70,24 +50,12 @@ public class TaskManager {
         }
     }
 
-    /**
-     * Searches for a task by its ID.
-     *
-     * @param id the task ID to search for
-     * @return the matching {@link Task}, or null if not found
-     */
+    /* Searches for a task by its ID. Returns the matching Task, or null if not found */
     public Task searchTaskByID(int id) {
         return findTaskByID(id);
     }
 
-    /**
-     * Updates the status of an existing task.
-     *
-     * @param id        the task ID
-     * @param newStatus the new status (Pending / In Progress / Completed)
-     * @return true if the status was updated; false if the task ID is unknown or
-     *         the status is invalid
-     */
+    /* Updates the status of an existing task. Returns true if the status was updated; false if the task ID is unknown or the status is invalid */
     public boolean updateTaskStatus(int id, String newStatus) {
         if (!Validator.isValidStatus(newStatus)) {
             return false;
@@ -100,11 +68,7 @@ public class TaskManager {
         return true;
     }
 
-    /**
-     * Displays all high-priority incomplete tasks, using the Part B helper methods
-     * {@link Task#isHighPriority()} and {@link Task#isCompleted()}. Prints a
-     * message if none match.
-     */
+    /* Displays all high-priority incomplete tasks, using the Part B helper methods Task.isHighPriority() and Task.isCompleted(). Prints a message if none match. */
     public void displayHighPriorityIncompleteTasks() {
         boolean found = false;
         for (int i = 0; i < tasks.size(); i++) {
@@ -119,17 +83,7 @@ public class TaskManager {
         }
     }
 
-    /**
-     * Calculates the completion percentage of all tracked tasks.
-     * <p>
-     * Formula: {@code (completedTasks / totalTasks) * 100.0}. Uses the Part B
-     * helper {@link Task#isCompleted()} to count completed tasks via an indexed
-     * loop. Display formatting is done with {@link OutputFormat#percentage(double)}
-     * (2 decimals, and "N/A" for the -1 "no tasks" result).
-     *
-     * @return completion percentage in [0.0, 100.0]; returns {@code -1} when
-     *         there are no tasks (guards against division by zero / NaN)
-     */
+    /* Returns the percentage of tasks that are Completed, or -1 if there are no tasks. */
     public double calculateCompletionPercentage() {
         if (tasks.isEmpty()) {
             return -1;
@@ -145,12 +99,7 @@ public class TaskManager {
 
     // ----- Helper -----
 
-    /**
-     * Finds a task by its ID using an indexed loop.
-     *
-     * @param id the task ID
-     * @return the matching {@link Task}, or null if not found
-     */
+    /* Finds a task by its ID using an indexed loop. Returns the matching Task, or null if not found */
     private Task findTaskByID(int id) {
         for (int i = 0; i < tasks.size(); i++) {
             Task t = tasks.get(i);
@@ -163,12 +112,7 @@ public class TaskManager {
 
     // ----- Validation helpers -----
 
-    /**
-     * Returns true if the given course ID exists in the set of valid course IDs.
-     *
-     * @param courseID the course ID to validate
-     * @return true if the course ID exists
-     */
+    /* Returns true if the given course ID exists in the set of valid course IDs. Returns true if the course ID exists */
     private boolean courseExists(int courseID) {
         for (int i = 0; i < validCourseIDs.size(); i++) {
             if (validCourseIDs.get(i) == courseID) {
